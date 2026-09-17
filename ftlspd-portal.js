@@ -1,6 +1,6 @@
 (function () {
   const OWNER_EMAIL = "murphyedward@gmail.com";
-  const SERVER_CONNECT_URL = window.LSPD_FIVEM_CONNECT_URL || "fivem://connect/ftlspd.com";
+  const SERVER_CONNECT_URL = window.LSPD_FIVEM_CONNECT_URL || "";
   const SUPABASE_CONFIG = Object.assign({
     url: window.LSPD_SUPABASE_URL || "",
     anonKey: window.LSPD_SUPABASE_ANON_KEY || "",
