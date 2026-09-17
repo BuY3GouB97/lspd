@@ -1755,7 +1755,7 @@
   function startStreamPolling() {
     if (state.streamTimer) clearInterval(state.streamTimer);
     refreshStreamStatuses();
-    state.streamTimer = setInterval(refreshStreamStatuses, 100);
+    state.streamTimer = setInterval(refreshStreamStatuses, 5000);
   }
 
   async function refreshStreamStatuses() {
