@@ -2,8 +2,8 @@
   const OWNER_EMAIL = "alilamir27@gmail.com";
   const SERVER_CONNECT_URL = window.LSPD_FIVEM_CONNECT_URL || "";
   const SUPABASE_CONFIG = Object.assign({
-    url: window.LSPD_SUPABASE_URL || "",
-    anonKey: window.LSPD_SUPABASE_ANON_KEY || "",
+  url: window.LSPD_SUPABASE_URL || "https://cydsusnowotmorxywyxa.supabase.co",
+    anonKey: window.LSPD_SUPABASE_ANON_KEY || "sb_publishable_1Onpbnsgcx2zaSAwqEsMMw_vDGJRdfq",
     ownerPassword: window.LSPD_OWNER_PASSWORD || "!medward9318u",
     discordWebhookUrl: window.LSPD_DISCORD_WEBHOOK_URL || "https://canary.discord.com/api/webhooks/1550096295065030706/8EwafuN8mvX2nsVcPE9cLIoZ_6YruZvV2vqJGrufTFqx9qsA6vkKAXOYPnf_6Fv2N2WP",
     tables: {
