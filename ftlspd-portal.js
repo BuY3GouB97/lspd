@@ -21,11 +21,12 @@
     accounts: "ftlspd-accounts-v1",
     roles: "ftlspd-roles-v2",
     assets: "ftlspd-assets-v2",
+    assetOrder: "ftlspd-asset-order-v1",
     userEmail: "ftlspd-user-email-v1",
     session: "ftlspd-session-v1"
   };
 
-  const portalWorkspaces = ["recruitment", "review", "archives", "fto", "crew", "media"];
+  const portalWorkspaces = ["recruitment", "review", "archives", "fto", "crew", "media", "credits"];
   const state = {
     client: null,
     realtimeChannel: null,
@@ -38,6 +39,9 @@
     role: "guest",
     activeReviewType: "recruitment",
     activeArchive: "accepted-recruitment",
+    assetOrder: { crew: [], media: [] },
+    assetEditing: { crew: null, media: null },
+    dragAsset: null,
     applicationType: "recruitment",
     applicationStep: 1,
     applicationDraft: {},
@@ -60,6 +64,7 @@
       workspaceFto: "FTO",
       workspaceCrew: "LSPD Crew",
       workspaceMedia: "Media",
+      workspaceCredits: "Credits",
       roleOwner: "Owner",
       roleAdmin: "Admin",
       roleEditor: "Admin",
@@ -134,6 +139,11 @@
       mediaSubtitle: "Department photo board for patrol, academy, ceremony, and command media.",
       addCrew: "Add crew member",
       addMedia: "Add media",
+      updateCrew: "Update crew member",
+      updateMedia: "Update media",
+      edit: "Edit",
+      cancel: "Cancel",
+      dragAsset: "Drag to reposition",
       name: "Name",
       rank: "Rank",
       discordId: "Discord ID",
@@ -143,6 +153,16 @@
       remove: "Remove",
       noCrew: "No crew profiles have been added yet.",
       noMedia: "No media has been added yet.",
+      creditsTitle: "Credits & Build Log",
+      creditsSubtitle: "A First Town local command interface built for LSPD operations, records, media, and recruitment.",
+      creditsKicker: "First Town production",
+      creditMajedTitle: "Majed Alqahtani",
+      creditMajedRole: "Head of the Internal Affairs",
+      creditMurphyTitle: "Murphy Edward",
+      creditMurphyRole: "Chief of Police",
+      creditBody: "All core credits go to Majed Alqahtani and Chief of Police Murphy Edward for the LSPD command system vision, department identity, and operational direction.",
+      creditLocal: "Locally made in First Town.",
+      creditStack: "Languages used: HTML, CSS, and JS.",
       applicationModalTitleRecruitment: "New Recruitment Application",
       applicationModalTitleTransfer: "Transfer Request",
       applicationStep: "Page {step} of 2",
@@ -178,7 +198,12 @@
       savedDecision: "Decision saved.",
       savedRole: "Role updated.",
       savedAsset: "Saved.",
+      editMode: "Editing selected item.",
+      reorderSaved: "Order updated.",
       removed: "Removed.",
+      deleteArchive: "Delete archive",
+      confirmDeleteArchive: "Delete this archived record only?",
+      archiveDeleted: "Archive record deleted.",
       databaseError: "Database action failed. Check Supabase table names and credentials.",
       resetDone: "Archives and cooldown timers were reset.",
       pendingCleared: "Pending requests cleared.",
@@ -209,6 +234,7 @@
       workspaceFto: "FTO",
       workspaceCrew: "طاقم LSPD",
       workspaceMedia: "الإعلام",
+      workspaceCredits: "الاعتمادات",
       roleOwner: "مالك",
       roleAdmin: "أدمن",
       roleEditor: "أدمن",
@@ -283,6 +309,11 @@
       mediaSubtitle: "لوحة صور القسم للدوريات، الأكاديمية، المراسم، والقيادة.",
       addCrew: "إضافة عضو قيادة",
       addMedia: "إضافة مادة إعلامية",
+      updateCrew: "تحديث عضو القيادة",
+      updateMedia: "تحديث المادة الإعلامية",
+      edit: "تعديل",
+      cancel: "إلغاء",
+      dragAsset: "اسحب لتغيير الترتيب",
       name: "الاسم",
       rank: "الرتبة",
       discordId: "معرف الديسكورد",
@@ -292,6 +323,16 @@
       remove: "حذف",
       noCrew: "لم تتم إضافة ملفات قيادة بعد.",
       noMedia: "لم تتم إضافة مواد إعلامية بعد.",
+      creditsTitle: "الاعتمادات وسجل البناء",
+      creditsSubtitle: "واجهة قيادة محلية في First Town لعمليات LSPD والسجلات والإعلام والتقديم.",
+      creditsKicker: "إنتاج First Town",
+      creditMajedTitle: "Majed Alqahtani",
+      creditMajedRole: "Head of the Internal Affairs",
+      creditMurphyTitle: "Murphy Edward",
+      creditMurphyRole: "Chief of Police",
+      creditBody: "تعود الاعتمادات الأساسية إلى Majed Alqahtani و Chief of Police Murphy Edward لرؤية نظام قيادة LSPD وهوية القسم والتوجيه التشغيلي.",
+      creditLocal: "صنع محلياً في First Town.",
+      creditStack: "اللغات المستخدمة: HTML و CSS و JS.",
       applicationModalTitleRecruitment: "طلب توظيف جديد",
       applicationModalTitleTransfer: "طلب نقل",
       applicationStep: "الصفحة {step} من 2",
@@ -327,7 +368,12 @@
       savedDecision: "تم حفظ القرار.",
       savedRole: "تم تحديث الصلاحية.",
       savedAsset: "تم الحفظ.",
+      editMode: "تم فتح وضع تعديل العنصر.",
+      reorderSaved: "تم تحديث الترتيب.",
       removed: "تم الحذف.",
+      deleteArchive: "حذف الأرشيف",
+      confirmDeleteArchive: "حذف هذا السجل المؤرشف فقط؟",
+      archiveDeleted: "تم حذف السجل المؤرشف.",
       databaseError: "فشل إجراء قاعدة البيانات. تحقق من أسماء الجداول وبيانات Supabase.",
       resetDone: "تم تصفير الأرشيف وفترات الانتظار.",
       pendingCleared: "تم مسح الطلبات المعلقة.",
@@ -446,7 +492,8 @@
       ["sop", "fa-book-open", "workspaceSop"],
       ["fto", "fa-graduation-cap", "workspaceFto"],
       ["crew", "fa-users-gear", "workspaceCrew"],
-      ["media", "fa-images", "workspaceMedia"]
+      ["media", "fa-images", "workspaceMedia"],
+      ["credits", "fa-award", "workspaceCredits"]
     ];
     nav.innerHTML = tabs.map(function (tab) {
       return '<button id="workspace-' + tab[0] + '" class="workspace-tab" onclick="setWorkspace(\'' + tab[0] + '\')" type="button" aria-selected="' + (tab[0] === "recruitment") + '"><i class="fa-solid ' + tab[1] + '"></i><span data-i18n="' + tab[2] + '">' + tr(tab[2]) + "</span></button>";
@@ -484,6 +531,7 @@
       ftoViewHtml(),
       crewViewHtml(),
       mediaViewHtml(),
+      creditsViewHtml(),
       applicationModalHtml(),
       decisionModalHtml(),
       roleModalHtml(),
@@ -617,7 +665,8 @@
       '<input class="portal-input" name="subtitle" data-i18n-placeholder="rank" placeholder="' + safe(tr("rank")) + '" required>',
       '<input class="portal-input" name="discord_id" data-i18n-placeholder="discordId" placeholder="' + safe(tr("discordId")) + '" required>',
       '<input class="portal-input wide" name="photo_url" data-i18n-placeholder="photoUrl" placeholder="' + safe(tr("photoUrl")) + '" required>',
-      '<button class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addCrew">' + safe(tr("addCrew")) + '</span></button>',
+      '<button id="crewSaveButton" class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addCrew">' + safe(tr("addCrew")) + '</span></button>',
+      '<button id="crewCancelEditButton" class="portal-button ghost hidden" type="button" data-cancel-asset-edit="crew"><i class="fa-solid fa-ban"></i><span data-i18n="cancel">' + safe(tr("cancel")) + '</span></button>',
       '</form>',
       '<div id="crewGrid" class="asset-grid"></div>',
       '</section>'
@@ -632,9 +681,23 @@
       '<input class="portal-input" name="title" data-i18n-placeholder="title" placeholder="' + safe(tr("title")) + '" required>',
       '<input class="portal-input wide" name="photo_url" data-i18n-placeholder="photoUrl" placeholder="' + safe(tr("photoUrl")) + '" required>',
       '<input class="portal-input wide" name="caption" data-i18n-placeholder="caption" placeholder="' + safe(tr("caption")) + '">',
-      '<button class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addMedia">' + safe(tr("addMedia")) + '</span></button>',
+      '<button id="mediaSaveButton" class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addMedia">' + safe(tr("addMedia")) + '</span></button>',
+      '<button id="mediaCancelEditButton" class="portal-button ghost hidden" type="button" data-cancel-asset-edit="media"><i class="fa-solid fa-ban"></i><span data-i18n="cancel">' + safe(tr("cancel")) + '</span></button>',
       '</form>',
       '<div id="mediaGrid" class="asset-grid"></div>',
+      '</section>'
+    ].join("");
+  }
+
+  function creditsViewHtml() {
+    return [
+      '<section id="creditsView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="creditsKicker">' + safe(tr("creditsKicker")) + '</p><h2 data-i18n="creditsTitle">' + safe(tr("creditsTitle")) + '</h2><p data-i18n="creditsSubtitle">' + safe(tr("creditsSubtitle")) + '</p></div></div>',
+      '<section class="credits-command">',
+      '<article class="credit-card primary-credit"><i class="fa-solid fa-user-shield"></i><span>IA COMMAND</span><h3 data-i18n="creditMajedTitle">' + safe(tr("creditMajedTitle")) + '</h3><p data-i18n="creditMajedRole">' + safe(tr("creditMajedRole")) + '</p></article>',
+      '<article class="credit-card primary-credit"><i class="fa-solid fa-star"></i><span>CHIEF COMMAND</span><h3 data-i18n="creditMurphyTitle">' + safe(tr("creditMurphyTitle")) + '</h3><p data-i18n="creditMurphyRole">' + safe(tr("creditMurphyRole")) + '</p></article>',
+      '<article class="credit-brief"><p data-i18n="creditBody">' + safe(tr("creditBody")) + '</p><div class="credit-chips"><span data-i18n="creditLocal">' + safe(tr("creditLocal")) + '</span><span data-i18n="creditStack">' + safe(tr("creditStack")) + '</span></div></article>',
+      '</section>',
       '</section>'
     ].join("");
   }
@@ -823,6 +886,13 @@
     document.getElementById("roleForm")?.addEventListener("submit", saveRole);
     document.getElementById("crewForm")?.addEventListener("submit", function (event) { saveAsset(event, "crew"); });
     document.getElementById("mediaForm")?.addEventListener("submit", function (event) { saveAsset(event, "media"); });
+    document.querySelectorAll("[data-cancel-asset-edit]").forEach(function (button) {
+      button.addEventListener("click", function () { cancelAssetEdit(button.dataset.cancelAssetEdit); });
+    });
+    document.addEventListener("dragstart", handleAssetDragStart);
+    document.addEventListener("dragover", handleAssetDragOver);
+    document.addEventListener("drop", handleAssetDrop);
+    document.addEventListener("dragend", handleAssetDragEnd);
   }
 
   function trackPointerGlow(event) {
@@ -1005,7 +1075,8 @@
       state.applications = (apps.data || []).map(normalizeApplication);
       state.accounts = (accounts.data || []).map(normalizeAccount);
       state.roles = roles.data || [];
-      state.assets = assets.data || [];
+      state.assets = (assets.data || []).map(normalizeAsset);
+      syncAssetOrderFromRows();
       saveLocalData();
       updateRole();
       renderAllPortal();
@@ -1023,7 +1094,8 @@
     state.applications = readJson(STORAGE_KEYS.applications).map(normalizeApplication);
     state.accounts = readJson(STORAGE_KEYS.accounts).map(normalizeAccount);
     state.roles = readJson(STORAGE_KEYS.roles);
-    state.assets = readJson(STORAGE_KEYS.assets);
+    state.assets = readJson(STORAGE_KEYS.assets).map(normalizeAsset);
+    state.assetOrder = readOrder();
     state.authUser = readSession();
   }
 
@@ -1032,6 +1104,7 @@
     localStorage.setItem(STORAGE_KEYS.accounts, JSON.stringify(state.accounts));
     localStorage.setItem(STORAGE_KEYS.roles, JSON.stringify(state.roles));
     localStorage.setItem(STORAGE_KEYS.assets, JSON.stringify(state.assets));
+    localStorage.setItem(STORAGE_KEYS.assetOrder, JSON.stringify(state.assetOrder));
   }
 
   function readJson(key) {
@@ -1040,6 +1113,18 @@
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
       return [];
+    }
+  }
+
+  function readOrder() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEYS.assetOrder) || "{}");
+      return {
+        crew: Array.isArray(parsed.crew) ? parsed.crew : [],
+        media: Array.isArray(parsed.media) ? parsed.media : []
+      };
+    } catch (error) {
+      return { crew: [], media: [] };
     }
   }
 
@@ -1065,6 +1150,48 @@
       role: normalizeRole(row.role || "applicant"),
       password_hash: row.password_hash || row.passwordHash || ""
     });
+  }
+
+  function normalizeAsset(row) {
+    const order = Number(row.display_order);
+    return Object.assign({}, row, {
+      id: row.id || uid(),
+      category: row.category === "media" ? "media" : "crew",
+      title: row.title || row.name || "",
+      subtitle: row.subtitle || row.rank || "",
+      discord_id: row.discord_id || "",
+      photo_url: row.photo_url || "",
+      caption: row.caption || "",
+      display_order: Number.isFinite(order) ? order : null
+    });
+  }
+
+  function syncAssetOrderFromRows() {
+    ["crew", "media"].forEach(function (category) {
+      const ordered = state.assets
+        .filter(function (asset) { return asset.category === category; })
+        .filter(function (asset) { return Number.isFinite(Number(asset.display_order)); })
+        .sort(function (a, b) { return Number(a.display_order) - Number(b.display_order); })
+        .map(function (asset) { return asset.id; });
+      if (ordered.length) state.assetOrder[category] = ordered;
+    });
+  }
+
+  function orderedAssets(category) {
+    const manual = state.assetOrder[category] || [];
+    const manualIndex = new Map(manual.map(function (id, index) { return [id, index]; }));
+    return state.assets
+      .filter(function (asset) { return asset.category === category; })
+      .map(normalizeAsset)
+      .sort(function (a, b) {
+        const aManual = manualIndex.has(a.id) ? manualIndex.get(a.id) : Infinity;
+        const bManual = manualIndex.has(b.id) ? manualIndex.get(b.id) : Infinity;
+        if (aManual !== bManual) return aManual - bManual;
+        const aOrder = Number.isFinite(Number(a.display_order)) ? Number(a.display_order) : Infinity;
+        const bOrder = Number.isFinite(Number(b.display_order)) ? Number(b.display_order) : Infinity;
+        if (aOrder !== bOrder) return aOrder - bOrder;
+        return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+      });
   }
 
   function normalizeRole(role) {
@@ -1160,6 +1287,8 @@
     const mediaForm = document.getElementById("mediaForm");
     if (crewForm) crewForm.classList.toggle("hidden", !canEdit());
     if (mediaForm) mediaForm.classList.toggle("hidden", !canEdit());
+    updateAssetFormState("crew");
+    updateAssetFormState("media");
     const clear = document.getElementById("clearPendingButton");
     if (clear) clear.classList.toggle("hidden", !canEdit());
     const reset = document.getElementById("fullResetButton");
@@ -1241,7 +1370,12 @@
       return '<div class="question-pair"><strong>' + safe(label) + '</strong><span>' + safe(String(value)) + "</span></div>";
     }).filter(Boolean).join("");
     const decisionHtml = decisionDetailsHtml(app);
-    const actions = app.status === "pending" && canEdit() ? '<div class="review-actions"><button class="portal-button success" type="button" onclick="window.openDecisionModal(\'' + safeAttr(app.id) + '\',\'accepted\')"><i class="fa-solid fa-check"></i><span data-i18n="approve">' + safe(tr("approve")) + '</span></button><button class="portal-button danger" type="button" onclick="window.openDecisionModal(\'' + safeAttr(app.id) + '\',\'rejected\')"><i class="fa-solid fa-xmark"></i><span data-i18n="reject">' + safe(tr("reject")) + '</span></button></div>' : "";
+    let actions = "";
+    if (app.status === "pending" && canEdit()) {
+      actions = '<div class="review-actions"><button class="portal-button success" type="button" onclick="window.openDecisionModal(\'' + safeAttr(app.id) + '\',\'accepted\')"><i class="fa-solid fa-check"></i><span data-i18n="approve">' + safe(tr("approve")) + '</span></button><button class="portal-button danger" type="button" onclick="window.openDecisionModal(\'' + safeAttr(app.id) + '\',\'rejected\')"><i class="fa-solid fa-xmark"></i><span data-i18n="reject">' + safe(tr("reject")) + '</span></button></div>';
+    } else if (app.status !== "pending" && canEdit()) {
+      actions = '<div class="review-actions"><button class="portal-button danger" type="button" onclick="window.deleteArchiveRecord(\'' + safeAttr(app.id) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="deleteArchive">' + safe(tr("deleteArchive")) + '</span></button></div>';
+    }
     return [
       '<article class="review-card">',
       '<div class="review-top"><div><h3 class="review-title">' + safe(app.applicant_name || "Unknown applicant") + '</h3><div class="review-meta">' + safe(tr("submittedBy", { email: app.applicant_email || "-" })) + ' · ' + safe(app.discord_id || "-") + ' · ' + safe(tr("submittedAt", { date: formatDateTime(app.created_at) })) + '</div></div><span class="status-pill ' + statusClass + '">' + safe(tr(app.status)) + " · " + safe(app.kind === "transfer" ? tr("transferLabel") : tr("recruitmentLabel")) + "</span></div>",
@@ -1271,17 +1405,20 @@
   function renderAssets(category) {
     const grid = document.getElementById(category === "crew" ? "crewGrid" : "mediaGrid");
     if (!grid) return;
-    const records = state.assets.filter(function (asset) { return asset.category === category; });
+    const records = orderedAssets(category);
+    grid.classList.toggle("drag-enabled", canEdit());
     if (!records.length) {
       grid.innerHTML = '<div class="empty-portal">' + safe(tr(category === "crew" ? "noCrew" : "noMedia")) + "</div>";
       return;
     }
-    grid.innerHTML = records.map(function (asset) {
+    grid.innerHTML = records.map(function (asset, index) {
       const title = asset.title || asset.name || "";
       const subtitle = asset.subtitle || asset.rank || asset.caption || "";
       const discord = asset.discord_id ? '<span>' + safe(tr("discordId")) + ": " + safe(asset.discord_id) + "</span>" : "";
-      const remove = canEdit() ? '<div class="asset-card-actions"><button class="portal-button danger" type="button" onclick="window.removeAsset(\'' + safeAttr(asset.id) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="remove">' + safe(tr("remove")) + "</span></button></div>" : "";
-      return '<article class="asset-card"><img src="' + safeAttr(asset.photo_url || "image2.png") + '" alt="' + safeAttr(title) + '"><div class="asset-card-body"><h3>' + safe(title) + '</h3><p>' + safe(subtitle || asset.caption || "") + '</p>' + discord + remove + "</div></article>";
+      const caption = category === "media" && asset.caption ? '<p class="asset-caption">' + safe(asset.caption) + "</p>" : "";
+      const drag = canEdit() ? '<button class="asset-drag-handle" type="button" aria-label="' + safeAttr(tr("dragAsset")) + '" title="' + safeAttr(tr("dragAsset")) + '"><i class="fa-solid fa-grip-lines"></i></button>' : "";
+      const actions = canEdit() ? '<div class="asset-card-actions"><button class="portal-button ghost" type="button" onclick="window.editAsset(\'' + safeAttr(asset.id) + '\')"><i class="fa-solid fa-pen-to-square"></i><span data-i18n="edit">' + safe(tr("edit")) + '</span></button><button class="portal-button danger" type="button" onclick="window.removeAsset(\'' + safeAttr(asset.id) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="remove">' + safe(tr("remove")) + "</span></button></div>" : "";
+      return '<article class="asset-card" data-asset-id="' + safeAttr(asset.id) + '" data-asset-category="' + safeAttr(category) + '" data-asset-index="' + index + '" draggable="' + (canEdit() ? "true" : "false") + '">' + drag + '<img src="' + safeAttr(asset.photo_url || "image2.png") + '" alt="' + safeAttr(title) + '"><div class="asset-card-body"><h3>' + safe(title) + '</h3><p>' + safe(subtitle || "") + '</p>' + caption + discord + actions + "</div></article>";
     }).join("");
   }
 
@@ -1656,24 +1793,83 @@
     }
     const form = event.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
-    const row = {
-      id: uid(),
-      category,
+    const editingId = state.assetEditing[category];
+    const existing = editingId ? state.assets.find(function (asset) { return asset.id === editingId && asset.category === category; }) : null;
+    const patch = {
       title: (data.title || "").trim(),
       subtitle: (data.subtitle || "").trim(),
       discord_id: (data.discord_id || "").trim(),
       photo_url: (data.photo_url || "").trim(),
       caption: (data.caption || "").trim(),
-      created_by: state.userEmail,
-      created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
-    const ok = await insertRow("assets", row);
+    let ok;
+    if (existing) {
+      ok = await updateRow("assets", existing.id, patch);
+    } else {
+      const order = orderedAssets(category).length;
+      ok = await insertRow("assets", Object.assign({
+        id: uid(),
+        category,
+        created_by: state.userEmail,
+        created_at: new Date().toISOString(),
+        display_order: order
+      }, patch));
+    }
     if (!ok) return;
     form.reset();
+    state.assetEditing[category] = null;
+    updateAssetFormState(category);
     toast(tr("savedAsset"), "success");
     await refreshAfterMutation();
   }
+
+  function updateAssetFormState(category) {
+    const form = document.getElementById(category === "crew" ? "crewForm" : "mediaForm");
+    if (!form) return;
+    const editing = Boolean(state.assetEditing[category]);
+    form.classList.toggle("editing-asset", editing);
+    const saveButton = document.getElementById(category + "SaveButton");
+    const cancelButton = document.getElementById(category + "CancelEditButton");
+    if (saveButton) {
+      const icon = saveButton.querySelector("i");
+      const label = saveButton.querySelector("span");
+      if (icon) icon.className = "fa-solid " + (editing ? "fa-floppy-disk" : "fa-plus");
+      if (label) {
+        label.dataset.i18n = editing ? (category === "crew" ? "updateCrew" : "updateMedia") : (category === "crew" ? "addCrew" : "addMedia");
+        label.textContent = tr(label.dataset.i18n);
+      }
+    }
+    if (cancelButton) cancelButton.classList.toggle("hidden", !editing);
+  }
+
+  function cancelAssetEdit(category) {
+    state.assetEditing[category] = null;
+    const form = document.getElementById(category === "crew" ? "crewForm" : "mediaForm");
+    if (form) form.reset();
+    updateAssetFormState(category);
+  }
+
+  window.editAsset = function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const asset = state.assets.find(function (entry) { return entry.id === id; });
+    if (!asset) return;
+    const category = asset.category === "media" ? "media" : "crew";
+    const form = document.getElementById(category === "crew" ? "crewForm" : "mediaForm");
+    if (!form) return;
+    state.assetEditing[category] = id;
+    if (form.elements.title) form.elements.title.value = asset.title || "";
+    if (form.elements.subtitle) form.elements.subtitle.value = asset.subtitle || "";
+    if (form.elements.discord_id) form.elements.discord_id.value = asset.discord_id || "";
+    if (form.elements.photo_url) form.elements.photo_url.value = asset.photo_url || "";
+    if (form.elements.caption) form.elements.caption.value = asset.caption || "";
+    updateAssetFormState(category);
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+    toast(tr("editMode"), "success");
+  };
 
   window.removeAsset = async function (id) {
     if (!canEdit()) {
@@ -1686,9 +1882,90 @@
     await refreshAfterMutation();
   };
 
+  window.deleteArchiveRecord = async function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const record = state.applications.find(function (app) { return app.id === id; });
+    if (!record || record.status === "pending") return;
+    if (!confirm(tr("confirmDeleteArchive"))) return;
+    const ok = await deleteRows("applications", [id]);
+    if (!ok) return;
+    toast(tr("archiveDeleted"), "success");
+    await refreshAfterMutation();
+  };
+
+  function handleAssetDragStart(event) {
+    const card = event.target.closest(".asset-card[data-asset-id]");
+    if (!card || !canEdit()) return;
+    state.dragAsset = {
+      id: card.dataset.assetId,
+      category: card.dataset.assetCategory
+    };
+    card.classList.add("dragging");
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", state.dragAsset.id);
+  }
+
+  function handleAssetDragOver(event) {
+    const card = event.target.closest(".asset-card[data-asset-id]");
+    if (!card || !state.dragAsset || card.dataset.assetCategory !== state.dragAsset.category) return;
+    event.preventDefault();
+    card.classList.add("drag-over");
+    event.dataTransfer.dropEffect = "move";
+  }
+
+  async function handleAssetDrop(event) {
+    const card = event.target.closest(".asset-card[data-asset-id]");
+    if (!card || !state.dragAsset || card.dataset.assetCategory !== state.dragAsset.category) return;
+    event.preventDefault();
+    document.querySelectorAll(".asset-card.drag-over").forEach(function (node) { node.classList.remove("drag-over"); });
+    if (card.dataset.assetId === state.dragAsset.id) return;
+    await moveAssetBefore(state.dragAsset.category, state.dragAsset.id, card.dataset.assetId);
+  }
+
+  function handleAssetDragEnd() {
+    document.querySelectorAll(".asset-card.dragging, .asset-card.drag-over").forEach(function (node) {
+      node.classList.remove("dragging", "drag-over");
+    });
+    state.dragAsset = null;
+  }
+
+  async function moveAssetBefore(category, draggedId, targetId) {
+    const ids = orderedAssets(category).map(function (asset) { return asset.id; });
+    const from = ids.indexOf(draggedId);
+    const to = ids.indexOf(targetId);
+    if (from < 0 || to < 0 || from === to) return;
+    ids.splice(from, 1);
+    ids.splice(to, 0, draggedId);
+    state.assetOrder[category] = ids;
+    state.assets = state.assets.map(function (asset) {
+      if (asset.category !== category) return asset;
+      const index = ids.indexOf(asset.id);
+      return index >= 0 ? Object.assign({}, asset, { display_order: index, updated_at: new Date().toISOString() }) : asset;
+    });
+    saveLocalData();
+    renderAssets(category);
+    toast(tr("reorderSaved"), "success");
+    if (state.client) await persistAssetOrder(category, ids);
+  }
+
+  async function persistAssetOrder(category, ids) {
+    for (let index = 0; index < ids.length; index += 1) {
+      const ok = await updateRow("assets", ids[index], { display_order: index, updated_at: new Date().toISOString() }, { quiet: true });
+      if (!ok) return;
+    }
+  }
+
   async function insertRow(table, row) {
     if (state.client) {
-      const result = await state.client.from(tableName(table)).insert(row);
+      let result = await state.client.from(tableName(table)).insert(row);
+      if (result.error && table === "assets" && row && Object.prototype.hasOwnProperty.call(row, "display_order") && isMissingDisplayOrderError(result.error)) {
+        const fallback = Object.assign({}, row);
+        delete fallback.display_order;
+        result = await state.client.from(tableName(table)).insert(fallback);
+      }
       if (result.error) {
         console.warn(result.error);
         toast(tr("databaseError"), "error");
@@ -1699,17 +1976,23 @@
     if (table === "applications") state.applications.unshift(normalizeApplication(row));
     if (table === "accounts") state.accounts.push(normalizeAccount(row));
     if (table === "roles") state.roles.push(row);
-    if (table === "assets") state.assets.unshift(row);
+    if (table === "assets") state.assets.unshift(normalizeAsset(row));
     saveLocalData();
     return true;
   }
 
-  async function updateRow(table, id, patch) {
+  async function updateRow(table, id, patch, options) {
+    const settings = options || {};
     if (state.client) {
-      const result = await state.client.from(tableName(table)).update(patch).eq("id", id);
+      let result = await state.client.from(tableName(table)).update(patch).eq("id", id);
+      if (result.error && table === "assets" && patch && Object.prototype.hasOwnProperty.call(patch, "display_order") && isMissingDisplayOrderError(result.error)) {
+        const fallback = Object.assign({}, patch);
+        delete fallback.display_order;
+        result = Object.keys(fallback).length ? await state.client.from(tableName(table)).update(fallback).eq("id", id) : { error: null };
+      }
       if (result.error) {
         console.warn(result.error);
-        toast(tr("databaseError"), "error");
+        if (!settings.quiet) toast(tr("databaseError"), "error");
         return false;
       }
       return true;
@@ -1720,8 +2003,16 @@
     if (table === "accounts") {
       state.accounts = state.accounts.map(function (row) { return row.id === id ? normalizeAccount(Object.assign({}, row, patch)) : row; });
     }
+    if (table === "assets") {
+      state.assets = state.assets.map(function (row) { return row.id === id ? normalizeAsset(Object.assign({}, row, patch)) : row; });
+    }
     saveLocalData();
     return true;
+  }
+
+  function isMissingDisplayOrderError(error) {
+    const message = String((error && (error.message || error.details || error.hint || error.code)) || "");
+    return /display_order|schema cache|column/i.test(message);
   }
 
   async function deleteRows(table, ids) {
@@ -1737,7 +2028,11 @@
     }
     if (table === "applications") state.applications = state.applications.filter(function (row) { return !ids.includes(row.id); });
     if (table === "accounts") state.accounts = state.accounts.filter(function (row) { return !ids.includes(row.id); });
-    if (table === "assets") state.assets = state.assets.filter(function (row) { return !ids.includes(row.id); });
+    if (table === "assets") {
+      state.assets = state.assets.filter(function (row) { return !ids.includes(row.id); });
+      state.assetOrder.crew = state.assetOrder.crew.filter(function (id) { return !ids.includes(id); });
+      state.assetOrder.media = state.assetOrder.media.filter(function (id) { return !ids.includes(id); });
+    }
     saveLocalData();
     return true;
   }
