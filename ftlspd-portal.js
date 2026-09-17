@@ -598,7 +598,7 @@
       '<div class="fto-grid">',
       ftoCard("fa-compass", "ftoPhaseOne", "ftoPhaseOneText"),
       ftoCard("fa-car-side", "ftoPhaseTwo", "ftoPhaseTwoText"),
-      ftoCard("fa-shield-check", "ftoPhaseThree", "ftoPhaseThreeText"),
+      ftoCard("fa-file", "ftoPhaseThree", "ftoPhaseThreeText"),
       '</div>',
       '</section>'
     ].join("");
