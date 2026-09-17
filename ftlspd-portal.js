@@ -194,7 +194,7 @@
       viewers: "{n} viewers",
       streamUnavailable: "Kick status unavailable",
       streamOpen: "Open Kick",
-      streamAutoRefresh: "Refreshes every 10 seconds",
+      streamAutoRefresh: "Refreshes every 5 seconds",
       creditsTitle: "Credits & Build Log",
       creditsSubtitle: "A First Town local command interface built for LSPD operations, records, media, and recruitment.",
       creditsKicker: "First Town production",
