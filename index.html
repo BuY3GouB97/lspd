@@ -153,7 +153,7 @@
     .topbar.sop-mode .brand { justify-self: start; }
     .sop-view { flex: 1; }
     .sop-page { width: min(1480px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 38px; }
-    .sop-hero { position: relative; overflow: hidden; min-height: 274px; padding: 36px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 28px; border: 1px solid rgba(125,198,235,.24); border-radius: 20px; background: linear-gradient(90deg, rgba(4,20,36,.94) 0%, rgba(8,28,49,.79) 55%, rgba(6,23,41,.68) 100%), url('image.png') center / cover; box-shadow: var(--shadow); isolation: isolate; }
+    .sop-hero { position: relative; overflow: hidden; min-height: 274px; padding: 36px; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 28px; border: 1px solid rgba(125,198,235,.24); border-radius: 20px; background: linear-gradient(90deg, rgba(4,20,36,.94) 0%, rgba(8,28,49,.79) 55%, rgba(6,23,41,.68) 100%), url('image2.png') center / cover; box-shadow: var(--shadow); isolation: isolate; }
     .sop-hero::after { content: ""; position: absolute; inset: 0; opacity: .48; z-index: -1; background: linear-gradient(90deg, transparent 78%, rgba(98,215,255,.14)); }
     .sop-hero-copy { max-width: 760px; }
     .sop-eyebrow { margin: 0 0 10px; color: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
@@ -635,5 +635,22 @@ function renderSopDocument() {
 }
 
   </script>
+  <script>
+    window.LSPD_FIVEM_CONNECT_URL = window.LSPD_FIVEM_CONNECT_URL || "fivem://connect/z5r8mp";
+    window.LSPD_DISCORD_WEBHOOK_URL = window.LSPD_DISCORD_WEBHOOK_URL || "";
+    window.LSPD_SUPABASE_CONFIG = window.LSPD_SUPABASE_CONFIG || {
+      url: "",
+      anonKey: "",
+      ownerPassword: "!medward9318u",
+      discordWebhookUrl: "https://canary.discord.com/api/webhooks/1550096295065030706/8EwafuN8mvX2nsVcPE9cLIoZ_6YruZvV2vqJGrufTFqx9qsA6vkKAXOYPnf_6Fv2N2WP",
+      tables: {
+        applications: "lspd_applications",
+        accounts: "lspd_accounts",
+        roles: "lspd_roles",
+        assets: "lspd_assets"
+      }
+    };
+  </script>
+  <script src="ftlspd-portal.js"></script>
 </body>
 </html>
