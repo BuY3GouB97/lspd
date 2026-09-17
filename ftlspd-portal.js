@@ -460,13 +460,6 @@
     overrideWorkspace();
     bindPortalEvents();
   }
-
-  function installFirstTownBrand() {
-    const brand = document.querySelector(".brand");
-    if (!brand || document.querySelector(".first-town-header-logo")) return;
-    brand.insertAdjacentHTML("beforeend", '<img class="first-town-header-logo" src="" alt="First Town logo">');
-  }
-
   function installStylesheet() {
     if (document.querySelector('link[href="ftlspd-portal.css"]')) return;
     const link = document.createElement("link");
