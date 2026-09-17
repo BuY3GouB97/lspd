@@ -1,2895 +1,2710 @@
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Share+Tech+Mono&display=swap");
-
-:root {
-  --page: #080d1a;
-  --surface: rgba(14, 23, 38, .92);
-  --surface-solid: #0e1726;
-  --surface-raised: #111f33;
-  --line: #1b2e4b;
-  --line-strong: #2b4b75;
-  --text: #f6fbff;
-  --muted: #9fb2c9;
-  --muted-strong: #d7e6f6;
-  --accent: #00a2ff;
-  --accent-cyan: #ffff;
-  --accent-soft: rgba(0, 136, 255, .16);
-  --critical: #e7515a;
-  --success: #ffff;
-  --gold: #fefeff;
-  --shadow: 0 24px 70px rgba(0, 0, 0, .38);
-  --pointer-x: 50%;
-  --pointer-y: 35%;
-}
-
-/* Tactical command-center theme override */
-:root {
-  --page: #020712;
-  --surface: rgba(7, 16, 31, .74);
-  --surface-solid: #07101f;
-  --surface-raised: rgba(10, 24, 44, .9);
-  --line: rgba(31, 78, 122, .62);
-  --line-strong: rgba(0, 166, 255, .48);
-  --text: #edf7ff;
-  --muted: #7f98b2;
-  --muted-strong: #b9d7ef;
-  --accent: #0088ff;
-  --accent-cyan: #00d2ff;
-  --accent-soft: rgba(0, 136, 255, .14);
-  --critical: #e7515a;
-  --success: #1abc9c;
-  --gold: #dfefff;
-  --glass: rgba(5, 13, 26, .64);
-  --hud-font: "Share Tech Mono", "Orbitron", ui-monospace, SFMono-Regular, Consolas, monospace;
-  --display-font: "Orbitron", "Share Tech Mono", Inter, Arial, sans-serif;
-  --shadow: 0 26px 80px rgba(0, 0, 0, .54), 0 0 34px rgba(0, 136, 255, .08);
-}
-
-@keyframes tacticalSweep {
-  0% { transform: translateX(-26%) skewX(-16deg); opacity: 0; }
-  16% { opacity: .46; }
-  42% { opacity: .18; }
-  100% { transform: translateX(126%) skewX(-16deg); opacity: 0; }
-}
-
-@keyframes tacticalGridPan {
-  from { background-position: 0 0, 0 0, 0 0; }
-  to { background-position: 0 54px, 54px 0, 180px 180px; }
-}
-
-@keyframes terminalBlink {
-  0%, 46% { opacity: 1; box-shadow: 0 0 12px currentColor; }
-  47%, 100% { opacity: .35; box-shadow: none; }
-}
-
-@keyframes panelArm {
-  from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-html,
-body {
-  background-color: #020712;
-}
-
-body {
-  color: var(--text);
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(231, 81, 90, .13), transparent 21rem),
-    linear-gradient(115deg, rgba(0, 62, 125, .16), transparent 28%),
-    linear-gradient(245deg, rgba(231, 81, 90, .06), transparent 22%),
-    linear-gradient(180deg, rgba(2, 7, 18, .82), rgba(2, 7, 18, .97)),
-    url("image2.png") center / cover fixed,
-    #020712;
-  font-family: Inter, Arial, sans-serif;
-}
-
-body::before {
-  opacity: .24 !important;
-  background:
-    linear-gradient(rgba(0, 210, 255, .08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 136, 255, .075) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 0 48%, rgba(0, 210, 255, .045) 49% 51%, transparent 52%);
-  background-size: 54px 54px, 54px 54px, 180px 180px;
-  animation: tacticalGridPan 18s linear infinite;
-  mask-image: linear-gradient(to bottom, black, rgba(0, 0, 0, .72), transparent 88%);
-}
-
-body::after {
-  opacity: .2;
-  background-image:
-    radial-gradient(circle, rgba(0, 210, 255, .8) 0 1px, transparent 1.7px),
-    radial-gradient(circle, rgba(231, 81, 90, .55) 0 1px, transparent 1.6px);
-  background-size: 230px 190px, 310px 270px;
-  background-position: 24px 62px, 172px 138px;
-  animation: commandFloat 11s ease-in-out infinite;
-}
-
-.app-shell::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, transparent, rgba(0, 210, 255, .16), transparent),
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, .024) 0 1px, transparent 1px 7px);
-  width: 34%;
-  opacity: .18;
-  animation: tacticalSweep 8.5s ease-in-out infinite;
-}
-
-.app-shell,
-.topbar,
-.portal-view,
-.sop-view,
-.main-layout,
-footer {
-  position: relative;
-  z-index: 1;
-}
-
-.brand-title,
-.content-title,
-.portal-title,
-.welcome-title,
-.section-head h2,
-.sop-title,
-.review-title,
-.asset-card h3,
-.fto-card h3 {
-  font-family: var(--display-font);
-  letter-spacing: .02em;
-}
-
-.eyebrow,
-.portal-kicker,
-.content-kicker,
-.sop-eyebrow,
-.records-label,
-.system-status,
-.workspace-tab,
-.nav-tab,
-.utility-button,
-.portal-button,
-.subtab,
-.role-badge,
-.db-badge,
-.status-pill,
-.tab-count,
-.code-badge {
-  font-family: var(--hud-font);
-  letter-spacing: .08em;
-}
-
-[dir="rtl"] body,
-[dir="rtl"] .regulation-text,
-[dir="rtl"] .sop-article,
-[dir="rtl"] .overview-box {
-  font-family: Cairo, Arial, sans-serif;
-}
-
-.topbar {
-  background: rgba(2, 7, 18, .78);
-  border-bottom: 1px solid rgba(0, 210, 255, .2);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, .54), inset 0 -1px rgba(0, 210, 255, .08);
-  backdrop-filter: blur(22px) saturate(1.25);
-}
-
-.brand-mark,
-.sidebar,
-.content-header,
-.regulation-card,
-.sop-hero,
-.sop-stat,
-.sop-index,
-.sop-document,
-.portal-hero,
-.portal-panel,
-.overview-box,
-.status-panel,
-.hero-metric,
-.action-card,
-.asset-card,
-.review-card,
-.fto-card,
-.modal-shell,
-.welcome-shell,
-.asset-form,
-.empty-portal,
-.empty-state,
-.notice,
-.portal-toast {
-  border: 1px solid rgba(0, 210, 255, .19);
-  background:
-    linear-gradient(145deg, rgba(7, 16, 31, .78), rgba(3, 9, 19, .84)),
-    rgba(5, 13, 26, .58);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, .055),
-    inset 0 0 0 1px rgba(255, 255, 255, .012),
-    0 22px 70px rgba(0, 0, 0, .42),
-    0 0 28px rgba(0, 136, 255, .075);
-  backdrop-filter: blur(18px) saturate(1.18);
-}
-
-.portal-panel,
-.status-panel,
-.overview-box,
-.hero-metric,
-.action-card,
-.review-card,
-.fto-card,
-.asset-card,
-.regulation-card {
-  animation: panelArm .44s ease both;
-}
-
-.content-header,
-.portal-hero,
-.sop-hero,
-.welcome-shell {
-  position: relative;
-  overflow: hidden;
-}
-
-.content-header::before,
-.portal-hero::after,
-.sop-hero::after,
-.welcome-shell::after,
-.modal-shell::before,
-.review-card::before,
-.asset-card::before,
-.fto-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    linear-gradient(90deg, rgba(0, 210, 255, .11), transparent 18%, transparent 82%, rgba(231, 81, 90, .08)),
-    linear-gradient(rgba(0, 210, 255, .065) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 34px;
-  opacity: .32;
-  mask-image: linear-gradient(to bottom, black, transparent 80%);
-}
-
-.portal-hero::before,
-.welcome-visual::before {
-  filter: saturate(.72) brightness(.55) contrast(1.24);
-}
-
-.portal-hero::after,
-.welcome-visual::after {
-  opacity: .44;
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(0, 210, 255, .16), transparent 18rem),
-    linear-gradient(90deg, rgba(0, 210, 255, .13) 1px, transparent 1px),
-    linear-gradient(rgba(0, 136, 255, .1) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 0 47%, rgba(231, 81, 90, .08) 48% 50%, transparent 51%);
-  background-size: auto, 42px 42px, 42px 42px, 190px 190px;
-}
-
-.system-status,
-.role-badge,
-.db-badge,
-.records-label {
-  color: #bfefff;
-  border-color: rgba(0, 210, 255, .26);
-  background: rgba(0, 136, 255, .08);
-  text-shadow: 0 0 14px rgba(0, 210, 255, .2);
-}
-
-.system-status::before {
-  content: "SEC";
-  color: var(--critical);
-}
-
-.system-status .dot,
-.db-badge[data-state="live"]::before {
-  animation: terminalBlink 1.8s steps(2, end) infinite;
-}
-
-.top-search input,
-.identity-bar,
-.identity-bar input,
-.language-select,
-.portal-input,
-.portal-select,
-.portal-textarea,
-.sop-search input {
-  color: #eaf8ff;
-  border-color: rgba(0, 210, 255, .18);
-  background: rgba(2, 7, 18, .72);
-  box-shadow: inset 0 0 18px rgba(0, 136, 255, .045);
-}
-
-.top-search input:focus,
-.identity-bar input:focus,
-.portal-input:focus,
-.portal-select:focus,
-.portal-textarea:focus,
-.sop-search input:focus {
-  border-color: rgba(0, 210, 255, .76);
-  box-shadow: 0 0 0 1px rgba(0, 210, 255, .26), 0 0 34px rgba(0, 136, 255, .2), inset 0 0 18px rgba(0, 136, 255, .06);
-}
-
-.workspace-tab,
-.nav-tab,
-.utility-button,
-.portal-button,
-.subtab,
-.auth-mini-button,
-.role-manage-button,
-.icon-action {
-  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
-  border-color: rgba(0, 210, 255, .22);
-  background: rgba(3, 10, 21, .7);
-}
-
-.workspace-tab:hover,
-.nav-tab:hover,
-.utility-button:hover,
-.portal-button:hover,
-.subtab:hover,
-.auth-mini-button:hover,
-.role-manage-button:hover,
-.icon-action:hover {
-  color: #f4fbff;
-  border-color: rgba(0, 210, 255, .74);
-  background: rgba(0, 136, 255, .13);
-  box-shadow: 0 0 0 1px rgba(0, 210, 255, .15), 0 0 28px rgba(0, 136, 255, .2);
-}
-
-.workspace-tab[aria-selected="true"],
-.nav-tab[aria-pressed="true"],
-.subtab[aria-selected="true"] {
-  color: #f6fbff;
-  border-color: rgba(0, 210, 255, .62);
-  background: linear-gradient(90deg, rgba(0, 136, 255, .24), rgba(0, 210, 255, .07));
-  box-shadow: inset 3px 0 var(--accent-cyan), 0 0 28px rgba(0, 136, 255, .16);
-}
-
-.portal-button.primary,
-.portal-button.danger {
-  color: #fff8f9;
-  border-color: rgba(231, 81, 90, .78);
-  background:
-    linear-gradient(135deg, rgba(231, 81, 90, .95), rgba(112, 20, 33, .92));
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .18), 0 16px 40px rgba(231, 81, 90, .2);
-}
-
-.portal-button.primary:hover,
-.portal-button.danger:hover {
-  border-color: rgba(255, 121, 132, .98);
-  background:
-    linear-gradient(135deg, rgba(255, 86, 99, .98), rgba(143, 24, 41, .96));
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .28), 0 0 34px rgba(231, 81, 90, .32);
-}
-
-.portal-button.success {
-  color: #eaffff;
-  border-color: rgba(0, 210, 255, .52);
-  background: linear-gradient(135deg, rgba(0, 136, 255, .62), rgba(0, 58, 112, .9));
-  box-shadow: 0 0 30px rgba(0, 136, 255, .18);
-}
-
-.portal-button.ghost {
-  color: #cfeeff;
-  background: rgba(2, 7, 18, .58);
-}
-
-.portal-title,
-.welcome-title {
-  color: #f5fbff;
-  text-shadow:
-    0 0 18px rgba(0, 210, 255, .22),
-    0 0 46px rgba(0, 136, 255, .16);
-}
-
-.portal-title span,
-.welcome-title span,
-.sop-title span {
-  color: var(--accent-cyan);
-  text-shadow: 0 0 26px rgba(0, 210, 255, .45);
-}
-
-.portal-kicker,
-.content-kicker,
-.sop-eyebrow,
-.eyebrow {
-  color: var(--accent-cyan);
-  text-shadow: 0 0 18px rgba(0, 210, 255, .25);
-}
-
-.code-badge,
-.sop-section-number,
-.hero-metric i,
-.action-card i,
-.fto-card i {
-  border-color: rgba(0, 210, 255, .32);
-  background: rgba(0, 136, 255, .11);
-  box-shadow: inset 0 0 18px rgba(0, 136, 255, .08), 0 0 22px rgba(0, 210, 255, .11);
-}
-
-.regulation-card.degree-1,
-.regulation-card.degree-2,
-.regulation-card.degree-3,
-.regulation-card.degree-4,
-.regulation-card.degree-5,
-.regulation-card.degree-6 {
-  --degree: #ffffff;
-}
-
-.regulation-card.degree-7,
-.regulation-card.degree-0,
-#tab-7,
-#tab-0 {
-  --degree: var(--critical) !important;
-}
-
-/* Latest command UI additions */
-.portal-hero::before {
-  background:
-    radial-gradient(circle at 50% 32%, rgba(1, 4, 11, .45), rgba(1, 4, 11, .94) 66%),
-    linear-gradient(90deg, rgba(1, 4, 11, .96), rgba(6, 15, 32, .72), rgba(1, 4, 11, .98)),
-    url("image4.png") center / cover !important;
-}
-
-.first-town-header-logo {
-  display: none !important;
-}
-
-.action-card .portal-button i.fa-arrow-down {
-  width: 10px;
-  min-width: 10px;
-  font-size: 9px;
-  opacity: .7;
-  transform: scale(.72);
-}
-
-.stream-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
-}
-
-.stream-card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(231, 81, 90, .2);
-  border-radius: 8px;
-  background: linear-gradient(145deg, rgba(5, 12, 25, .86), rgba(1, 4, 11, .92));
-  box-shadow: 0 24px 76px rgba(0, 0, 0, .5), 0 0 32px rgba(231, 81, 90, .08);
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-}
-
-.stream-shot {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: #020711;
-}
-
-.stream-shot img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  filter: saturate(.9) contrast(1.08);
-}
-
-.stream-state {
-  position: absolute;
-  top: 10px;
-  inset-inline-start: 10px;
-  padding: 6px 9px;
-  color: #fff;
-  background: rgba(231, 81, 90, .9);
-  border: 1px solid rgba(255, 180, 186, .34);
-  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
-  font-family: var(--hud-font);
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.stream-card.is-offline .stream-shot img {
-  filter: grayscale(1) brightness(.48);
-}
-
-.stream-card.is-offline .stream-state {
-  background: rgba(28, 39, 55, .92);
-}
-
-.stream-body {
-  padding: 14px;
-  display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-}
-
-.stream-logo {
-  width: 54px;
-  height: 54px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid rgba(58, 167, 255, .28);
-  box-shadow: 0 0 22px rgba(58, 167, 255, .12);
-}
-
-.stream-body h3 {
-  margin: 0 0 4px;
-  font-family: var(--display-font);
-  font-size: 16px;
-}
-
-.stream-body p,
-.stream-body span {
-  display: block;
-  margin: 0;
-  color: #aabdd2;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.stream-actions {
-  padding: 0 14px 14px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.settings-dock {
-  position: fixed;
-  z-index: 140;
-  inset-inline-end: 18px;
-  bottom: 18px;
-  display: grid;
-  justify-items: end;
-  gap: 10px;
-  pointer-events: none;
-}
-
-.settings-toggle,
-.settings-panel {
-  pointer-events: auto;
-}
-
-.settings-toggle {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  color: #fff2f3;
-  border: 1px solid rgba(231, 81, 90, .48);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(231, 81, 90, .26), rgba(5, 12, 25, .94));
-  box-shadow: 0 0 32px rgba(231, 81, 90, .26), 0 18px 50px rgba(0, 0, 0, .5);
-}
-
-.settings-panel {
-  width: min(390px, calc(100vw - 36px));
-  max-height: min(720px, calc(100vh - 96px));
-  overflow: auto;
-  padding: 14px;
-  border: 1px solid rgba(231, 81, 90, .28);
-  border-radius: 8px;
-  background: rgba(3, 9, 19, .94);
-  box-shadow: 0 28px 90px rgba(0, 0, 0, .72), 0 0 42px rgba(231, 81, 90, .16);
-  backdrop-filter: blur(20px) saturate(1.2);
-}
-
-.settings-panel header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.settings-panel h3 {
-  margin: 0;
-  font-family: var(--display-font);
-  font-size: 16px;
-}
-
-.settings-panel p {
-  margin: 5px 0 0;
-  color: #8fa7be;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.settings-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.settings-grid label {
-  display: grid;
-  gap: 6px;
-  color: #b9d7ef;
-  font-family: var(--hud-font);
-  font-size: 11px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
-.settings-grid label:first-child {
-  grid-column: 1 / -1;
-}
-
-.settings-grid input[type="color"] {
-  width: 100%;
-  height: 40px;
-  border: 1px solid rgba(58, 167, 255, .2);
-  border-radius: 8px;
-  background: rgba(2, 7, 18, .72);
-}
-
-.tab-order-head {
-  margin: 14px 0 8px;
-  color: #ff8991;
-  font-family: var(--hud-font);
-  font-size: 11px;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.tab-order-list {
-  display: grid;
-  gap: 7px;
-  margin-bottom: 12px;
-}
-
-.tab-order-item {
-  min-height: 39px;
-  padding: 6px 7px 6px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  border: 1px solid rgba(58, 167, 255, .16);
-  background: rgba(5, 22, 46, .44);
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-}
-
-.tab-order-item span {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #dceeff;
-  font-size: 12px;
-}
-
-.tab-order-item div {
-  display: flex;
-  gap: 5px;
-}
-
-.tab-order-item .icon-action {
-  width: 29px;
-  height: 29px;
-}
-
-.asset-card.is-reacting,
-.review-card.is-reacting,
-.fto-card.is-reacting,
-.hero-metric.is-reacting,
-.action-card.is-reacting,
-.stream-card.is-reacting,
-.credit-card.is-reacting,
-.portal-panel.is-reacting,
-.status-panel.is-reacting {
-  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-3px);
-}
-
-.asset-card::after,
-.review-card::after,
-.fto-card::after,
-.hero-metric::after,
-.action-card::after,
-.stream-card::after,
-.credit-card::after,
-.portal-panel::after,
-.status-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle at var(--react-x, 50%) var(--react-y, 50%), rgba(255, 118, 128, .18), transparent 44%);
-  transition: opacity .2s ease;
-}
-
-.asset-card.is-reacting::after,
-.review-card.is-reacting::after,
-.fto-card.is-reacting::after,
-.hero-metric.is-reacting::after,
-.action-card.is-reacting::after,
-.stream-card.is-reacting::after,
-.credit-card.is-reacting::after,
-.portal-panel.is-reacting::after,
-.status-panel.is-reacting::after {
-  opacity: 1;
-}
-
-body {
-  background-color: var(--custom-bg, #01040b);
-}
-
-@media (max-width: 760px) {
-  .settings-dock {
-    inset-inline: 14px;
-    justify-items: end;
+(function () {
+  const OWNER_EMAIL = "alilamir27@gmail.com";
+  const SERVER_CONNECT_URL = window.LSPD_FIVEM_CONNECT_URL || "";
+  const SUPABASE_CONFIG = Object.assign({
+  url: window.LSPD_SUPABASE_URL || "https://cydsusnowotmorxywyxa.supabase.co",
+    anonKey: window.LSPD_SUPABASE_ANON_KEY || "sb_publishable_1Onpbnsgcx2zaSAwqEsMMw_vDGJRdfq",
+    ownerPassword: window.LSPD_OWNER_PASSWORD || "!medward9318u",
+    discordWebhookUrl: window.LSPD_DISCORD_WEBHOOK_URL || "https://canary.discord.com/api/webhooks/1550096295065030706/8EwafuN8mvX2nsVcPE9cLIoZ_6YruZvV2vqJGrufTFqx9qsA6vkKAXOYPnf_6Fv2N2WP",
+    tables: {
+      applications: "lspd_applications",
+      accounts: "lspd_accounts",
+      roles: "lspd_roles",
+      assets: "lspd_assets",
+      streams: "lspd_streams"
+    }
+  }, window.LSPD_SUPABASE_CONFIG || {});
+  SUPABASE_CONFIG.tables = Object.assign({
+    applications: "lspd_applications",
+    accounts: "lspd_accounts",
+    roles: "lspd_roles",
+    assets: "lspd_assets",
+    streams: "lspd_streams"
+  }, SUPABASE_CONFIG.tables || {});
+  const OWNER_PASSWORD = window.LSPD_OWNER_PASSWORD || SUPABASE_CONFIG.ownerPassword || "!medward9318u";
+  const DISCORD_WEBHOOK_URL = window.LSPD_DISCORD_WEBHOOK_URL || SUPABASE_CONFIG.discordWebhookUrl || "https://canary.discord.com/api/webhooks/1550096295065030706/8EwafuN8mvX2nsVcPE9cLIoZ_6YruZvV2vqJGrufTFqx9qsA6vkKAXOYPnf_6Fv2N2WP";
+
+  const STORAGE_KEYS = {
+    applications: "ftlspd-applications-v2",
+    accounts: "ftlspd-accounts-v1",
+    roles: "ftlspd-roles-v2",
+    assets: "ftlspd-assets-v2",
+    assetOrder: "ftlspd-asset-order-v1",
+    streams: "ftlspd-streams-v1",
+    uiPrefs: "ftlspd-ui-prefs-v1",
+    userEmail: "ftlspd-user-email-v1",
+    session: "ftlspd-session-v1"
+  };
+
+  const defaultWorkspaceTabs = [
+    ["recruitment", "fa-house-signal", "workspaceRecruitment"],
+    ["review", "fa-clipboard-check", "workspaceReview"],
+    ["archives", "fa-box-archive", "workspaceArchives"],
+    ["regulations", "fa-clipboard-list", "Regulations"],
+    ["sop", "fa-book-open", "Police SOP"],
+    ["fto", "fa-graduation-cap", "workspaceFto"],
+    ["crew", "fa-users-gear", "workspaceCrew"],
+    ["media", "fa-images", "workspaceMedia"],
+    ["streams", "fa-tower-broadcast", "workspaceStreams"],
+    ["credits", "fa-award", "workspaceCredits"]
+  ];
+  const portalWorkspaces = ["recruitment", "review", "archives", "fto", "crew", "media", "streams", "credits"];
+  const state = {
+    client: null,
+    realtimeChannel: null,
+    applications: [],
+    accounts: [],
+    roles: [],
+    assets: [],
+    streams: [],
+    streamStatus: {},
+    streamTimer: null,
+    userEmail: localStorage.getItem(STORAGE_KEYS.userEmail) || "",
+    authUser: null,
+    role: "guest",
+    activeReviewType: "recruitment",
+    activeArchive: "accepted-recruitment",
+    assetOrder: { crew: [], media: [] },
+    assetEditing: { crew: null, media: null },
+    dragAsset: null,
+    assetOrderLockUntil: 0,
+    streamEditing: null,
+    uiPrefs: null,
+    applicationType: "recruitment",
+    applicationStep: 1,
+    applicationDraft: {},
+    pendingDecision: null,
+    databaseMode: "local",
+    audioReady: false,
+    lastHoverSound: 0
+  };
+
+  const portalCopy = {
+    en: {
+      pageTitle: "FT | LSPD Command Portal",
+      brandKicker: "Los Santos Police Department",
+      brandTitle: "Command Portal",
+      footerLeft: "Version Beta 1.3 | Made By : Majed Alqahtani | Murphy Edward",
+      footerRight: "LSPD command systems",
+      workspaceRecruitment: "HUB",
+      workspaceReview: "Review",
+      workspaceArchives: "Archives",
+      workspaceFto: "FTO",
+      workspaceCrew: "LSPD Crew",
+      workspaceMedia: "Media",
+      workspaceStreams: "Streams",
+      workspaceCredits: "Credits",
+      roleOwner: "Owner",
+      roleAdmin: "Admin",
+      roleEditor: "Admin",
+      roleViewer: "Viewer",
+      roleGuest: "Guest",
+      roleApplicant: "Applicant",
+      emailPlaceholder: "Email",
+      passwordPlaceholder: "Password",
+      login: "Login",
+      createAccount: "Create account",
+      logout: "Logout",
+      localMode: "Local fallback",
+      liveMode: "Supabase live",
+      roleManagerLabel: "Manage roles",
+      welcomeKicker: "FT | LSPD command access",
+      welcomeTitle: "Los Santos Police <span>Department</span>",
+      welcomeText: "Welcome to the official LSPD portal for regulations, SOP, recruitment, FTO, command crew, and field media.",
+      enterPortal: "Enter portal",
+      connectFiveM: "Connect to First Town",
+      recruitmentKicker: "LSPD command hub",
+      recruitmentTitle: "LSPD <span>Command</span> HUB",
+      recruitmentCopy: "Explore the system, connect to First Town, and join the LSPD when you are ready to start recruitment or transfer.",
+      metricRealtime: "Real-time records",
+      metricRealtimeText: "Applications sync to Supabase when configured.",
+      metricRoles: "Role secured",
+      metricRolesText: "Owner, admin, and applicant permissions.",
+      metricCooldown: "Cooldown aware",
+      metricCooldownText: "Accepted and rejected applicants are tracked automatically.",
+      overviewTitle: "نظرة عامة على الشرطة البلدية الأمريكية",
+      overviewText: "تعمل إدارات الشرطة البلدية في الولايات المتحدة كجهة محلية مسؤولة عن حفظ النظام العام، حماية الأرواح والممتلكات، الاستجابة للبلاغات، وتنفيذ القانون داخل نطاق المدينة. في سياق LSPD، يمثل الضابط واجهة الدولة أمام المواطنين، لذلك تعتمد الإدارة على التسلسل القيادي، الانضباط، التقارير الدقيقة، واحترام صلاحيات استخدام القوة وفق سياسة واضحة.",
+      applyRecruitment: "Apply for Recruitment (New)",
+      submitTransfer: "Submit Transfer Request",
+      goToFtoRecruitment: "Recruitment",
+      goToFtoTransfer: "Transfer",
+      ftoApplyTitle: "Recruitment desk",
+      ftoApplyText: "Login or create an applicant account, then submit recruitment or transfer from this FTO desk.",
+      loginRequired: "Login or create an account before submitting recruitment or transfer.",
+      activeStatus: "Active application status",
+      noApplicantRecords: "No active records for this email yet.",
+      cooldownAccepted: "You are under a 7-day acceptance cooldown until {date}.",
+      cooldownRejected: "You are under a 3-day rejection cooldown until {date}.",
+      pendingWarning: "You already have a pending {type} application.",
+      reviewTitle: "Pending Applications Review",
+      reviewSubtitle: "Review submitted recruitment and transfer requests with complete question text and applicant answers.",
+      newRecruitment: "New Recruitment",
+      transferRequests: "Transfer Requests",
+      searchApplications: "Search applications...",
+      clearPending: "Clear All Pending Requests",
+      accessRequired: "Owner or admin login is required to access this section.",
+      noPending: "No pending records in this queue.",
+      approve: "Approve",
+      reject: "Reject",
+      archivesTitle: "System Archives and Records",
+      archivesSubtitle: "Accepted and rejected records remain available for audit until a permitted reset.",
+      acceptedRecruitment: "Accepted Recruitment",
+      acceptedTransfers: "Accepted Transfers",
+      rejectedRecruitment: "Rejected Recruitment",
+      rejectedTransfers: "Rejected Transfers",
+      fullReset: "Full System Reset",
+      noArchive: "No archived records in this category.",
+      ftoTitle: "Field Training Officer",
+      ftoSubtitle: "A focused training space for academy handoff, field evaluation, and probation readiness.",
+      ftoPhaseOne: "Orientation",
+      ftoPhaseOneText: "Verify SOP literacy, radio discipline, uniform standards, and call sign readiness before ride-alongs.",
+      ftoPhaseTwo: "Ride Along",
+      ftoPhaseTwoText: "Evaluate traffic stops, report quality, pursuit spacing, officer safety, and command compliance.",
+      ftoPhaseThree: "Certification",
+      ftoPhaseThreeText: "Confirm policy judgment, scenario handling, de-escalation, and readiness for independent patrol.",
+      crewTitle: "LSPD Crew",
+      crewSubtitle: "Chiefs and command staff profiles with photos, names, ranks, and Discord IDs.",
+      mediaTitle: "LSPD Media",
+      mediaSubtitle: "Department photo board for patrol, academy, ceremony, and command media.",
+      streamsTitle: "LSPD Streams",
+      streamsSubtitle: "Live Kick channels for command, patrol, training, and community broadcasts.",
+      addCrew: "Add crew member",
+      addMedia: "Add media",
+      addStream: "Add stream",
+      updateCrew: "Update crew member",
+      updateMedia: "Update media",
+      updateStream: "Update stream",
+      edit: "Edit",
+      cancel: "Cancel",
+      dragAsset: "Drag to reposition",
+      name: "Name",
+      rank: "Rank",
+      discordId: "Discord ID",
+      photoUrl: "Photo URL",
+      logoUrl: "Logo URL",
+      kickUrl: "Kick direct link",
+      title: "Title",
+      caption: "Caption",
+      remove: "Remove",
+      noCrew: "No crew profiles have been added yet.",
+      noMedia: "No media has been added yet.",
+      noStreams: "No Kick streamers have been added yet.",
+      live: "Live",
+      offline: "Offline",
+      viewers: "{n} viewers",
+      streamUnavailable: "Kick status unavailable",
+      streamOpen: "Open Kick",
+      streamAutoRefresh: "Refreshes every 10 seconds",
+      creditsTitle: "Credits & Build Log",
+      creditsSubtitle: "A First Town local command interface built for LSPD operations, records, media, and recruitment.",
+      creditsKicker: "First Town production",
+      creditMajedTitle: "Majed Alqahtani",
+      creditMajedRole: "Head of the Internal Affairs",
+      creditMurphyTitle: "Murphy Edward",
+      creditMurphyRole: "Chief of Police",
+      creditMohsenTitle: "Mohsen Alqahtani",
+      creditMohsenRole: "Assistant Developer",
+      creditBody: "All core credits go to Majed Alqahtani, Chief of Police Murphy Edward, and Assistant Developer Mohsen Alqahtani for the LSPD command system vision, department identity, development support, and operational direction.",
+      creditLocal: "Locally made in First Town.",
+      creditStack: "Languages used: HTML, CSS, and JS.",
+      applicationModalTitleRecruitment: "New Recruitment Application",
+      applicationModalTitleTransfer: "Transfer Request",
+      applicationStep: "Page {step} of 2",
+      back: "Back",
+      next: "Next",
+      submitApplication: "Submit application",
+      close: "Close",
+      decisionApproveTitle: "Approve application",
+      decisionRejectTitle: "Reject application",
+      approvalMessage: "Response message",
+      defaultApproval: "Your application has been accepted, please attend on one of the specified dates.",
+      mondayDate: "Monday interview date",
+      fridayDate: "Friday interview date",
+      rejectionReason: "Rejection reason",
+      saveDecision: "Save decision",
+      roleManagement: "Admin Account Management",
+      roleManagementText: "Owner only. Create or update admin accounts with passwords.",
+      userEmail: "User email",
+      accountPassword: "Account password",
+      role: "Role",
+      saveRole: "Save account",
+      configuredUsers: "Configured accounts",
+      noUsers: "No configured accounts yet.",
+      validationError: "Complete the required fields before continuing.",
+      loginSuccess: "Logged in.",
+      logoutSuccess: "Logged out.",
+      accountCreated: "Account created.",
+      invalidLogin: "Invalid email or password.",
+      accountExists: "An account already exists for this email.",
+      webhookSent: "Discord webhook notified.",
+      webhookSkipped: "Discord webhook URL is not configured.",
+      savedApplication: "Application submitted and records refreshed.",
+      savedDecision: "Decision saved.",
+      savedRole: "Role updated.",
+      savedAsset: "Saved.",
+      savedStream: "Stream saved.",
+      editMode: "Editing selected item.",
+      reorderSaved: "Order updated.",
+      removed: "Removed.",
+      settingsTitle: "Interface Settings",
+      settingsSubtitle: "Customize the command UI locally on this device.",
+      settingsOpen: "Open settings",
+      fontSetting: "Font",
+      tabOrderSetting: "Tab order",
+      colorRedSetting: "Red accent",
+      colorBlueSetting: "Blue accent",
+      colorBgSetting: "Background",
+      colorTextSetting: "Text",
+      resetUi: "Reset UI",
+      moveUp: "Move up",
+      moveDown: "Move down",
+      settingsSaved: "Settings saved.",
+      deleteArchive: "Delete archive",
+      confirmDeleteArchive: "Delete this archived record only?",
+      archiveDeleted: "Archive record deleted.",
+      databaseError: "Database action failed. Check Supabase table names and credentials.",
+      resetDone: "Archives and cooldown timers were reset.",
+      pendingCleared: "Pending requests cleared.",
+      confirmClear: "Clear all pending requests in this queue?",
+      confirmReset: "Wipe accepted/rejected archives and reset cooldown timers?",
+      noPermission: "Your current role cannot perform this action.",
+      recruitmentLabel: "Recruitment",
+      transferLabel: "Transfer",
+      pending: "Pending",
+      accepted: "Accepted",
+      rejected: "Rejected",
+      submittedBy: "Submitted by {email}",
+      submittedAt: "Submitted {date}",
+      decidedAt: "Decided {date}",
+      decisionMessage: "Decision message",
+      interviewDates: "Interview dates",
+      reason: "Reason"
+    },
+    ar: {
+      pageTitle: "بوابة شرطة لوس سانتوس",
+      brandKicker: "شرطة لوس سانتوس",
+      brandTitle: "بوابة القيادة",
+      footerLeft: "Version Beta 1.3 | Made By : Majed Alqahtani | Murphy Edward",
+      footerRight: "أنظمة قيادة الشرطة",
+      workspaceRecruitment: "الرئيسية",
+      workspaceReview: "المراجعة",
+      workspaceArchives: "الأرشيف",
+      workspaceFto: "FTO",
+      workspaceCrew: "طاقم LSPD",
+      workspaceMedia: "الإعلام",
+      workspaceStreams: "البثوث",
+      workspaceCredits: "الاعتمادات",
+      roleOwner: "مالك",
+      roleAdmin: "أدمن",
+      roleEditor: "أدمن",
+      roleViewer: "مشاهد",
+      roleGuest: "مشاهد",
+      roleApplicant: "متقدم",
+      emailPlaceholder: "البريد",
+      passwordPlaceholder: "كلمة المرور",
+      login: "تسجيل الدخول",
+      createAccount: "إنشاء حساب",
+      logout: "خروج",
+      localMode: "تخزين محلي",
+      liveMode: "Supabase مباشر",
+      roleManagerLabel: "إدارة الصلاحيات",
+      welcomeKicker: "دخول بوابة FTLSPD",
+      welcomeTitle: "شرطة لوس سانتوس <span>الرسمية</span>",
+      welcomeText: "مرحباً بك في بوابة LSPD الخاصة باللوائح، دليل الإجراءات، التقديم، التدريب الميداني، طاقم القيادة، والإعلام.",
+      enterPortal: "دخول البوابة",
+      connectFiveM: "الدخول إلى First Town",
+      recruitmentKicker: "مركز قيادة LSPD",
+      recruitmentTitle: "مركز <span>LSPD</span>",
+      recruitmentCopy: "استكشف النظام، ادخل إلى FiveM، وانتقل إلى FTO عندما تكون جاهزاً للتقديم أو النقل.",
+      metricRealtime: "سجلات مباشرة",
+      metricRealtimeText: "تتزامن الطلبات مع Supabase عند إعداده.",
+      metricRoles: "صلاحيات آمنة",
+      metricRolesText: "صلاحيات مالك، أدمن، ومتقدم.",
+      metricCooldown: "متابعة فترات الانتظار",
+      metricCooldownText: "يتم احتساب مدة القبول والرفض تلقائياً.",
+      overviewTitle: "نظرة عامة على الشرطة البلدية الأمريكية",
+      overviewText: "تعمل إدارات الشرطة البلدية في الولايات المتحدة كجهة محلية مسؤولة عن حفظ النظام العام، حماية الأرواح والممتلكات، الاستجابة للبلاغات، وتنفيذ القانون داخل نطاق المدينة. في سياق LSPD، يمثل الضابط واجهة الدولة أمام المواطنين، لذلك تعتمد الإدارة على التسلسل القيادي، الانضباط، التقارير الدقيقة، واحترام صلاحيات استخدام القوة وفق سياسة واضحة.",
+      applyRecruitment: "تقديم توظيف جديد",
+      submitTransfer: "تقديم طلب نقل",
+      goToFtoRecruitment: "التوظيف",
+      goToFtoTransfer: "النقل",
+      ftoApplyTitle: "مكتب التقديم",
+      ftoApplyText: "سجل الدخول أو أنشئ حساب متقدم، ثم أرسل طلب توظيف أو نقل من مكتب FTO.",
+      loginRequired: "سجل الدخول أو أنشئ حساباً قبل إرسال طلب توظيف أو نقل.",
+      activeStatus: "حالة الطلب الحالية",
+      noApplicantRecords: "لا توجد سجلات نشطة لهذا البريد حالياً.",
+      cooldownAccepted: "لديك مدة انتظار قبول 7 أيام حتى {date}.",
+      cooldownRejected: "لديك مدة انتظار رفض 3 أيام حتى {date}.",
+      pendingWarning: "لديك طلب {type} قيد المراجعة بالفعل.",
+      reviewTitle: "مراجعة الطلبات المعلقة",
+      reviewSubtitle: "راجع طلبات التوظيف والنقل مع عرض نص كل سؤال كاملاً وإجابة المتقدم.",
+      newRecruitment: "توظيف جديد",
+      transferRequests: "طلبات النقل",
+      searchApplications: "البحث في الطلبات...",
+      clearPending: "مسح كل الطلبات المعلقة",
+      accessRequired: "يلزم تسجيل دخول مالك أو أدمن للوصول إلى هذا القسم.",
+      noPending: "لا توجد سجلات معلقة في هذه القائمة.",
+      approve: "قبول",
+      reject: "رفض",
+      archivesTitle: "الأرشيف والسجلات",
+      archivesSubtitle: "تبقى سجلات القبول والرفض متاحة للتدقيق حتى يتم تصفيرها بصلاحية مناسبة.",
+      acceptedRecruitment: "التوظيف المقبول",
+      acceptedTransfers: "النقل المقبول",
+      rejectedRecruitment: "التوظيف المرفوض",
+      rejectedTransfers: "النقل المرفوض",
+      fullReset: "تصفير النظام",
+      noArchive: "لا توجد سجلات مؤرشفة في هذا التصنيف.",
+      ftoTitle: "ضابط التدريب الميداني",
+      ftoSubtitle: "مساحة تدريبية لتسليم الأكاديمية، تقييم الميدان، وجاهزية فترة الاختبار.",
+      ftoPhaseOne: "التهيئة",
+      ftoPhaseOneText: "تأكيد فهم الإجراءات، انضباط الراديو، الزي الرسمي، وجاهزية الكول ساين قبل المرافقة.",
+      ftoPhaseTwo: "المرافقة الميدانية",
+      ftoPhaseTwoText: "تقييم الاستيقافات، جودة التقارير، مسافات المطاردة، سلامة الضابط، والالتزام القيادي.",
+      ftoPhaseThree: "الاعتماد",
+      ftoPhaseThreeText: "تأكيد الحكم النظامي، التعامل مع السيناريوهات، التهدئة، والجاهزية للدورية المستقلة.",
+      crewTitle: "طاقم LSPD",
+      crewSubtitle: "ملفات القيادة مع الصور، الأسماء، الرتب، ومعرفات الديسكورد.",
+      mediaTitle: "إعلام LSPD",
+      mediaSubtitle: "لوحة صور القسم للدوريات، الأكاديمية، المراسم، والقيادة.",
+      streamsTitle: "بثوث LSPD",
+      streamsSubtitle: "قنوات Kick المباشرة للقيادة والدوريات والتدريب والمجتمع.",
+      addCrew: "إضافة عضو قيادة",
+      addMedia: "إضافة مادة إعلامية",
+      addStream: "إضافة بث",
+      updateCrew: "تحديث عضو القيادة",
+      updateMedia: "تحديث المادة الإعلامية",
+      updateStream: "تحديث البث",
+      edit: "تعديل",
+      cancel: "إلغاء",
+      dragAsset: "اسحب لتغيير الترتيب",
+      name: "الاسم",
+      rank: "الرتبة",
+      discordId: "معرف الديسكورد",
+      photoUrl: "رابط الصورة",
+      logoUrl: "رابط الشعار",
+      kickUrl: "رابط Kick المباشر",
+      title: "العنوان",
+      caption: "الوصف",
+      remove: "حذف",
+      noCrew: "لم تتم إضافة ملفات قيادة بعد.",
+      noMedia: "لم تتم إضافة مواد إعلامية بعد.",
+      noStreams: "لم تتم إضافة بثوث Kick بعد.",
+      live: "مباشر",
+      offline: "غير مباشر",
+      viewers: "{n} مشاهد",
+      streamUnavailable: "تعذر جلب حالة Kick",
+      streamOpen: "فتح Kick",
+      streamAutoRefresh: "يتحدث كل 10 ثواني",
+      creditsTitle: "الاعتمادات وسجل البناء",
+      creditsSubtitle: "واجهة قيادة محلية في First Town لعمليات LSPD والسجلات والإعلام والتقديم.",
+      creditsKicker: "إنتاج First Town",
+      creditMajedTitle: "Majed Alqahtani",
+      creditMajedRole: "Head of the Internal Affairs",
+      creditMurphyTitle: "Murphy Edward",
+      creditMurphyRole: "Chief of Police",
+      creditMohsenTitle: "Mohsen Alqahtani",
+      creditMohsenRole: "Assistant Developer",
+      creditBody: "تعود الاعتمادات الأساسية إلى Majed Alqahtani و Chief of Police Murphy Edward و Assistant Developer Mohsen Alqahtani لرؤية نظام قيادة LSPD وهوية القسم ودعم التطوير والتوجيه التشغيلي.",
+      creditLocal: "صنع محلياً في First Town.",
+      creditStack: "اللغات المستخدمة: HTML و CSS و JS.",
+      applicationModalTitleRecruitment: "طلب توظيف جديد",
+      applicationModalTitleTransfer: "طلب نقل",
+      applicationStep: "الصفحة {step} من 2",
+      back: "رجوع",
+      next: "التالي",
+      submitApplication: "إرسال الطلب",
+      close: "إغلاق",
+      decisionApproveTitle: "قبول الطلب",
+      decisionRejectTitle: "رفض الطلب",
+      approvalMessage: "رسالة الرد",
+      defaultApproval: "Your application has been accepted, please attend on one of the specified dates.",
+      mondayDate: "موعد مقابلة الاثنين",
+      fridayDate: "موعد مقابلة الجمعة",
+      rejectionReason: "سبب الرفض",
+      saveDecision: "حفظ القرار",
+      roleManagement: "إدارة حسابات الأدمن",
+      roleManagementText: "للمالك فقط. أنشئ أو حدث حسابات الأدمن مع كلمة المرور.",
+      userEmail: "بريد المستخدم",
+      accountPassword: "كلمة مرور الحساب",
+      role: "الصلاحية",
+      saveRole: "حفظ الحساب",
+      configuredUsers: "الحسابات المسجلة",
+      noUsers: "لا توجد حسابات مسجلة بعد.",
+      validationError: "أكمل الحقول المطلوبة قبل المتابعة.",
+      loginSuccess: "تم تسجيل الدخول.",
+      logoutSuccess: "تم تسجيل الخروج.",
+      accountCreated: "تم إنشاء الحساب.",
+      invalidLogin: "البريد أو كلمة المرور غير صحيحة.",
+      accountExists: "يوجد حساب بهذا البريد مسبقاً.",
+      webhookSent: "تم تنبيه ويب هوك ديسكورد.",
+      webhookSkipped: "رابط ويب هوك ديسكورد غير مضبوط.",
+      savedApplication: "تم إرسال الطلب وتحديث السجلات.",
+      savedDecision: "تم حفظ القرار.",
+      savedRole: "تم تحديث الصلاحية.",
+      savedAsset: "تم الحفظ.",
+      savedStream: "تم حفظ البث.",
+      editMode: "تم فتح وضع تعديل العنصر.",
+      reorderSaved: "تم تحديث الترتيب.",
+      removed: "تم الحذف.",
+      settingsTitle: "إعدادات الواجهة",
+      settingsSubtitle: "خصص واجهة القيادة محلياً على هذا الجهاز.",
+      settingsOpen: "فتح الإعدادات",
+      fontSetting: "الخط",
+      tabOrderSetting: "ترتيب التبويبات",
+      colorRedSetting: "لون الأحمر",
+      colorBlueSetting: "لون الأزرق",
+      colorBgSetting: "الخلفية",
+      colorTextSetting: "النص",
+      resetUi: "إعادة ضبط الواجهة",
+      moveUp: "رفع",
+      moveDown: "خفض",
+      settingsSaved: "تم حفظ الإعدادات.",
+      deleteArchive: "حذف الأرشيف",
+      confirmDeleteArchive: "حذف هذا السجل المؤرشف فقط؟",
+      archiveDeleted: "تم حذف السجل المؤرشف.",
+      databaseError: "فشل إجراء قاعدة البيانات. تحقق من أسماء الجداول وبيانات Supabase.",
+      resetDone: "تم تصفير الأرشيف وفترات الانتظار.",
+      pendingCleared: "تم مسح الطلبات المعلقة.",
+      confirmClear: "هل تريد مسح كل الطلبات المعلقة في هذه القائمة؟",
+      confirmReset: "هل تريد مسح سجلات القبول والرفض وتصفير فترات الانتظار؟",
+      noPermission: "صلاحيتك الحالية لا تسمح بهذا الإجراء.",
+      recruitmentLabel: "توظيف",
+      transferLabel: "نقل",
+      pending: "معلق",
+      accepted: "مقبول",
+      rejected: "مرفوض",
+      submittedBy: "مقدم بواسطة {email}",
+      submittedAt: "أرسل في {date}",
+      decidedAt: "صدر القرار في {date}",
+      decisionMessage: "رسالة القرار",
+      interviewDates: "مواعيد المقابلة",
+      reason: "السبب"
+    }
+  };
+
+  const questionBank = {
+    recruitment: [
+      [
+        q("full_name", "Full legal RP name", "الاسم الكامل داخل الرول بلاي", "text", true),
+        q("contact_email", "Contact email", "البريد الإلكتروني للتواصل", "email", true),
+        q("discord_id", "Discord ID", "معرف الديسكورد", "text", true),
+        q("age", "Age", "العمر", "number", true),
+        q("weekly_hours", "Expected weekly activity hours", "عدد ساعات النشاط الأسبوعية المتوقعة", "number", true),
+        q("past_experience", "Past law enforcement or emergency service experience", "خبراتك السابقة في الشرطة أو الطوارئ", "textarea", true)
+      ],
+      [
+        q("scenario_traffic_stop", "A driver refuses to exit during a felony traffic stop. What do you do?", "سائق يرفض النزول أثناء استيقاف جنائي. ماذا تفعل؟", "textarea", true),
+        q("scenario_hostage", "How would you handle a hostage scene before SWAT or command arrives?", "كيف تتعامل مع حالة رهائن قبل وصول السوات أو القيادة؟", "textarea", true),
+        q("lethal_force_policy", "When is lethal force justified under LSPD policy?", "متى يكون استخدام القوة القاتلة مبرراً وفق سياسة LSPD؟", "textarea", true),
+        q("department_policy", "Explain why chain of command and radio discipline matter.", "اشرح أهمية التسلسل القيادي وانضباط الراديو.", "textarea", true),
+        q("agreement", "I confirm that all answers are true and I agree to follow LSPD regulations.", "أقر بأن جميع الإجابات صحيحة وأوافق على الالتزام بلوائح LSPD.", "checkbox", true)
+      ]
+    ],
+    transfer: [
+      [
+        q("full_name", "Full legal RP name", "الاسم الكامل داخل الرول بلاي", "text", true),
+        q("contact_email", "Contact email", "البريد الإلكتروني للتواصل", "email", true),
+        q("discord_id", "Discord ID", "معرف الديسكورد", "text", true),
+        q("current_department", "Current or previous department", "القسم الحالي أو السابق", "text", true),
+        q("current_rank", "Current or previous rank", "الرتبة الحالية أو السابقة", "text", true),
+        q("weekly_hours", "Expected weekly activity hours", "عدد ساعات النشاط الأسبوعية المتوقعة", "number", true),
+        q("transfer_reason", "Why are you requesting transfer into LSPD?", "لماذا ترغب في النقل إلى LSPD؟", "textarea", true)
+      ],
+      [
+        q("scenario_internal_conflict", "A former colleague breaks policy in front of you. What do you do?", "زميل سابق يخالف السياسة أمامك. ماذا تفعل؟", "textarea", true),
+        q("scenario_pursuit", "Describe safe pursuit spacing and when a PIT is appropriate.", "اشرح مسافة المطاردة الآمنة ومتى تكون PIT مناسبة.", "textarea", true),
+        q("lethal_force_policy", "When is lethal force justified under LSPD policy?", "متى يكون استخدام القوة القاتلة مبرراً وفق سياسة LSPD؟", "textarea", true),
+        q("department_policy", "How will you adapt to LSPD chain of command and SOP?", "كيف ستتأقلم مع التسلسل القيادي ودليل الإجراءات في LSPD؟", "textarea", true),
+        q("agreement", "I confirm that all transfer details are true and I accept LSPD command review.", "أقر بصحة تفاصيل النقل وأوافق على مراجعة قيادة LSPD.", "checkbox", true)
+      ]
+    ]
+  };
+
+  function q(key, en, ar, type, required) {
+    return { key, label: { en, ar }, type, required: Boolean(required) };
   }
 
-  .settings-grid,
-  .stream-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Final red/black/dark-blue command palette override */
-:root {
-  --page: #01040b;
-  --surface: rgba(5, 12, 25, .8);
-  --surface-solid: #050c19;
-  --surface-raised: rgba(8, 18, 37, .94);
-  --line: rgba(25, 55, 95, .74);
-  --line-strong: rgba(231, 81, 90, .58);
-  --accent: #0b4d91;
-  --accent-cyan: #3aa7ff;
-  --accent-soft: rgba(11, 77, 145, .18);
-  --critical: #e7515a;
-  --success: #2f8cff;
-}
-
-body {
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(231, 81, 90, .13), transparent 18rem),
-    radial-gradient(circle at 78% 14%, rgba(0, 70, 150, .2), transparent 30rem),
-    linear-gradient(115deg, rgba(231, 81, 90, .09), transparent 24%),
-    linear-gradient(245deg, rgba(0, 62, 125, .16), transparent 32%),
-    linear-gradient(180deg, rgba(1, 4, 11, .9), rgba(1, 4, 11, .985)),
-    url("image2.png") center / cover fixed,
-    #01040b;
-}
-
-body::before {
-  background:
-    linear-gradient(rgba(58, 167, 255, .06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(231, 81, 90, .07) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 0 48%, rgba(58, 167, 255, .035) 49% 51%, transparent 52%) !important;
-}
-
-body::after {
-  background-image:
-    radial-gradient(circle, rgba(231, 81, 90, .84) 0 1px, transparent 1.7px),
-    radial-gradient(circle, rgba(58, 167, 255, .56) 0 1px, transparent 1.6px);
-}
-
-.brand-mark,
-.sidebar,
-.content-header,
-.regulation-card,
-.sop-hero,
-.sop-stat,
-.sop-index,
-.sop-document,
-.portal-hero,
-.portal-panel,
-.overview-box,
-.status-panel,
-.hero-metric,
-.action-card,
-.asset-card,
-.review-card,
-.fto-card,
-.modal-shell,
-.welcome-shell,
-.asset-form,
-.empty-portal,
-.empty-state,
-.notice,
-.portal-toast,
-.credits-command,
-.credit-card,
-.credit-brief {
-  border-color: rgba(231, 81, 90, .18);
-  background:
-    linear-gradient(145deg, rgba(5, 12, 25, .84), rgba(1, 4, 11, .88)),
-    rgba(3, 9, 19, .7);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, .05),
-    inset 0 0 0 1px rgba(58, 167, 255, .025),
-    0 24px 76px rgba(0, 0, 0, .5),
-    0 0 32px rgba(231, 81, 90, .08);
-}
-
-.portal-kicker,
-.content-kicker,
-.sop-eyebrow,
-.eyebrow,
-.workspace-tab i,
-.nav-tab i {
-  color: #ff6b76;
-  text-shadow: 0 0 18px rgba(231, 81, 90, .35);
-}
-
-.workspace-tab[aria-selected="true"],
-.nav-tab[aria-pressed="true"],
-.subtab[aria-selected="true"] {
-  border-color: rgba(231, 81, 90, .58);
-  background: linear-gradient(90deg, rgba(231, 81, 90, .22), rgba(8, 28, 58, .35));
-  box-shadow: inset 3px 0 var(--critical), 0 0 28px rgba(231, 81, 90, .16);
-}
-
-.workspace-tab:hover,
-.nav-tab:hover,
-.utility-button:hover,
-.portal-button:hover,
-.subtab:hover,
-.auth-mini-button:hover,
-.role-manage-button:hover,
-.icon-action:hover {
-  border-color: rgba(231, 81, 90, .64);
-  background: rgba(29, 7, 14, .68);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .2), 0 0 30px rgba(231, 81, 90, .2);
-}
-
-.portal-button.success,
-.portal-button.ghost,
-.utility-button,
-.auth-mini-button,
-.role-manage-button,
-.icon-action,
-.subtab {
-  border-color: rgba(58, 167, 255, .28);
-  background: rgba(5, 22, 46, .66);
-}
-
-.portal-title span,
-.welcome-title span,
-.sop-title span,
-.asset-card h3 {
-  color: #ff727b;
-  text-shadow: 0 0 16px rgba(231, 81, 90, .55), 0 0 34px rgba(58, 167, 255, .18);
-}
-
-.portal-button.primary,
-.portal-button.danger {
-  border-color: rgba(231, 81, 90, .82);
-  background: linear-gradient(135deg, rgba(231, 81, 90, .96), rgba(93, 12, 24, .96));
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .2), 0 18px 44px rgba(231, 81, 90, .22);
-}
-
-.portal-button.success {
-  color: #eaf5ff;
-  border-color: rgba(58, 167, 255, .5);
-  background: linear-gradient(135deg, rgba(19, 82, 155, .82), rgba(4, 24, 54, .94));
-}
-
-.asset-grid.drag-enabled .asset-card {
-  cursor: grab;
-}
-
-.asset-card.dragging {
-  opacity: .58;
-  transform: scale(.985) rotate(-.4deg);
-  border-color: rgba(231, 81, 90, .72);
-}
-
-.asset-card.drag-over {
-  border-color: rgba(255, 111, 121, .9);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .35), 0 0 38px rgba(231, 81, 90, .28);
-}
-
-.asset-drag-handle {
-  position: absolute;
-  top: 10px;
-  inset-inline-end: 10px;
-  z-index: 2;
-  width: 34px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  color: #ffe8ea;
-  border: 1px solid rgba(231, 81, 90, .42);
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  background: rgba(20, 5, 10, .74);
-  box-shadow: 0 0 18px rgba(231, 81, 90, .22);
-}
-
-.asset-card-actions {
-  gap: 8px;
-}
-
-.asset-form.editing-asset {
-  border-color: rgba(231, 81, 90, .48);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .18), 0 0 36px rgba(231, 81, 90, .12);
-}
-
-.credits-command {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.credit-card,
-.credit-brief {
-  position: relative;
-  overflow: hidden;
-  min-height: 190px;
-  padding: 22px;
-  border-radius: 8px;
-}
-
-.credit-card i {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 18px;
-  color: #fff0f2;
-  border: 1px solid rgba(231, 81, 90, .4);
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  background: rgba(231, 81, 90, .14);
-  box-shadow: 0 0 24px rgba(231, 81, 90, .18);
-}
-
-.credit-card span,
-.credit-chips span {
-  font-family: var(--hud-font);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.credit-card span {
-  color: #ff8991;
-  font-size: 11px;
-}
-
-.credit-card h3 {
-  margin: 7px 0 5px;
-  color: #f7fbff;
-  font-family: var(--display-font);
-  font-size: clamp(22px, 3vw, 34px);
-  text-shadow: 0 0 24px rgba(231, 81, 90, .28);
-}
-
-.credit-card p,
-.credit-brief p {
-  margin: 0;
-  color: #aabdd2;
-  line-height: 1.7;
-}
-
-.credit-brief {
-  grid-column: 1 / -1;
-  min-height: 150px;
-}
-
-.credit-chips {
-  margin-top: 18px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.credit-chips span {
-  padding: 8px 10px;
-  color: #dceeff;
-  border: 1px solid rgba(58, 167, 255, .24);
-  background: rgba(5, 22, 46, .58);
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  font-size: 11px;
-}
-
-@media (max-width: 760px) {
-  .credits-command {
-    grid-template-columns: 1fr;
+  function getLang() {
+    return typeof currentLanguage !== "undefined" ? currentLanguage : "en";
   }
 
-  .credit-brief {
-    grid-column: auto;
-  }
-}
-
-/* Red/black/dark-blue tactical upgrade and new feature surfaces */
-:root {
-  --page: #01040b;
-  --surface: rgba(5, 12, 25, .78);
-  --surface-solid: #050c19;
-  --surface-raised: rgba(8, 18, 37, .92);
-  --line: rgba(25, 55, 95, .72);
-  --line-strong: rgba(231, 81, 90, .56);
-  --accent: #0b4d91;
-  --accent-cyan: #3aa7ff;
-  --accent-soft: rgba(11, 77, 145, .18);
-  --critical: #e7515a;
-  --success: #2f8cff;
-  --shadow: 0 28px 90px rgba(0, 0, 0, .62), 0 0 34px rgba(231, 81, 90, .075);
-}
-
-body {
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(231, 81, 90, .13), transparent 18rem),
-    radial-gradient(circle at 78% 14%, rgba(0, 70, 150, .2), transparent 30rem),
-    linear-gradient(115deg, rgba(231, 81, 90, .09), transparent 24%),
-    linear-gradient(245deg, rgba(0, 62, 125, .16), transparent 32%),
-    linear-gradient(180deg, rgba(1, 4, 11, .9), rgba(1, 4, 11, .985)),
-    url("image2.png") center / cover fixed,
-    #01040b;
-}
-
-body::before {
-  background:
-    linear-gradient(rgba(58, 167, 255, .06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(231, 81, 90, .07) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 0 48%, rgba(58, 167, 255, .035) 49% 51%, transparent 52%) !important;
-}
-
-body::after {
-  background-image:
-    radial-gradient(circle, rgba(231, 81, 90, .84) 0 1px, transparent 1.7px),
-    radial-gradient(circle, rgba(58, 167, 255, .56) 0 1px, transparent 1.6px);
-}
-
-.brand-mark,
-.sidebar,
-.content-header,
-.regulation-card,
-.sop-hero,
-.sop-stat,
-.sop-index,
-.sop-document,
-.portal-hero,
-.portal-panel,
-.overview-box,
-.status-panel,
-.hero-metric,
-.action-card,
-.asset-card,
-.review-card,
-.fto-card,
-.modal-shell,
-.welcome-shell,
-.asset-form,
-.empty-portal,
-.empty-state,
-.notice,
-.portal-toast,
-.credits-command,
-.credit-card,
-.credit-brief {
-  border-color: rgba(231, 81, 90, .18);
-  background:
-    linear-gradient(145deg, rgba(5, 12, 25, .84), rgba(1, 4, 11, .88)),
-    rgba(3, 9, 19, .7);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, .05),
-    inset 0 0 0 1px rgba(58, 167, 255, .025),
-    0 24px 76px rgba(0, 0, 0, .5),
-    0 0 32px rgba(231, 81, 90, .08);
-}
-
-.portal-kicker,
-.content-kicker,
-.sop-eyebrow,
-.eyebrow,
-.workspace-tab i,
-.nav-tab i {
-  color: #ff6b76;
-  text-shadow: 0 0 18px rgba(231, 81, 90, .35);
-}
-
-.workspace-tab[aria-selected="true"],
-.nav-tab[aria-pressed="true"],
-.subtab[aria-selected="true"] {
-  border-color: rgba(231, 81, 90, .58);
-  background: linear-gradient(90deg, rgba(231, 81, 90, .22), rgba(8, 28, 58, .35));
-  box-shadow: inset 3px 0 var(--critical), 0 0 28px rgba(231, 81, 90, .16);
-}
-
-.portal-button.success,
-.portal-button.ghost,
-.utility-button,
-.auth-mini-button,
-.role-manage-button,
-.icon-action,
-.subtab {
-  border-color: rgba(58, 167, 255, .28);
-  background: rgba(5, 22, 46, .66);
-}
-
-.portal-button.success:hover,
-.portal-button.ghost:hover,
-.utility-button:hover,
-.auth-mini-button:hover,
-.role-manage-button:hover,
-.icon-action:hover,
-.subtab:hover {
-  border-color: rgba(231, 81, 90, .64);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .2), 0 0 30px rgba(231, 81, 90, .2);
-}
-
-.portal-title span,
-.welcome-title span,
-.sop-title span,
-.asset-card h3 {
-  color: #ff727b;
-  text-shadow: 0 0 16px rgba(231, 81, 90, .55), 0 0 34px rgba(58, 167, 255, .18);
-}
-
-.asset-grid.drag-enabled .asset-card {
-  cursor: grab;
-}
-
-.asset-card.dragging {
-  opacity: .58;
-  transform: scale(.985) rotate(-.4deg);
-  border-color: rgba(231, 81, 90, .72);
-}
-
-.asset-card.drag-over {
-  border-color: rgba(255, 111, 121, .9);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .35), 0 0 38px rgba(231, 81, 90, .28);
-}
-
-.asset-drag-handle {
-  position: absolute;
-  top: 10px;
-  inset-inline-end: 10px;
-  z-index: 2;
-  width: 34px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  color: #ffe8ea;
-  border: 1px solid rgba(231, 81, 90, .42);
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  background: rgba(20, 5, 10, .74);
-  box-shadow: 0 0 18px rgba(231, 81, 90, .22);
-}
-
-.asset-card-actions {
-  gap: 8px;
-}
-
-.asset-caption {
-  margin-top: 7px !important;
-  color: #a9bfd6 !important;
-}
-
-.asset-form.editing-asset {
-  border-color: rgba(231, 81, 90, .48);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .18), 0 0 36px rgba(231, 81, 90, .12);
-}
-
-.credits-command {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  padding: 16px;
-  border-radius: 8px;
-}
-
-.credit-card,
-.credit-brief {
-  position: relative;
-  overflow: hidden;
-  min-height: 190px;
-  padding: 22px;
-  border-radius: 8px;
-}
-
-.credit-card i {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 18px;
-  color: #fff0f2;
-  border: 1px solid rgba(231, 81, 90, .4);
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  background: rgba(231, 81, 90, .14);
-  box-shadow: 0 0 24px rgba(231, 81, 90, .18);
-}
-
-.credit-card span,
-.credit-chips span {
-  font-family: var(--hud-font);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-
-.credit-card span {
-  color: #ff8991;
-  font-size: 11px;
-}
-
-.credit-card h3 {
-  margin: 7px 0 5px;
-  color: #f7fbff;
-  font-family: var(--display-font);
-  font-size: clamp(22px, 3vw, 34px);
-  text-shadow: 0 0 24px rgba(231, 81, 90, .28);
-}
-
-.credit-card p,
-.credit-brief p {
-  margin: 0;
-  color: #aabdd2;
-  line-height: 1.7;
-}
-
-.credit-brief {
-  grid-column: 1 / -1;
-  min-height: 150px;
-}
-
-.credit-chips {
-  margin-top: 18px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.credit-chips span {
-  padding: 8px 10px;
-  color: #dceeff;
-  border: 1px solid rgba(58, 167, 255, .24);
-  background: rgba(5, 22, 46, .58);
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  font-size: 11px;
-}
-
-@media (max-width: 760px) {
-  .credits-command {
-    grid-template-columns: 1fr;
+  function tr(key, values) {
+    const lang = getLang();
+    const source = (portalCopy[lang] && portalCopy[lang][key]) || (portalCopy.en && portalCopy.en[key]) || key;
+    return source.replace(/\{(\w+)\}/g, function (_, token) {
+      return values && values[token] != null ? values[token] : "";
+    });
   }
 
-  .credit-brief {
-    grid-column: auto;
-  }
-}
-
-#tab-1,
-#tab-2,
-#tab-3,
-#tab-4,
-#tab-5,
-#tab-6 {
-  --degree: #ffffff !important;
-}
-
-.regulation-card.degree-7,
-.regulation-card.degree-0 {
-  border-color: rgba(231, 81, 90, .35);
-  box-shadow: inset 0 1px rgba(255, 255, 255, .05), 0 0 24px rgba(231, 81, 90, .12), var(--shadow);
-}
-
-.question-pair,
-.check-field {
-  border-color: rgba(0, 210, 255, .13);
-  background: rgba(2, 7, 18, .52);
-}
-
-.status-pill.accepted {
-  color: #bffaf0;
-  border-color: rgba(26, 188, 156, .38);
-  background: rgba(26, 188, 156, .12);
-}
-
-.status-pill.rejected,
-.cooldown-banner {
-  color: #ffdce0;
-  border-color: rgba(231, 81, 90, .42);
-  background: rgba(231, 81, 90, .11);
-  box-shadow: 0 0 26px rgba(231, 81, 90, .1);
-}
-
-#crewGrid .asset-card {
-  border-color: rgba(0, 210, 255, .25);
-  background:
-    linear-gradient(180deg, rgba(0, 136, 255, .08), transparent 44%),
-    rgba(3, 10, 21, .76);
-}
-
-#crewGrid .asset-card h3 {
-  color: #f7fcff;
-  text-shadow: 0 0 12px rgba(0, 210, 255, .78), 0 0 30px rgba(0, 136, 255, .44);
-}
-
-#crewGrid .asset-card p {
-  color: #9eeaff;
-  font-family: var(--hud-font);
-  letter-spacing: .08em;
-  text-shadow: 0 0 12px rgba(0, 210, 255, .62), 0 0 26px rgba(0, 136, 255, .34);
-}
-
-.modal-backdrop {
-  background: rgba(1, 5, 12, .82);
-  backdrop-filter: blur(22px) saturate(1.2);
-}
-
-.modal-head {
-  background: rgba(3, 10, 21, .92);
-  border-bottom-color: rgba(0, 210, 255, .16);
-}
-
-.portal-toast.success {
-  border-color: rgba(26, 188, 156, .5);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, .42), 0 0 24px rgba(26, 188, 156, .14);
-}
-
-.portal-toast.error {
-  border-color: rgba(231, 81, 90, .58);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, .42), 0 0 26px rgba(231, 81, 90, .18);
-}
-
-.portal-toast.warn {
-  border-color: rgba(0, 210, 255, .42);
-}
-
-footer {
-  color: #809ab4;
-  border-top-color: rgba(0, 210, 255, .13);
-  font-family: var(--hud-font);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-@keyframes scanDrift {
-  0% { background-position: 0 0, 0 0; }
-  100% { background-position: 0 180px, 240px 0; }
-}
-
-@keyframes commandFloat {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: .45; }
-  50% { transform: translate3d(0, -10px, 0); opacity: .9; }
-}
-
-@keyframes logoOrbit {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes logoBreath {
-  0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 18px rgba(0, 210, 255, .28)); }
-  50% { transform: translateY(-4px) scale(1.035); filter: drop-shadow(0 0 34px rgba(0, 210, 255, .48)); }
-}
-
-@keyframes heroReveal {
-  0% { opacity: 0; transform: translateY(18px) scale(.985); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@keyframes ripplePop {
-  0% { width: 0; height: 0; opacity: .42; }
-  100% { width: 420px; height: 420px; opacity: 0; }
-}
-
-@keyframes bluePulse {
-  0%, 100% { box-shadow: 0 0 0 rgba(0, 136, 255, 0), inset 0 1px rgba(255, 255, 255, .05); }
-  50% { box-shadow: 0 0 38px rgba(0, 136, 255, .22), inset 0 1px rgba(255, 255, 255, .08); }
-}
-
-@keyframes pulseOnce {
-  0% { transform: scale(1); box-shadow: 0 0 0 rgba(0, 210, 255, 0); }
-  45% { transform: scale(1.015); box-shadow: 0 0 46px rgba(0, 210, 255, .26); }
-  100% { transform: scale(1); box-shadow: 0 0 0 rgba(0, 210, 255, 0); }
-}
-
-body {
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(0, 210, 255, .16), transparent 19rem),
-    radial-gradient(circle at 50% 21%, rgba(0, 136, 255, .13), transparent 26rem),
-    radial-gradient(circle at 50% 55%, rgba(0, 210, 255, .08), transparent 35rem),
-    linear-gradient(145deg, rgba(2, 5, 12, .97), rgba(7, 13, 28, .94)),
-    url("image2.png") center / cover fixed,
-    #080d1a;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: .32;
-  background-image:
-    radial-gradient(circle, rgba(0, 210, 255, .95) 0 1px, transparent 1.5px),
-    radial-gradient(circle, rgba(255, 201, 85, .52) 0 1px, transparent 1.5px);
-  background-size: 210px 180px, 280px 240px;
-  background-position: 18px 40px, 118px 92px;
-  animation: commandFloat 7s ease-in-out infinite;
-}
-
-.app-shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: .17;
-  background:
-    linear-gradient(rgba(0, 210, 255, .08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 136, 255, .08) 1px, transparent 1px);
-  background-size: 100% 36px, 44px 100%;
-  animation: scanDrift 12s linear infinite;
-  mask-image: radial-gradient(circle at var(--pointer-x) var(--pointer-y), black, transparent 72%);
-}
-
-.app-shell,
-.topbar,
-.portal-view,
-footer {
-  position: relative;
-  z-index: 1;
-}
-
-.topbar {
-  border-bottom-color: rgba(0, 210, 255, .18);
-  box-shadow: 0 18px 60px rgba(0, 0, 0, .28);
-}
-
-.workspace-nav {
-  flex-wrap: wrap;
-}
-
-.workspace-tab,
-.utility-button,
-.portal-button,
-.subtab,
-.icon-action {
-  position: relative;
-  overflow: hidden;
-}
-
-.workspace-tab::after,
-.utility-button::after,
-.portal-button::after,
-.subtab::after,
-.icon-action::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .16), transparent);
-  transform: translateX(-70%);
-  transition: opacity .18s ease, transform .34s ease;
-  pointer-events: none;
-}
-
-.workspace-tab:hover::after,
-.utility-button:hover::after,
-.portal-button:hover::after,
-.subtab:hover::after,
-.icon-action:hover::after {
-  opacity: 1;
-  transform: translateX(70%);
-}
-
-.fx-ripple {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0, 210, 255, .38), transparent 64%);
-  pointer-events: none;
-  animation: ripplePop .68s ease-out forwards;
-}
-
-.first-town-header-logo {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  border-radius: 50%;
-  margin-inline-start: 4px;
-  filter: drop-shadow(0 0 16px rgba(0, 210, 255, .32));
-  animation: logoBreath 4.8s ease-in-out infinite;
-}
-
-.identity-bar {
-  min-width: min(610px, 46vw);
-  display: grid;
-  grid-template-columns: minmax(130px, 1fr) minmax(112px, .72fr) auto auto auto auto;
-  align-items: center;
-  gap: 8px;
-  padding: 6px;
-  border: 1px solid rgba(0, 210, 255, .18);
-  border-radius: 8px;
-  background: rgba(8, 13, 26, .58);
-  box-shadow: inset 0 1px rgba(255, 255, 255, .06);
-}
-
-.identity-bar input {
-  width: 100%;
-  min-height: 32px;
-  padding: 0 10px;
-  color: var(--text);
-  border: 1px solid rgba(27, 46, 75, .96);
-  border-radius: 6px;
-  background: rgba(5, 12, 24, .82);
-  font-size: 11px;
-}
-
-.auth-mini-button {
-  min-height: 30px;
-  padding: 0 10px;
-  color: #eafdff;
-  border: 1px solid rgba(0, 136, 255, .35);
-  border-radius: 6px;
-  background: rgba(0, 40, 84, .62);
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-}
-
-.auth-mini-button:hover {
-  transform: translateY(-1px);
-  border-color: rgba(0, 210, 255, .72);
-  box-shadow: 0 0 20px rgba(0, 136, 255, .22);
-}
-
-.role-badge,
-.db-badge {
-  min-height: 30px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 10px;
-  border: 1px solid rgba(0, 210, 255, .2);
-  border-radius: 6px;
-  color: #dff8ff;
-  background: rgba(0, 136, 255, .12);
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  white-space: nowrap;
-}
-
-.db-badge[data-state="local"] {
-  color: #ffe9b6;
-  border-color: rgba(248, 212, 119, .25);
-  background: rgba(248, 212, 119, .1);
-}
-
-.db-badge[data-state="live"] {
-  color: #cdfbf1;
-  border-color: rgba(26, 188, 156, .28);
-  background: rgba(26, 188, 156, .12);
-}
-
-.role-manage-button {
-  width: 32px;
-  height: 32px;
-  display: inline-grid;
-  place-items: center;
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0, 210, 255, .22);
-  border-radius: 6px;
-  background: rgba(0, 136, 255, .12);
-}
-
-.portal-view {
-  flex: 1;
-  width: min(1480px, calc(100% - 40px));
-  margin: 0 auto;
-  padding: 30px 0 38px;
-}
-
-.portal-shell {
-  display: grid;
-  gap: 16px;
-}
-
-.portal-hero,
-.portal-panel,
-.overview-box,
-.status-panel {
-  border: 1px solid rgba(27, 46, 75, .95);
-  border-radius: 8px;
-  background: linear-gradient(145deg, rgba(14, 23, 38, .94), rgba(8, 18, 34, .91));
-  box-shadow: var(--shadow);
-}
-
-.portal-hero {
-  position: relative;
-  overflow: hidden;
-  min-height: 310px;
-  padding: clamp(24px, 4vw, 46px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: end;
-  justify-items: center;
-  text-align: center;
-  gap: 28px;
-  isolation: isolate;
-  animation: heroReveal .72s ease both;
-}
-
-.portal-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(circle at 50% 32%, rgba(8, 13, 26, .58), rgba(8, 13, 26, .94) 64%),
-    linear-gradient(90deg, rgba(4, 7, 15, .97), rgba(7, 13, 28, .8), rgba(4, 7, 15, .97)),
-    url("image.png") center / cover;
-}
-
-.portal-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: .62;
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(0, 210, 255, .18), transparent 19rem),
-    linear-gradient(90deg, rgba(0, 136, 255, .2) 1px, transparent 1px),
-    linear-gradient(rgba(0, 210, 255, .09) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: linear-gradient(90deg, black, transparent 78%);
-}
-
-.portal-hero > div:first-child,
-.welcome-visual > * {
-  animation: heroReveal .76s ease both;
-}
-
-.first-town-logo {
-  display: inline-block;
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(0, 210, 255, .35));
-}
-
-.hub-logo {
-  width: 128px;
-  height: 128px;
-  margin-bottom: 12px;
-  animation: logoBreath 4s ease-in-out infinite;
-}
-
-.first-town-orbit {
-  position: relative;
-  width: 128px;
-  height: 128px;
-  margin-bottom: 18px;
-  display: grid;
-  place-items: center;
-}
-
-.first-town-orbit::before,
-.first-town-orbit::after {
-  content: "";
-  position: absolute;
-  inset: -16px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 210, 255, .22);
-  border-top-color: rgba(0, 210, 255, .78);
-  animation: logoOrbit 7s linear infinite;
-}
-
-.first-town-orbit::after {
-  inset: -29px;
-  border-color: rgba(0, 136, 255, .14);
-  border-bottom-color: rgba(248, 212, 119, .45);
-  animation-duration: 11s;
-  animation-direction: reverse;
-}
-
-.first-town-logo-xl {
-  width: 116px;
-  height: 116px;
-  animation: logoBreath 4.2s ease-in-out infinite;
-}
-
-.portal-kicker {
-  margin: 0 0 10px;
-  color: var(--accent-cyan);
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-
-.portal-title {
-  margin: 0;
-  max-width: 820px;
-  font-size: clamp(34px, 5vw, 70px);
-  line-height: .94;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  text-shadow: 0 0 38px rgba(0, 136, 255, .18);
-}
-
-.portal-title span {
-  color: var(--accent-cyan);
-  text-shadow: 0 0 30px rgba(0, 210, 255, .32);
-}
-
-.portal-copy {
-  max-width: 700px;
-  margin: 18px 0 0;
-  color: #c9d9ea;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.portal-hero .portal-action-row,
-.portal-hero .hero-stack {
-  justify-content: center;
-}
-
-.portal-hero .hero-stack {
-  width: min(760px, 100%);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.portal-action-row {
-  margin-top: 22px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.portal-button {
-  min-height: 42px;
-  padding: 0 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  border: 1px solid rgba(0, 210, 255, .28);
-  border-radius: 8px;
-  color: #eafdff;
-  background: rgba(0, 136, 255, .13);
-  box-shadow: 0 0 0 0 rgba(0, 210, 255, 0);
-  font-size: 12px;
-  font-weight: 900;
-  text-decoration: none;
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
-}
-
-.portal-button:hover {
-  transform: translateY(-1px);
-  border-color: rgba(0, 210, 255, .72);
-  background: rgba(0, 136, 255, .22);
-  box-shadow: 0 0 24px rgba(0, 210, 255, .2);
-}
-
-.portal-button:active,
-.workspace-tab:active,
-.subtab:active,
-.auth-mini-button:active,
-.icon-action:active {
-  transform: translateY(1px) scale(.985);
-}
-
-.portal-button.primary {
-  color: #001827;
-  border-color: rgba(0, 210, 255, .78);
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent));
-  box-shadow: 0 12px 34px rgba(0, 136, 255, .24);
-}
-
-.portal-button.success {
-  color: #021c18;
-  border-color: rgba(26, 188, 156, .75);
-  background: linear-gradient(135deg, #48f1d1, var(--success));
-}
-
-.portal-button.danger {
-  color: #fff6f7;
-  border-color: rgba(231, 81, 90, .72);
-  background: rgba(231, 81, 90, .2);
-}
-
-.portal-button.ghost {
-  background: rgba(8, 13, 26, .52);
-}
-
-.portal-button:disabled {
-  cursor: not-allowed;
-  opacity: .45;
-  transform: none;
-  box-shadow: none;
-}
-
-.hero-stack {
-  display: grid;
-  gap: 10px;
-}
-
-.hero-metric,
-.action-card,
-.asset-card,
-.review-card,
-.fto-card {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(27, 46, 75, .95);
-  border-radius: 8px;
-  background: rgba(8, 18, 34, .76);
-  box-shadow: inset 0 1px rgba(255, 255, 255, .04);
-}
-
-.hero-metric,
-.action-card,
-.review-card,
-.fto-card,
-.asset-card,
-.portal-panel,
-.status-panel,
-.overview-box {
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease;
-}
-
-.hero-metric:hover,
-.review-card:hover,
-.fto-card:hover,
-.asset-card:hover,
-.portal-panel:hover,
-.status-panel:hover,
-.overview-box:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0, 210, 255, .32);
-  box-shadow: 0 0 34px rgba(0, 136, 255, .13), var(--shadow);
-}
-
-.action-card:hover {
-  transform: translateY(-4px) scale(1.006);
-}
-
-.pulse-once {
-  animation: pulseOnce .9s ease both;
-}
-
-.hero-metric {
-  min-height: 82px;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.hero-metric:nth-child(1) { animation: heroReveal .62s ease .05s both; }
-.hero-metric:nth-child(2) { animation: heroReveal .62s ease .14s both; }
-.hero-metric:nth-child(3) { animation: heroReveal .62s ease .23s both; }
-
-.hero-metric i {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0, 210, 255, .22);
-  border-radius: 8px;
-  background: rgba(0, 136, 255, .12);
-  box-shadow: 0 0 26px rgba(0, 210, 255, .12);
-}
-
-.hero-metric strong {
-  display: block;
-  color: var(--text);
-  font-size: 13px;
-}
-
-.hero-metric span {
-  display: block;
-  margin-top: 2px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.4;
-}
-
-.overview-box,
-.status-panel,
-.portal-panel {
-  padding: 18px;
-}
-
-.overview-box {
-  color: #dbe8f7;
-  font-family: Cairo, Arial, sans-serif;
-  line-height: 2;
-  border-inline-start: 3px solid var(--accent-cyan);
-}
-
-.overview-box h3,
-.status-panel h3,
-.portal-panel h3 {
-  margin: 0 0 9px;
-  color: var(--text);
-  font-size: 15px;
-}
-
-.overview-box p,
-.status-panel p,
-.portal-panel p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
-}
-
-.cooldown-banner {
-  padding: 13px 15px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  border: 1px solid rgba(248, 212, 119, .25);
-  border-radius: 8px;
-  color: #ffe9b6;
-  background: rgba(248, 212, 119, .1);
-  box-shadow: 0 0 28px rgba(248, 212, 119, .08);
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-.portal-actions-grid,
-.portal-grid,
-.asset-grid,
-.fto-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.portal-actions-grid {
-  grid-template-columns: repeat(2, minmax(240px, 1fr));
-}
-
-.action-card {
-  padding: 18px;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 14px;
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-}
-
-.action-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(0, 210, 255, .38);
-  box-shadow: 0 0 32px rgba(0, 210, 255, .12);
-}
-
-.action-card i {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0, 210, 255, .28);
-  border-radius: 8px;
-  background: rgba(0, 136, 255, .14);
-  font-size: 18px;
-}
-
-.action-card h3 {
-  margin: 0 0 5px;
-  font-size: 16px;
-}
-
-.action-card p {
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.section-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.section-head h2 {
-  margin: 0;
-  font-size: clamp(24px, 3vw, 38px);
-  letter-spacing: 0;
-}
-
-.section-head p {
-  max-width: 760px;
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.subtabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.subtab {
-  min-height: 36px;
-  padding: 0 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted-strong);
-  border: 1px solid rgba(27, 46, 75, .95);
-  border-radius: 8px;
-  background: rgba(8, 18, 34, .72);
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.subtab[aria-selected="true"] {
-  color: #eafdff;
-  border-color: rgba(0, 210, 255, .45);
-  background: rgba(0, 136, 255, .17);
-  box-shadow: 0 0 22px rgba(0, 210, 255, .11);
-}
-
-.toolbar {
-  margin-bottom: 12px;
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto;
-  gap: 10px;
-}
-
-.portal-input,
-.portal-select,
-.portal-textarea {
-  width: 100%;
-  min-height: 40px;
-  padding: 0 12px;
-  color: var(--text);
-  border: 1px solid rgba(27, 46, 75, .95);
-  border-radius: 8px;
-  background: rgba(5, 12, 24, .78);
-  transition: border-color .18s ease, box-shadow .18s ease;
-}
-
-.portal-textarea {
-  min-height: 104px;
-  padding: 11px 12px;
-  resize: vertical;
-}
-
-.portal-input:focus,
-.portal-select:focus,
-.portal-textarea:focus {
-  border-color: rgba(0, 210, 255, .65);
-  box-shadow: 0 0 0 4px rgba(0, 210, 255, .08);
-  outline: 0;
-}
-
-.empty-portal {
-  padding: 34px;
-  border: 1px dashed rgba(43, 75, 117, .86);
-  border-radius: 8px;
-  color: var(--muted);
-  background: rgba(8, 18, 34, .42);
-  text-align: center;
-  font-size: 13px;
-}
-
-.review-card {
-  padding: 16px;
-  display: grid;
-  gap: 12px;
-}
-
-.review-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.review-title {
-  margin: 0;
-  font-size: 16px;
-}
-
-.review-meta {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.status-pill {
-  padding: 5px 9px;
-  color: #eafdff;
-  border: 1px solid rgba(0, 210, 255, .22);
-  border-radius: 999px;
-  background: rgba(0, 136, 255, .12);
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.status-pill.accepted {
-  color: #cdfbf1;
-  border-color: rgba(26, 188, 156, .35);
-  background: rgba(26, 188, 156, .14);
-}
-
-.status-pill.rejected {
-  color: #ffe0e2;
-  border-color: rgba(231, 81, 90, .38);
-  background: rgba(231, 81, 90, .14);
-}
-
-.question-list {
-  display: grid;
-  gap: 8px;
-}
-
-.question-pair {
-  padding: 11px;
-  border: 1px solid rgba(27, 46, 75, .74);
-  border-radius: 8px;
-  background: rgba(5, 12, 24, .44);
-}
-
-.question-pair strong {
-  display: block;
-  color: #e7f7ff;
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-.question-pair span {
-  display: block;
-  margin-top: 6px;
-  color: #c7d7e8;
-  font-size: 12px;
-  line-height: 1.65;
-  white-space: pre-wrap;
-}
-
-.review-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.asset-form {
-  margin-bottom: 14px;
-  padding: 14px;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
-  gap: 9px;
-  border: 1px solid rgba(27, 46, 75, .95);
-  border-radius: 8px;
-  background: rgba(8, 18, 34, .58);
-}
-
-.asset-form .wide {
-  grid-column: span 2;
-}
-
-.asset-card {
-  overflow: hidden;
-}
-
-.asset-card img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  display: block;
-  object-fit: cover;
-  background: #050c18;
-}
-
-.asset-card-body {
-  padding: 13px;
-}
-
-.asset-card h3 {
-  margin: 0 0 4px;
-  font-size: 15px;
-}
-
-.asset-card p,
-.asset-card span {
-  display: block;
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-.asset-card-actions {
-  margin-top: 12px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.fto-card {
-  padding: 16px;
-}
-
-.fto-card i {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 12px;
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0, 210, 255, .22);
-  border-radius: 8px;
-  background: rgba(0, 136, 255, .12);
-}
-
-.fto-card h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.fto-card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.65;
-}
-
-.fto-apply-desk {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  animation: bluePulse 4s ease-in-out infinite;
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: rgba(3, 7, 15, .74);
-  backdrop-filter: blur(18px);
-}
-
-.modal-shell {
-  width: min(860px, 100%);
-  max-height: min(86vh, 850px);
-  overflow: auto;
-  border: 1px solid rgba(0, 210, 255, .24);
-  border-radius: 8px;
-  background: linear-gradient(145deg, rgba(14, 23, 38, .98), rgba(5, 12, 24, .98));
-  box-shadow: 0 30px 90px rgba(0, 0, 0, .62), 0 0 60px rgba(0, 136, 255, .13);
-}
-
-.modal-head {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding: 18px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  border-bottom: 1px solid rgba(27, 46, 75, .95);
-  background: rgba(14, 23, 38, .96);
-}
-
-.modal-head h2 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.modal-head p {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.icon-action {
-  width: 34px;
-  height: 34px;
-  flex: 0 0 auto;
-  display: inline-grid;
-  place-items: center;
-  color: var(--muted-strong);
-  border: 1px solid rgba(27, 46, 75, .95);
-  border-radius: 8px;
-  background: rgba(5, 12, 24, .66);
-}
-
-.modal-body {
-  padding: 18px;
-}
-
-.field-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.field-grid label,
-.modal-body label {
-  display: grid;
-  gap: 7px;
-  color: var(--muted-strong);
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.field-grid label.full {
-  grid-column: 1 / -1;
-}
-
-.check-field {
-  display: flex !important;
-  grid-column: 1 / -1;
-  align-items: flex-start;
-  gap: 9px !important;
-  padding: 11px;
-  border: 1px solid rgba(27, 46, 75, .82);
-  border-radius: 8px;
-  background: rgba(5, 12, 24, .5);
-  line-height: 1.55;
-}
-
-.check-field input {
-  margin-top: 3px;
-}
-
-.modal-actions {
-  padding: 0 18px 18px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 9px;
-}
-
-.welcome-shell {
-  position: relative;
-  width: min(1180px, 100%);
-  min-height: min(760px, 90vh);
-  display: grid;
-  grid-template-columns: 1fr;
-  overflow: hidden;
-  border: 1px solid rgba(0, 210, 255, .28);
-  border-radius: 8px;
-  background: #050c18;
-  box-shadow: 0 38px 110px rgba(0, 0, 0, .68), 0 0 80px rgba(0, 136, 255, .16);
-}
-
-.welcome-visual {
-  position: relative;
-  min-height: 460px;
-  padding: clamp(24px, 4vw, 44px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  isolation: isolate;
-}
-
-.welcome-visual::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    linear-gradient(90deg, rgba(5, 12, 24, .95), rgba(5, 12, 24, .45)),
-    url("image3.png") center / cover;
-}
-
-.welcome-visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: .35;
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(0, 210, 255, .18), transparent 19rem),
-    radial-gradient(circle at 16% 18%, rgba(0, 210, 255, .3), transparent 28rem),
-    linear-gradient(90deg, rgba(0, 210, 255, .1) 1px, transparent 1px),
-    linear-gradient(rgba(0, 136, 255, .09) 1px, transparent 1px);
-  background-size: auto, 38px 38px, 38px 38px;
-}
-
-.dual-badge-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-}
-
-.welcome-title {
-  margin: 0;
-  max-width: 700px;
-  font-size: clamp(40px, 7vw, 78px);
-  line-height: .92;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  text-shadow: 0 0 40px rgba(0, 136, 255, .22);
-}
-
-.welcome-title span {
-  color: var(--accent-cyan);
-}
-
-.welcome-side {
-  padding: 24px;
-  position: absolute;
-  inset-inline: 0;
-  bottom: 38px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 22px;
-  background: transparent;
-}
-
-.welcome-badge {
-  width: 96px;
-  height: 96px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 22px rgba(0, 210, 255, .22));
-}
-
-.first-town-badge {
-  border-radius: 50%;
-  animation: logoBreath 4.6s ease-in-out infinite;
-}
-
-.welcome-side p {
-  max-width: 700px;
-  text-align: center;
-  color: var(--muted);
-  line-height: 1.65;
-  font-size: 13px;
-  height: 1px;
-}
-
-#crewGrid {
-  grid-template-columns: repeat(auto-fit, minmax(256px, 256px));
-  justify-content: center;
-}
-
-#crewGrid .asset-card {
-  width: 256px;
-  text-align: center;
-  background: radial-gradient(circle at 50% 14%, rgba(0, 136, 255, .16), rgba(6, 12, 25, .96) 62%);
-}
-
-#crewGrid .asset-card img {
-  width: 256px;
-  height: 256px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-}
-
-#crewGrid .asset-card h3 {
-  color: #f5fbff;
-  font-size: 17px;
-  text-shadow: 0 0 10px rgba(0, 210, 255, .72), 0 0 24px rgba(0, 136, 255, .36);
-}
-
-#crewGrid .asset-card p {
-  color: #9eeaff;
-  font-weight: 800;
-  text-shadow: 0 0 10px rgba(0, 210, 255, .58), 0 0 18px rgba(0, 136, 255, .28);
-}
-
-.regulation-card.degree-1,
-.regulation-card.degree-2,
-.regulation-card.degree-3,
-.regulation-card.degree-4,
-.regulation-card.degree-5,
-.regulation-card.degree-6 {
-  --degree: #ffffff;
-}
-
-.regulation-card.degree-7,
-.regulation-card.degree-0 {
-  --degree: var(--critical);
-}
-
-#tab-1, #tab-2, #tab-3, #tab-4, #tab-5, #tab-6 {
-  --degree: #ffffff !important;
-}
-
-#tab-7, #tab-0 {
-  --degree: var(--critical) !important;
-}
-
-.toast-stack {
-  position: fixed;
-  inset-inline-end: 18px;
-  bottom: 18px;
-  z-index: 120;
-  display: grid;
-  gap: 9px;
-}
-
-.portal-toast {
-  max-width: min(390px, calc(100vw - 36px));
-  padding: 12px 14px;
-  border: 1px solid rgba(0, 210, 255, .25);
-  border-radius: 8px;
-  color: #eafdff;
-  background: rgba(14, 23, 38, .96);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, .42);
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.portal-toast.success {
-  border-color: rgba(26, 188, 156, .4);
-}
-
-.portal-toast.error {
-  border-color: rgba(231, 81, 90, .45);
-}
-
-.portal-toast.warn {
-  border-color: rgba(248, 212, 119, .4);
-}
-
-[dir="rtl"] .identity-bar,
-[dir="rtl"] .portal-action-row,
-[dir="rtl"] .section-head,
-[dir="rtl"] .subtabs,
-[dir="rtl"] .review-top,
-[dir="rtl"] .review-actions,
-[dir="rtl"] .modal-head,
-[dir="rtl"] .modal-actions,
-[dir="rtl"] .cooldown-banner {
-  direction: rtl;
-}
-
-[dir="rtl"] .overview-box {
-  border-inline-start: 0;
-  border-inline-end: 3px solid var(--accent-cyan);
-}
-
-@media (max-width: 1120px) {
-  .topbar-inner {
-    grid-template-columns: minmax(0, 1fr);
+  function installPortalDom() {
+    installStylesheet();
+    extendCopy();
+    installFirstTownBrand();
+    installWorkspaceNav();
+    installIdentityBar();
+    installViews();
+    installSettingsPanel();
+    installFooterCredits();
+    overrideLanguage();
+    overrideWorkspace();
+    bindPortalEvents();
   }
 
-  .top-actions {
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  function installFirstTownBrand() {
+    document.querySelectorAll(".first-town-header-logo").forEach(function (node) { node.remove(); });
   }
 
-  .identity-bar {
-    min-width: min(100%, 720px);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  function installStylesheet() {
+    ensureStylesheet("ftlspd-portal.css");
+    ensureStylesheet("ftlspd-custom.css");
   }
 
-  .portal-hero,
-  .welcome-shell {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 760px) {
-  .portal-view {
-    width: min(100% - 28px, 560px);
-    padding-top: 20px;
+  function ensureStylesheet(href) {
+    if (document.querySelector('link[href="' + href + '"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
   }
 
-  .portal-hero {
-    min-height: 0;
-    padding: 24px;
+  function extendCopy() {
+    if (typeof copy === "undefined") return;
+    Object.assign(copy.en, portalCopy.en);
+    Object.assign(copy.ar, portalCopy.ar);
   }
 
-  .portal-title,
-  .welcome-title {
-    font-size: 36px;
+  function installWorkspaceNav() {
+    const nav = document.querySelector(".workspace-nav");
+    if (!nav) return;
+    const tabs = orderedWorkspaceTabs();
+    nav.innerHTML = tabs.map(function (tab) {
+      return '<button id="workspace-' + tab[0] + '" class="workspace-tab" onclick="setWorkspace(\'' + tab[0] + '\')" type="button" aria-selected="' + (tab[0] === "recruitment") + '"><i class="fa-solid ' + tab[1] + '"></i><span data-i18n="' + tab[2] + '">' + tr(tab[2]) + "</span></button>";
+    }).join("");
+    updateAdminTabVisibility();
   }
 
-  .portal-actions-grid,
-  .portal-grid,
-  .asset-grid,
-  .fto-grid,
-  .portal-hero .hero-stack,
-  .field-grid {
-    grid-template-columns: 1fr;
+  function installIdentityBar() {
+    const topActions = document.querySelector(".top-actions");
+    if (!topActions || document.getElementById("identityBar")) return;
+    topActions.insertAdjacentHTML("afterbegin", [
+      '<div id="identityBar" class="identity-bar">',
+      '<input id="authEmailInput" type="email" autocomplete="email" spellcheck="false" data-i18n-placeholder="emailPlaceholder" placeholder="' + safe(tr("emailPlaceholder")) + '">',
+      '<input id="authPasswordInput" type="password" autocomplete="current-password" data-i18n-placeholder="passwordPlaceholder" placeholder="' + safe(tr("passwordPlaceholder")) + '">',
+      '<button id="loginButton" class="auth-mini-button" type="button" data-i18n="login">' + safe(tr("login")) + '</button>',
+      '<button id="createAccountButton" class="auth-mini-button" type="button" data-i18n="createAccount">' + safe(tr("createAccount")) + '</button>',
+      '<button id="logoutButton" class="auth-mini-button hidden" type="button" data-i18n="logout">' + safe(tr("logout")) + '</button>',
+      '<span id="roleBadge" class="role-badge">' + safe(tr("roleGuest")) + '</span>',
+      '<button id="roleManagerButton" class="role-manage-button hidden" type="button" aria-label="' + safe(tr("roleManagerLabel")) + '"><i class="fa-solid fa-user-shield"></i></button>',
+      "</div>",
+    ].join(""));
+    const input = document.getElementById("authEmailInput");
+    input.value = state.userEmail;
   }
 
-  .fto-apply-desk {
-    display: grid;
+  function installViews() {
+    if (document.getElementById("recruitmentView")) return;
+    const footer = document.getElementById("regulationsFooter");
+    if (!footer) return;
+    footer.insertAdjacentHTML("beforebegin", [
+      welcomeModalHtml(),
+      recruitmentViewHtml(),
+      reviewViewHtml(),
+      archivesViewHtml(),
+      ftoViewHtml(),
+      crewViewHtml(),
+      mediaViewHtml(),
+      streamsViewHtml(),
+      creditsViewHtml(),
+      applicationModalHtml(),
+      decisionModalHtml(),
+      roleModalHtml(),
+      '<div id="toastStack" class="toast-stack" aria-live="polite"></div>'
+    ].join(""));
   }
 
-  .toolbar,
-  .asset-form {
-    grid-template-columns: 1fr;
+  function welcomeModalHtml() {
+    return [
+      '<div id="welcomeModal" class="modal-backdrop">',
+      '<section class="welcome-shell" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">',
+      '<div class="welcome-visual">',
+      '<div class="first-town-orbit"><img class="first-town-logo first-town-logo-xl" src="lspd-shield.png" alt="First Town logo"></div>',
+      '<p class="portal-kicker" data-i18n="welcomeKicker">' + safe(tr("welcomeKicker")) + '</p>',
+      '<h2 id="welcomeTitle" class="welcome-title" data-i18n-html="welcomeTitle">' + tr("welcomeTitle") + '</h2>',
+      '</div>',
+      '<aside class="welcome-side">',
+      '<div><div class="dual-badge-row"></div><p data-i18n="welcomeText">' + safe(tr("welcomeText")) + '</p></div>',
+      '<div class="portal-action-row">',
+      '<a class="portal-button primary" href="' + safe(SERVER_CONNECT_URL) + '"><i class="fa-solid fa-gamepad"></i><span data-i18n="connectFiveM">' + safe(tr("connectFiveM")) + '</span></a>',
+      '<button id="enterPortalButton" class="portal-button ghost" type="button"><i class="fa-solid fa-right-to-bracket"></i><span data-i18n="enterPortal">' + safe(tr("enterPortal")) + '</span></button>',
+      '</div>',
+      '</aside>',
+      '</section>',
+      '</div>'
+    ].join("");
   }
 
-  .asset-form .wide {
-    grid-column: auto;
+  function recruitmentViewHtml() {
+    return [
+      '<section id="recruitmentView" class="portal-view" aria-labelledby="recruitmentTitle">',
+      '<div class="portal-shell">',
+      '<section class="portal-hero">',
+      '<div>',
+      '<img class="first-town-logo hub-logo" src="lspd-shield.png" alt="First Town logo">',
+      '<p class="portal-kicker" data-i18n="recruitmentKicker">' + safe(tr("recruitmentKicker")) + '</p>',
+      '<h2 id="recruitmentTitle" class="portal-title" data-i18n-html="recruitmentTitle">' + tr("recruitmentTitle") + '</h2>',
+      '<p class="portal-copy" data-i18n="recruitmentCopy">' + safe(tr("recruitmentCopy")) + '</p>',
+      '<div class="portal-action-row">',
+      '<a class="portal-button primary" href="' + safe(SERVER_CONNECT_URL) + '"><i class="fa-solid fa-gamepad"></i><span data-i18n="connectFiveM">' + safe(tr("connectFiveM")) + '</span></a>',
+      '<button class="portal-button success" type="button" data-jump-fto="recruitment"><i class="fa-solid fa-user-plus"></i><span data-i18n="goToFtoRecruitment">' + safe(tr("goToFtoRecruitment")) + '</span></button>',
+      '<button class="portal-button" type="button" data-jump-fto="transfer"><i class="fa-solid fa-right-left"></i><span data-i18n="goToFtoTransfer">' + safe(tr("goToFtoTransfer")) + '</span></button>',
+      '</div>',
+      '</div>',
+      '<div class="hero-stack">',
+      metricHtml("fa-database", "metricRealtime", "metricRealtimeText"),
+      metricHtml("fa-user-shield", "metricRoles", "metricRolesText"),
+      metricHtml("fa-hourglass-half", "metricCooldown", "metricCooldownText"),
+      '</div>',
+      '</section>',
+      '<div id="cooldownBanner" class="cooldown-banner hidden"><i class="fa-solid fa-triangle-exclamation"></i><span></span></div>',
+      '<section class="overview-box" lang="ar" dir="rtl"><h3 data-i18n="overviewTitle">' + safe(tr("overviewTitle")) + '</h3><p data-i18n="overviewText">' + safe(tr("overviewText")) + '</p></section>',
+      '<section class="portal-actions-grid">',
+      actionCardHtml("fa-user-plus", "goToFtoRecruitment", "ftoApplyText", "recruitment"),
+      actionCardHtml("fa-right-left", "goToFtoTransfer", "ftoApplyText", "transfer"),
+      '</section>',
+      '<section class="status-panel"><h3 data-i18n="activeStatus">' + safe(tr("activeStatus")) + '</h3><div id="applicantStatusCards"></div></section>',
+      '</div>',
+      '</section>'
+    ].join("");
   }
 
-  .section-head {
-    display: block;
+  function metricHtml(icon, titleKey, textKey) {
+    return '<div class="hero-metric"><i class="fa-solid ' + icon + '"></i><div><strong data-i18n="' + titleKey + '">' + safe(tr(titleKey)) + '</strong><span data-i18n="' + textKey + '">' + safe(tr(textKey)) + "</span></div></div>";
   }
 
-  .section-head .portal-button {
-    margin-top: 12px;
+  function actionCardHtml(icon, titleKey, textKey, type) {
+    return [
+      '<article class="action-card">',
+      '<i class="fa-solid ' + icon + '"></i>',
+      '<div><h3 data-i18n="' + titleKey + '">' + safe(tr(titleKey)) + '</h3><p data-i18n="' + textKey + '">' + safe(tr(textKey)) + '</p>',
+      '<button class="portal-button ghost" type="button" data-jump-fto="' + type + '"><i class="fa-solid fa-arrow-down"></i><span data-i18n="' + (type === "transfer" ? "goToFtoTransfer" : "goToFtoRecruitment") + '">' + safe(tr(type === "transfer" ? "goToFtoTransfer" : "goToFtoRecruitment")) + '</span></button></div>',
+      '</article>'
+    ].join("");
   }
 
-  .welcome-side {
-    padding: 18px;
+  function reviewViewHtml() {
+    return [
+      '<section id="reviewView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="workspaceReview">' + safe(tr("workspaceReview")) + '</p><h2 data-i18n="reviewTitle">' + safe(tr("reviewTitle")) + '</h2><p data-i18n="reviewSubtitle">' + safe(tr("reviewSubtitle")) + '</p></div><button id="clearPendingButton" class="portal-button danger hidden" type="button"><i class="fa-solid fa-trash-can"></i><span data-i18n="clearPending">' + safe(tr("clearPending")) + '</span></button></div>',
+      '<div class="subtabs"><button class="subtab" type="button" data-review-type="recruitment" aria-selected="true"><i class="fa-solid fa-user-plus"></i><span data-i18n="newRecruitment">' + safe(tr("newRecruitment")) + '</span></button><button class="subtab" type="button" data-review-type="transfer" aria-selected="false"><i class="fa-solid fa-right-left"></i><span data-i18n="transferRequests">' + safe(tr("transferRequests")) + '</span></button></div>',
+      '<div class="toolbar"><input id="reviewSearchInput" class="portal-input" type="search" data-i18n-placeholder="searchApplications" placeholder="' + safe(tr("searchApplications")) + '"><span id="reviewCount" class="role-badge">0</span></div>',
+      '<div id="reviewList" class="portal-shell"></div>',
+      '</section>'
+    ].join("");
   }
-}
 
-/* Final tactical HUD precedence layer */
-body {
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(231, 81, 90, .13), transparent 21rem),
-    linear-gradient(115deg, rgba(0, 62, 125, .16), transparent 28%),
-    linear-gradient(245deg, rgba(231, 81, 90, .06), transparent 22%),
-    linear-gradient(180deg, rgba(1, 4, 11, .9), rgba(1, 4, 11, .985)),
-    url("image2.png") center / cover fixed,
-    #01040b;
-}
+  function archivesViewHtml() {
+    return [
+      '<section id="archivesView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="workspaceArchives">' + safe(tr("workspaceArchives")) + '</p><h2 data-i18n="archivesTitle">' + safe(tr("archivesTitle")) + '</h2><p data-i18n="archivesSubtitle">' + safe(tr("archivesSubtitle")) + '</p></div><button id="fullResetButton" class="portal-button danger hidden" type="button"><i class="fa-solid fa-bolt"></i><span data-i18n="fullReset">' + safe(tr("fullReset")) + '</span></button></div>',
+      '<div class="subtabs">',
+      archiveButton("accepted-recruitment", "acceptedRecruitment", "fa-user-check", true),
+      archiveButton("accepted-transfer", "acceptedTransfers", "fa-right-left", false),
+      archiveButton("rejected-recruitment", "rejectedRecruitment", "fa-user-xmark", false),
+      archiveButton("rejected-transfer", "rejectedTransfers", "fa-ban", false),
+      '</div>',
+      '<div id="archiveList" class="portal-shell"></div>',
+      '</section>'
+    ].join("");
+  }
 
-body::before {
-  opacity: .24 !important;
-  background:
-    linear-gradient(rgba(58, 167, 255, .06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(231, 81, 90, .07) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 0 48%, rgba(58, 167, 255, .035) 49% 51%, transparent 52%) !important;
-  background-size: 54px 54px, 54px 54px, 180px 180px !important;
-  animation: tacticalGridPan 18s linear infinite;
-}
+  function archiveButton(key, label, icon, selected) {
+    return '<button class="subtab" type="button" data-archive-type="' + key + '" aria-selected="' + selected + '"><i class="fa-solid ' + icon + '"></i><span data-i18n="' + label + '">' + safe(tr(label)) + "</span></button>";
+  }
 
-body::after {
-  opacity: .2;
-  background-image:
-    radial-gradient(circle, rgba(231, 81, 90, .84) 0 1px, transparent 1.7px),
-    radial-gradient(circle, rgba(58, 167, 255, .56) 0 1px, transparent 1.6px);
-  background-size: 230px 190px, 310px 270px;
-  background-position: 24px 62px, 172px 138px;
-  animation: commandFloat 11s ease-in-out infinite;
-}
+  function ftoViewHtml() {
+    return [
+      '<section id="ftoView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="workspaceFto">' + safe(tr("workspaceFto")) + '</p><h2 data-i18n="ftoTitle">' + safe(tr("ftoTitle")) + '</h2><p data-i18n="ftoSubtitle">' + safe(tr("ftoSubtitle")) + '</p></div></div>',
+      '<section id="ftoApplicationDesk" class="portal-panel fto-apply-desk"><div><h3 data-i18n="ftoApplyTitle">' + safe(tr("ftoApplyTitle")) + '</h3><p data-i18n="ftoApplyText">' + safe(tr("ftoApplyText")) + '</p></div><div class="portal-action-row"><button class="portal-button success" type="button" data-open-application="recruitment"><i class="fa-solid fa-user-plus"></i><span data-i18n="applyRecruitment">' + safe(tr("applyRecruitment")) + '</span></button><button class="portal-button" type="button" data-open-application="transfer"><i class="fa-solid fa-right-left"></i><span data-i18n="submitTransfer">' + safe(tr("submitTransfer")) + '</span></button></div></section>',
+      '<div class="fto-grid">',
+      ftoCard("fa-compass", "ftoPhaseOne", "ftoPhaseOneText"),
+      ftoCard("fa-car-side", "ftoPhaseTwo", "ftoPhaseTwoText"),
+      ftoCard("fa-file", "ftoPhaseThree", "ftoPhaseThreeText"),
+      '</div>',
+      '</section>'
+    ].join("");
+  }
 
-.topbar {
-  background: rgba(2, 7, 18, .78);
-  border-bottom: 1px solid rgba(231, 81, 90, .22);
-  box-shadow: 0 20px 70px rgba(0, 0, 0, .6), inset 0 -1px rgba(231, 81, 90, .08);
-  backdrop-filter: blur(22px) saturate(1.25);
-}
+  function ftoCard(icon, titleKey, textKey) {
+    return '<article class="fto-card"><i class="fa-solid ' + icon + '"></i><h3 data-i18n="' + titleKey + '">' + safe(tr(titleKey)) + '</h3><p data-i18n="' + textKey + '">' + safe(tr(textKey)) + "</p></article>";
+  }
 
-.brand-title,
-.content-title,
-.portal-title,
-.welcome-title,
-.section-head h2,
-.sop-title,
-.review-title,
-.asset-card h3,
-.fto-card h3 {
-  font-family: var(--display-font);
-  letter-spacing: .02em;
-}
+  function crewViewHtml() {
+    return [
+      '<section id="crewView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="workspaceCrew">' + safe(tr("workspaceCrew")) + '</p><h2 data-i18n="crewTitle">' + safe(tr("crewTitle")) + '</h2><p data-i18n="crewSubtitle">' + safe(tr("crewSubtitle")) + '</p></div></div>',
+      '<form id="crewForm" class="asset-form hidden">',
+      '<input class="portal-input" name="title" data-i18n-placeholder="name" placeholder="' + safe(tr("name")) + '" required>',
+      '<input class="portal-input" name="subtitle" data-i18n-placeholder="rank" placeholder="' + safe(tr("rank")) + '" required>',
+      '<input class="portal-input" name="discord_id" data-i18n-placeholder="discordId" placeholder="' + safe(tr("discordId")) + '" required>',
+      '<input class="portal-input wide" name="photo_url" data-i18n-placeholder="photoUrl" placeholder="' + safe(tr("photoUrl")) + '" required>',
+      '<button id="crewSaveButton" class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addCrew">' + safe(tr("addCrew")) + '</span></button>',
+      '<button id="crewCancelEditButton" class="portal-button ghost hidden" type="button" data-cancel-asset-edit="crew"><i class="fa-solid fa-ban"></i><span data-i18n="cancel">' + safe(tr("cancel")) + '</span></button>',
+      '</form>',
+      '<div id="crewGrid" class="asset-grid"></div>',
+      '</section>'
+    ].join("");
+  }
 
-.eyebrow,
-.portal-kicker,
-.content-kicker,
-.sop-eyebrow,
-.records-label,
-.system-status,
-.workspace-tab,
-.nav-tab,
-.utility-button,
-.portal-button,
-.subtab,
-.role-badge,
-.db-badge,
-.status-pill,
-.tab-count,
-.code-badge {
-  font-family: var(--hud-font);
-  letter-spacing: .08em;
-}
+  function mediaViewHtml() {
+    return [
+      '<section id="mediaView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="workspaceMedia">' + safe(tr("workspaceMedia")) + '</p><h2 data-i18n="mediaTitle">' + safe(tr("mediaTitle")) + '</h2><p data-i18n="mediaSubtitle">' + safe(tr("mediaSubtitle")) + '</p></div></div>',
+      '<form id="mediaForm" class="asset-form hidden">',
+      '<input class="portal-input" name="title" data-i18n-placeholder="title" placeholder="' + safe(tr("title")) + '" required>',
+      '<input class="portal-input wide" name="photo_url" data-i18n-placeholder="photoUrl" placeholder="' + safe(tr("photoUrl")) + '" required>',
+      '<input class="portal-input wide" name="caption" data-i18n-placeholder="caption" placeholder="' + safe(tr("caption")) + '">',
+      '<button id="mediaSaveButton" class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addMedia">' + safe(tr("addMedia")) + '</span></button>',
+      '<button id="mediaCancelEditButton" class="portal-button ghost hidden" type="button" data-cancel-asset-edit="media"><i class="fa-solid fa-ban"></i><span data-i18n="cancel">' + safe(tr("cancel")) + '</span></button>',
+      '</form>',
+      '<div id="mediaGrid" class="asset-grid"></div>',
+      '</section>'
+    ].join("");
+  }
 
-.brand-mark,
-.sidebar,
-.content-header,
-.regulation-card,
-.sop-hero,
-.sop-stat,
-.sop-index,
-.sop-document,
-.portal-hero,
-.portal-panel,
-.overview-box,
-.status-panel,
-.hero-metric,
-.action-card,
-.asset-card,
-.review-card,
-.fto-card,
-.modal-shell,
-.welcome-shell,
-.asset-form,
-.empty-portal,
-.empty-state,
-.notice,
-.portal-toast {
-  border: 1px solid rgba(231, 81, 90, .18);
-  background:
-    linear-gradient(145deg, rgba(5, 12, 25, .84), rgba(1, 4, 11, .88)),
-    rgba(5, 13, 26, .58);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, .055),
-    inset 0 0 0 1px rgba(255, 255, 255, .012),
-    0 22px 70px rgba(0, 0, 0, .42),
-    0 0 32px rgba(231, 81, 90, .08);
-  backdrop-filter: blur(18px) saturate(1.18);
-}
+  function streamsViewHtml() {
+    return [
+      '<section id="streamsView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="workspaceStreams">' + safe(tr("workspaceStreams")) + '</p><h2 data-i18n="streamsTitle">' + safe(tr("streamsTitle")) + '</h2><p data-i18n="streamsSubtitle">' + safe(tr("streamsSubtitle")) + '</p></div><span class="role-badge"><i class="fa-solid fa-arrows-rotate"></i><span data-i18n="streamAutoRefresh">' + safe(tr("streamAutoRefresh")) + '</span></span></div>',
+      '<form id="streamForm" class="asset-form hidden">',
+      '<input class="portal-input" name="name" data-i18n-placeholder="name" placeholder="' + safe(tr("name")) + '" required>',
+      '<input class="portal-input wide" name="logo_url" data-i18n-placeholder="logoUrl" placeholder="' + safe(tr("logoUrl")) + '" required>',
+      '<input class="portal-input wide" name="kick_url" data-i18n-placeholder="kickUrl" placeholder="' + safe(tr("kickUrl")) + '" required>',
+      '<button id="streamSaveButton" class="portal-button success" type="submit"><i class="fa-solid fa-plus"></i><span data-i18n="addStream">' + safe(tr("addStream")) + '</span></button>',
+      '<button id="streamCancelEditButton" class="portal-button ghost hidden" type="button"><i class="fa-solid fa-ban"></i><span data-i18n="cancel">' + safe(tr("cancel")) + '</span></button>',
+      '</form>',
+      '<div id="streamsGrid" class="stream-grid"></div>',
+      '</section>'
+    ].join("");
+  }
 
-.portal-hero::before,
-.welcome-visual::before {
-  filter: saturate(.72) brightness(.55) contrast(1.24);
-}
+  function creditsViewHtml() {
+    return [
+      '<section id="creditsView" class="portal-view hidden">',
+      '<div class="section-head"><div><p class="portal-kicker" data-i18n="creditsKicker">' + safe(tr("creditsKicker")) + '</p><h2 data-i18n="creditsTitle">' + safe(tr("creditsTitle")) + '</h2><p data-i18n="creditsSubtitle">' + safe(tr("creditsSubtitle")) + '</p></div></div>',
+      '<section class="credits-command">',
+      '<article class="credit-card primary-credit"><i class="fa-solid fa-user-shield"></i><span>IA COMMAND</span><h3 data-i18n="creditMajedTitle">' + safe(tr("creditMajedTitle")) + '</h3><p data-i18n="creditMajedRole">' + safe(tr("creditMajedRole")) + '</p></article>',
+      '<article class="credit-card primary-credit"><i class="fa-solid fa-star"></i><span>CHIEF COMMAND</span><h3 data-i18n="creditMurphyTitle">' + safe(tr("creditMurphyTitle")) + '</h3><p data-i18n="creditMurphyRole">' + safe(tr("creditMurphyRole")) + '</p></article>',
+      '<article class="credit-card primary-credit"><i class="fa-solid fa-code"></i><span>DEV SUPPORT</span><h3 data-i18n="creditMohsenTitle">' + safe(tr("creditMohsenTitle")) + '</h3><p data-i18n="creditMohsenRole">' + safe(tr("creditMohsenRole")) + '</p></article>',
+      '<article class="credit-brief"><p data-i18n="creditBody">' + safe(tr("creditBody")) + '</p><div class="credit-chips"><span data-i18n="creditLocal">' + safe(tr("creditLocal")) + '</span><span data-i18n="creditStack">' + safe(tr("creditStack")) + '</span></div></article>',
+      '</section>',
+      '</section>'
+    ].join("");
+  }
 
-.portal-hero::after,
-.welcome-visual::after {
-  opacity: .44;
-  background:
-    radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(231, 81, 90, .15), transparent 18rem),
-    linear-gradient(90deg, rgba(231, 81, 90, .1) 1px, transparent 1px),
-    linear-gradient(rgba(58, 167, 255, .08) 1px, transparent 1px),
-    linear-gradient(135deg, transparent 0 47%, rgba(231, 81, 90, .08) 48% 50%, transparent 51%);
-  background-size: auto, 42px 42px, 42px 42px, 190px 190px;
-}
+  function installSettingsPanel() {
+    if (document.getElementById("uiSettingsDock")) return;
+    document.body.insertAdjacentHTML("beforeend", [
+      '<aside id="uiSettingsDock" class="settings-dock">',
+      '<button id="settingsToggleButton" class="settings-toggle" type="button" aria-label="' + safeAttr(tr("settingsOpen")) + '"><i class="fa-solid fa-sliders"></i></button>',
+      '<section id="settingsPanel" class="settings-panel hidden">',
+      '<header><div><h3 data-i18n="settingsTitle">' + safe(tr("settingsTitle")) + '</h3><p data-i18n="settingsSubtitle">' + safe(tr("settingsSubtitle")) + '</p></div><button class="icon-action" id="settingsCloseButton" type="button"><i class="fa-solid fa-xmark"></i></button></header>',
+      '<div class="settings-grid">',
+      '<label><span data-i18n="fontSetting">' + safe(tr("fontSetting")) + '</span><select id="fontSettingInput" class="portal-select"><option value="Inter, Arial, sans-serif">Inter</option><option value="Orbitron, Inter, sans-serif">Orbitron</option><option value="Share Tech Mono, monospace">Share Tech Mono</option><option value="Cairo, Arial, sans-serif">Cairo</option><option value="Arial, sans-serif">Arial</option></select></label>',
+      '<label><span data-i18n="colorRedSetting">' + safe(tr("colorRedSetting")) + '</span><input id="redSettingInput" type="color" value="#e7515a"></label>',
+      '<label><span data-i18n="colorBlueSetting">' + safe(tr("colorBlueSetting")) + '</span><input id="blueSettingInput" type="color" value="#3aa7ff"></label>',
+      '<label><span data-i18n="colorBgSetting">' + safe(tr("colorBgSetting")) + '</span><input id="bgSettingInput" type="color" value="#01040b"></label>',
+      '<label><span data-i18n="colorTextSetting">' + safe(tr("colorTextSetting")) + '</span><input id="textSettingInput" type="color" value="#edf7ff"></label>',
+      '</div>',
+      '<div class="tab-order-head"><span data-i18n="tabOrderSetting">' + safe(tr("tabOrderSetting")) + '</span></div>',
+      '<div id="tabOrderList" class="tab-order-list"></div>',
+      '<button id="resetUiButton" class="portal-button danger" type="button"><i class="fa-solid fa-rotate-left"></i><span data-i18n="resetUi">' + safe(tr("resetUi")) + '</span></button>',
+      '</section>',
+      '</aside>'
+    ].join(""));
+    renderSettingsPanel();
+  }
 
-.workspace-tab,
-.nav-tab,
-.utility-button,
-.portal-button,
-.subtab,
-.auth-mini-button,
-.role-manage-button,
-.icon-action {
-  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
-  border-color: rgba(58, 167, 255, .28);
-  background: rgba(3, 10, 21, .7);
-}
+  function applicationModalHtml() {
+    return [
+      '<div id="applicationModal" class="modal-backdrop hidden">',
+      '<form id="applicationForm" class="modal-shell" novalidate>',
+      '<header class="modal-head"><div><h2 id="applicationModalTitle"></h2><p id="applicationStepText"></p></div><button class="icon-action" type="button" data-close-modal="applicationModal" aria-label="' + safe(tr("close")) + '"><i class="fa-solid fa-xmark"></i></button></header>',
+      '<div id="applicationFields" class="modal-body field-grid"></div>',
+      '<div class="modal-actions"><button id="applicationBackButton" class="portal-button ghost" type="button"><i class="fa-solid fa-arrow-left"></i><span data-i18n="back">' + safe(tr("back")) + '</span></button><button id="applicationNextButton" class="portal-button primary" type="button"><span data-i18n="next">' + safe(tr("next")) + '</span><i class="fa-solid fa-arrow-right"></i></button><button id="applicationSubmitButton" class="portal-button success hidden" type="submit"><i class="fa-solid fa-paper-plane"></i><span data-i18n="submitApplication">' + safe(tr("submitApplication")) + '</span></button></div>',
+      '</form>',
+      '</div>'
+    ].join("");
+  }
 
-.workspace-tab:hover,
-.nav-tab:hover,
-.utility-button:hover,
-.portal-button:hover,
-.subtab:hover,
-.auth-mini-button:hover,
-.role-manage-button:hover,
-.icon-action:hover {
-  color: #f4fbff;
-  border-color: rgba(231, 81, 90, .64);
-  background: rgba(29, 7, 14, .68);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .2), 0 0 30px rgba(231, 81, 90, .2);
-}
+  function decisionModalHtml() {
+    return [
+      '<div id="decisionModal" class="modal-backdrop hidden">',
+      '<form id="decisionForm" class="modal-shell">',
+      '<header class="modal-head"><div><h2 id="decisionTitle"></h2><p id="decisionSubject"></p></div><button class="icon-action" type="button" data-close-modal="decisionModal" aria-label="' + safe(tr("close")) + '"><i class="fa-solid fa-xmark"></i></button></header>',
+      '<div class="modal-body field-grid">',
+      '<label id="approvalMessageWrap" class="full"><span data-i18n="approvalMessage">' + safe(tr("approvalMessage")) + '</span><textarea id="approvalMessageInput" class="portal-textarea"></textarea></label>',
+      '<label id="mondayDateWrap"><span data-i18n="mondayDate">' + safe(tr("mondayDate")) + '</span><input id="mondayDateInput" class="portal-input" type="date"></label>',
+      '<label id="fridayDateWrap"><span data-i18n="fridayDate">' + safe(tr("fridayDate")) + '</span><input id="fridayDateInput" class="portal-input" type="date"></label>',
+      '<label id="rejectionReasonWrap" class="full hidden"><span data-i18n="rejectionReason">' + safe(tr("rejectionReason")) + '</span><textarea id="rejectionReasonInput" class="portal-textarea"></textarea></label>',
+      '</div>',
+      '<div class="modal-actions"><button class="portal-button success" type="submit"><i class="fa-solid fa-floppy-disk"></i><span data-i18n="saveDecision">' + safe(tr("saveDecision")) + '</span></button></div>',
+      '</form>',
+      '</div>'
+    ].join("");
+  }
 
-.workspace-tab[aria-selected="true"],
-.nav-tab[aria-pressed="true"],
-.subtab[aria-selected="true"] {
-  color: #f6fbff;
-  border-color: rgba(231, 81, 90, .58);
-  background: linear-gradient(90deg, rgba(231, 81, 90, .22), rgba(8, 28, 58, .35));
-  box-shadow: inset 3px 0 var(--critical), 0 0 28px rgba(231, 81, 90, .16);
-}
+  function roleModalHtml() {
+    return [
+      '<div id="roleModal" class="modal-backdrop hidden">',
+      '<section class="modal-shell" role="dialog" aria-modal="true">',
+      '<header class="modal-head"><div><h2 data-i18n="roleManagement">' + safe(tr("roleManagement")) + '</h2><p data-i18n="roleManagementText">' + safe(tr("roleManagementText")) + '</p></div><button class="icon-action" type="button" data-close-modal="roleModal" aria-label="' + safe(tr("close")) + '"><i class="fa-solid fa-xmark"></i></button></header>',
+      '<div class="modal-body">',
+      '<form id="roleForm" class="field-grid">',
+      '<label><span data-i18n="userEmail">' + safe(tr("userEmail")) + '</span><input id="roleEmailInput" class="portal-input" type="email" required></label>',
+      '<label><span data-i18n="accountPassword">' + safe(tr("accountPassword")) + '</span><input id="rolePasswordInput" class="portal-input" type="password" required></label>',
+      '<label><span data-i18n="role">' + safe(tr("role")) + '</span><select id="roleSelectInput" class="portal-select"><option value="admin">Admin</option><option value="applicant">Applicant</option></select></label>',
+      '<div class="modal-actions" style="grid-column:1/-1;padding:0"><button class="portal-button success" type="submit"><i class="fa-solid fa-user-plus"></i><span data-i18n="saveRole">' + safe(tr("saveRole")) + '</span></button></div>',
+      '</form>',
+      '<section class="status-panel" style="margin-top:14px"><h3 data-i18n="configuredUsers">' + safe(tr("configuredUsers")) + '</h3><div id="roleList" class="portal-shell"></div></section>',
+      '</div>',
+      '</section>',
+      '</div>'
+    ].join("");
+  }
 
-.portal-button.primary,
-.portal-button.danger {
-  color: #fff8f9;
-  border-color: rgba(231, 81, 90, .78);
-  background: linear-gradient(135deg, rgba(231, 81, 90, .95), rgba(112, 20, 33, .92));
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .18), 0 16px 40px rgba(231, 81, 90, .2);
-}
+  function installFooterCredits() {
+    const footer = document.getElementById("regulationsFooter");
+    if (!footer) return;
+    footer.classList.remove("hidden");
+    const left = footer.querySelector("span:first-child");
+    const right = footer.querySelector("span:last-child span");
+    if (left) {
+      left.dataset.i18n = "footerLeft";
+      left.textContent = tr("footerLeft");
+    }
+    if (right) {
+      right.dataset.i18n = "footerRight";
+      right.textContent = tr("footerRight");
+    }
+  }
 
-.portal-button.primary:hover,
-.portal-button.danger:hover {
-  border-color: rgba(255, 121, 132, .98);
-  background: linear-gradient(135deg, rgba(255, 86, 99, .98), rgba(143, 24, 41, .96));
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .28), 0 0 34px rgba(231, 81, 90, .32);
-}
+  function overrideLanguage() {
+    const baseApply = typeof applyLanguage === "function" ? applyLanguage : null;
+    const enhanced = function () {
+      if (baseApply) baseApply();
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(function (node) {
+        node.placeholder = tr(node.dataset.i18nPlaceholder);
+      });
+      renderSettingsPanel();
+      renderAllPortal();
+    };
+    try { applyLanguage = enhanced; } catch (error) { window.applyLanguage = enhanced; }
+    window.applyLanguage = enhanced;
+  }
 
-.portal-button.success {
-  color: #eaffff;
-  border-color: rgba(58, 167, 255, .5);
-  background: linear-gradient(135deg, rgba(19, 82, 155, .82), rgba(4, 24, 54, .94));
-  box-shadow: 0 0 30px rgba(58, 167, 255, .16);
-}
+  function overrideWorkspace() {
+    const enhanced = function (workspace) {
+      let next = workspace || "recruitment";
+      if ((next === "review" || next === "archives") && !canViewRecords()) {
+        toast(tr("accessRequired"), "error");
+        next = "recruitment";
+      }
+      try { currentWorkspace = next; } catch (error) {}
+      const isRegulations = next === "regulations";
+      const isSop = next === "sop";
+      toggleById("regulationsView", isRegulations);
+      toggleById("sopView", isSop);
+      portalWorkspaces.forEach(function (name) { toggleById(name + "View", next === name); });
+      document.querySelectorAll(".workspace-tab").forEach(function (tab) {
+        tab.setAttribute("aria-selected", String(tab.id === "workspace-" + next));
+      });
+      const topbar = document.querySelector(".topbar");
+      if (topbar) topbar.classList.toggle("sop-mode", isSop);
+      const topSearch = document.querySelector(".top-search");
+      if (topSearch) topSearch.classList.toggle("hidden", !isRegulations);
+      const footer = document.getElementById("regulationsFooter");
+      if (footer) footer.classList.remove("hidden");
+      if (isSop && typeof renderSop === "function") renderSop();
+      if (next === "review") renderReview();
+      if (next === "archives") renderArchives();
+      if (next === "crew") renderAssets("crew");
+      if (next === "media") renderAssets("media");
+      if (next === "streams") renderStreams();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    try { setWorkspace = enhanced; } catch (error) { window.setWorkspace = enhanced; }
+    window.setWorkspace = enhanced;
+  }
 
-.system-status,
-.role-badge,
-.db-badge,
-.records-label {
-  color: #bfefff;
-  border-color: rgba(231, 81, 90, .26);
-  background: rgba(37, 8, 16, .42);
-  text-shadow: 0 0 14px rgba(231, 81, 90, .22);
-}
+  function bindPortalEvents() {
+    document.addEventListener("pointerdown", primeAudio, { once: true });
+    document.addEventListener("pointermove", trackPointerGlow);
+    document.addEventListener("pointermove", handleReactivePointer);
+    document.addEventListener("pointerout", clearReactivePointer);
+    document.addEventListener("pointerover", function (event) {
+      if (event.target.closest("button, a, .subtab, .workspace-tab, input, select, textarea")) playSound("hover");
+    });
+    document.addEventListener("click", function (event) {
+      const target = event.target.closest("button, a, .subtab, .workspace-tab, .asset-card, .review-card, .fto-card, .hero-metric");
+      if (!target) return;
+      if (target.matches("a[href^='fivem:']")) playSound("connect");
+      else if (target.classList.contains("danger")) playSound("error");
+      else if (target.classList.contains("success") || target.classList.contains("primary")) playSound("success");
+      else playSound("click");
+      spawnRipple(event, target);
+    });
 
-.portal-title,
-.welcome-title {
-  color: #f5fbff;
-  text-shadow: 0 0 18px rgba(231, 81, 90, .22), 0 0 46px rgba(0, 62, 125, .22);
-}
+    document.getElementById("enterPortalButton")?.addEventListener("click", function () {
+      closeModal("welcomeModal");
+      playSound("success");
+    });
+    document.querySelectorAll("[data-open-application]").forEach(function (button) {
+      button.addEventListener("click", function () { openApplicationModal(button.dataset.openApplication); });
+    });
+    document.querySelectorAll("[data-jump-fto]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        window.setWorkspace("fto");
+        setTimeout(function () {
+          document.getElementById("ftoApplicationDesk")?.scrollIntoView({ behavior: "smooth", block: "center" });
+          document.getElementById("ftoApplicationDesk")?.classList.add("pulse-once");
+          setTimeout(function () { document.getElementById("ftoApplicationDesk")?.classList.remove("pulse-once"); }, 900);
+        }, 120);
+      });
+    });
+    document.querySelectorAll("[data-close-modal]").forEach(function (button) {
+      button.addEventListener("click", function () { closeModal(button.dataset.closeModal); });
+    });
+    document.getElementById("loginButton")?.addEventListener("click", function () { openAuthBranch("login"); });
+    document.getElementById("createAccountButton")?.addEventListener("click", function () { openAuthBranch("register"); });
+    document.getElementById("logoutButton")?.addEventListener("click", logoutAccount);
+    document.getElementById("authPasswordInput")?.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") openAuthBranch("login");
+    });
+    document.getElementById("roleManagerButton")?.addEventListener("click", openRoleModal);
+    document.getElementById("applicationBackButton")?.addEventListener("click", function () {
+      Object.assign(state.applicationDraft, collectStepData(document.getElementById("applicationForm"), state.applicationType, state.applicationStep));
+      state.applicationStep = 1;
+      renderApplicationFields();
+    });
+    document.getElementById("applicationNextButton")?.addEventListener("click", function () {
+      if (!validateApplicationStep()) return;
+      Object.assign(state.applicationDraft, collectStepData(document.getElementById("applicationForm"), state.applicationType, state.applicationStep));
+      state.applicationStep = 2;
+      renderApplicationFields();
+    });
+    document.getElementById("applicationForm")?.addEventListener("submit", submitApplication);
+    document.querySelectorAll("[data-review-type]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        state.activeReviewType = button.dataset.reviewType;
+        renderReview();
+      });
+    });
+    document.getElementById("reviewSearchInput")?.addEventListener("input", renderReview);
+    document.getElementById("clearPendingButton")?.addEventListener("click", clearPending);
+    document.querySelectorAll("[data-archive-type]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        state.activeArchive = button.dataset.archiveType;
+        renderArchives();
+      });
+    });
+    document.getElementById("fullResetButton")?.addEventListener("click", resetSystem);
+    document.getElementById("decisionForm")?.addEventListener("submit", saveDecision);
+    document.getElementById("roleForm")?.addEventListener("submit", saveRole);
+    document.getElementById("crewForm")?.addEventListener("submit", function (event) { saveAsset(event, "crew"); });
+    document.getElementById("mediaForm")?.addEventListener("submit", function (event) { saveAsset(event, "media"); });
+    document.getElementById("streamForm")?.addEventListener("submit", saveStream);
+    document.getElementById("streamCancelEditButton")?.addEventListener("click", cancelStreamEdit);
+    document.getElementById("settingsToggleButton")?.addEventListener("click", toggleSettingsPanel);
+    document.getElementById("settingsCloseButton")?.addEventListener("click", closeSettingsPanel);
+    document.getElementById("resetUiButton")?.addEventListener("click", resetUiPrefs);
+    ["fontSettingInput", "redSettingInput", "blueSettingInput", "bgSettingInput", "textSettingInput"].forEach(function (id) {
+      document.getElementById(id)?.addEventListener("input", saveUiPrefsFromControls);
+    });
+    document.querySelectorAll("[data-cancel-asset-edit]").forEach(function (button) {
+      button.addEventListener("click", function () { cancelAssetEdit(button.dataset.cancelAssetEdit); });
+    });
+    document.addEventListener("dragstart", handleAssetDragStart);
+    document.addEventListener("dragover", handleAssetDragOver);
+    document.addEventListener("drop", handleAssetDrop);
+    document.addEventListener("dragend", handleAssetDragEnd);
+  }
 
-.portal-title span,
-.welcome-title span,
-.sop-title span {
-  color: #ff727b;
-  text-shadow: 0 0 16px rgba(231, 81, 90, .55), 0 0 34px rgba(58, 167, 255, .18);
-}
+  function trackPointerGlow(event) {
+    const x = Math.round((event.clientX / Math.max(window.innerWidth, 1)) * 100);
+    const y = Math.round((event.clientY / Math.max(window.innerHeight, 1)) * 100);
+    document.documentElement.style.setProperty("--pointer-x", x + "%");
+    document.documentElement.style.setProperty("--pointer-y", y + "%");
+  }
 
-.top-search input,
-.identity-bar,
-.identity-bar input,
-.language-select,
-.portal-input,
-.portal-select,
-.portal-textarea,
-.sop-search input {
-  color: #eaf8ff;
-  border-color: rgba(58, 167, 255, .18);
-  background: rgba(2, 7, 18, .72);
-  box-shadow: inset 0 0 18px rgba(0, 136, 255, .045);
-}
+  function handleReactivePointer(event) {
+    const target = event.target.closest(".asset-card, .review-card, .fto-card, .hero-metric, .action-card, .stream-card, .credit-card, .portal-panel, .status-panel");
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / Math.max(rect.width, 1);
+    const py = (event.clientY - rect.top) / Math.max(rect.height, 1);
+    target.style.setProperty("--react-x", Math.round(px * 100) + "%");
+    target.style.setProperty("--react-y", Math.round(py * 100) + "%");
+    target.style.setProperty("--tilt-x", ((py - .5) * -5).toFixed(2) + "deg");
+    target.style.setProperty("--tilt-y", ((px - .5) * 5).toFixed(2) + "deg");
+    target.classList.add("is-reacting");
+  }
 
-.top-search input:focus,
-.identity-bar input:focus,
-.portal-input:focus,
-.portal-select:focus,
-.portal-textarea:focus,
-.sop-search input:focus {
-  border-color: rgba(231, 81, 90, .58);
-  box-shadow: 0 0 0 1px rgba(231, 81, 90, .22), 0 0 34px rgba(231, 81, 90, .18), inset 0 0 18px rgba(58, 167, 255, .05);
-}
+  function clearReactivePointer(event) {
+    const target = event.target.closest?.(".asset-card, .review-card, .fto-card, .hero-metric, .action-card, .stream-card, .credit-card, .portal-panel, .status-panel");
+    if (!target || target.contains(event.relatedTarget)) return;
+    target.classList.remove("is-reacting");
+    target.style.removeProperty("--tilt-x");
+    target.style.removeProperty("--tilt-y");
+  }
 
-.regulation-card.degree-1,
-.regulation-card.degree-2,
-.regulation-card.degree-3,
-.regulation-card.degree-4,
-.regulation-card.degree-5,
-.regulation-card.degree-6,
-#tab-1,
-#tab-2,
-#tab-3,
-#tab-4,
-#tab-5,
-#tab-6 {
-  --degree: #ffffff !important;
-}
+  function spawnRipple(event, target) {
+    if (!target || target.querySelector(".fx-ripple")) return;
+    const rect = target.getBoundingClientRect();
+    const ripple = document.createElement("span");
+    ripple.className = "fx-ripple";
+    ripple.style.left = (event.clientX - rect.left) + "px";
+    ripple.style.top = (event.clientY - rect.top) + "px";
+    target.appendChild(ripple);
+    setTimeout(function () { ripple.remove(); }, 680);
+  }
 
-.regulation-card.degree-7,
-.regulation-card.degree-0,
-#tab-7,
-#tab-0 {
-  --degree: var(--critical) !important;
-}
+  async function initPortal() {
+    loadLocalData();
+    applyUiPrefs();
+    updateRole();
+    renderAllPortal();
+    window.setWorkspace("recruitment");
+    startStreamPolling();
+    await initSupabase();
+  }
+
+  async function initSupabase() {
+    if (!isSupabaseConfigured()) {
+      updateDatabaseBadge();
+      return;
+    }
+    try {
+      await loadSupabaseSdk();
+      state.client = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+      state.databaseMode = "live";
+      updateDatabaseBadge();
+      await fetchAll();
+      subscribeRealtime();
+      toast(tr("liveMode"), "success");
+    } catch (error) {
+      console.warn(error);
+      state.databaseMode = "local";
+      updateDatabaseBadge();
+      toast(tr("databaseError"), "warn");
+    }
+  }
+
+  function getAuthInputs() {
+    return {
+      email: (document.getElementById("authEmailInput")?.value || "").trim().toLowerCase(),
+      password: document.getElementById("authPasswordInput")?.value || ""
+    };
+  }
+
+  async function loginAccount() {
+    const creds = getAuthInputs();
+    if (!creds.email || !creds.password) {
+      toast(tr("validationError"), "error");
+      return;
+    }
+    if (creds.email === OWNER_EMAIL) {
+      if (creds.password !== OWNER_PASSWORD) {
+        toast(tr("invalidLogin"), "error");
+        return;
+      }
+      saveSession({ email: OWNER_EMAIL, role: "owner" });
+      localStorage.setItem(STORAGE_KEYS.userEmail, OWNER_EMAIL);
+      updateRole();
+      renderAllPortal();
+      toast(tr("loginSuccess"), "success");
+      return;
+    }
+    const account = state.accounts.find(function (entry) { return entry.email === creds.email; });
+    const hash = await hashPassword(creds.password);
+    if (!account || account.password_hash !== hash) {
+      toast(tr("invalidLogin"), "error");
+      return;
+    }
+    saveSession(account);
+    localStorage.setItem(STORAGE_KEYS.userEmail, account.email);
+    updateRole();
+    renderAllPortal();
+    toast(tr("loginSuccess"), "success");
+  }
+
+  function openAuthBranch(mode) {
+    const branch = mode === "register" ? "register" : "login";
+    if (location.protocol === "file:") {
+      window.location.href = branch + "/index.html";
+      return;
+    }
+    window.location.href = "/" + branch + "/";
+  }
+
+  async function createApplicantAccount() {
+    const creds = getAuthInputs();
+    if (!creds.email || !creds.password || creds.email === OWNER_EMAIL) {
+      toast(tr("validationError"), "error");
+      return;
+    }
+    if (state.accounts.some(function (entry) { return entry.email === creds.email; })) {
+      toast(tr("accountExists"), "error");
+      return;
+    }
+    const row = normalizeAccount({
+      id: uid(),
+      email: creds.email,
+      role: "applicant",
+      password_hash: await hashPassword(creds.password),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
+    const ok = await insertRow("accounts", row);
+    if (!ok) return;
+    saveSession(row);
+    localStorage.setItem(STORAGE_KEYS.userEmail, row.email);
+    document.getElementById("authPasswordInput").value = "";
+    toast(tr("accountCreated"), "success");
+    await refreshAfterMutation();
+  }
+
+  function logoutAccount() {
+    saveSession(null);
+    const emailInput = document.getElementById("authEmailInput");
+    const passInput = document.getElementById("authPasswordInput");
+    if (emailInput) emailInput.disabled = false;
+    if (passInput) {
+      passInput.disabled = false;
+      passInput.value = "";
+    }
+    updateRole();
+    renderAllPortal();
+    toast(tr("logoutSuccess"), "success");
+  }
+
+  async function hashPassword(password) {
+    if (!window.crypto || !window.crypto.subtle) {
+      return "fallback-" + btoa(unescape(encodeURIComponent("ftlspd:" + password)));
+    }
+    const data = new TextEncoder().encode("ftlspd:" + password);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(digest)).map(function (byte) {
+      return byte.toString(16).padStart(2, "0");
+    }).join("");
+  }
+
+  function isSupabaseConfigured() {
+    return /^https:\/\/.+\.supabase\.co/i.test(SUPABASE_CONFIG.url || "") && Boolean(SUPABASE_CONFIG.anonKey);
+  }
+
+  function loadSupabaseSdk() {
+    if (window.supabase && window.supabase.createClient) return Promise.resolve();
+    return new Promise(function (resolve, reject) {
+      const existing = document.querySelector('script[data-supabase-sdk="true"]');
+      if (existing) {
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", reject, { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      script.dataset.supabaseSdk = "true";
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function subscribeRealtime() {
+    if (!state.client || state.realtimeChannel) return;
+    state.realtimeChannel = state.client.channel("lspd-portal-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: tableName("applications") }, fetchAll)
+      .on("postgres_changes", { event: "*", schema: "public", table: tableName("accounts") }, fetchAll)
+      .on("postgres_changes", { event: "*", schema: "public", table: tableName("roles") }, fetchAll)
+      .on("postgres_changes", { event: "*", schema: "public", table: tableName("assets") }, fetchAll)
+      .on("postgres_changes", { event: "*", schema: "public", table: tableName("streams") }, fetchAll)
+      .subscribe();
+  }
+
+  async function fetchAll() {
+    if (!state.client) return;
+    try {
+      const apps = await state.client.from(tableName("applications")).select("*").order("created_at", { ascending: false });
+      const accounts = await state.client.from(tableName("accounts")).select("*").order("email", { ascending: true });
+      const roles = await state.client.from(tableName("roles")).select("*").order("email", { ascending: true });
+      const assets = await state.client.from(tableName("assets")).select("*").order("created_at", { ascending: false });
+      const streams = await state.client.from(tableName("streams")).select("*").order("created_at", { ascending: false });
+      if (apps.error || accounts.error || roles.error || assets.error) throw apps.error || accounts.error || roles.error || assets.error;
+      state.applications = (apps.data || []).map(normalizeApplication);
+      state.accounts = (accounts.data || []).map(normalizeAccount);
+      state.roles = roles.data || [];
+      state.assets = (assets.data || []).map(normalizeAsset);
+      if (Date.now() > state.assetOrderLockUntil) syncAssetOrderFromRows();
+      if (!streams.error) state.streams = (streams.data || []).map(normalizeStream);
+      else console.warn(streams.error);
+      saveLocalData();
+      updateRole();
+      renderAllPortal();
+    } catch (error) {
+      console.warn(error);
+      toast(tr("databaseError"), "error");
+    }
+  }
+
+  function tableName(key) {
+    return (SUPABASE_CONFIG.tables && SUPABASE_CONFIG.tables[key]) || key;
+  }
+
+  function loadLocalData() {
+    state.applications = readJson(STORAGE_KEYS.applications).map(normalizeApplication);
+    state.accounts = readJson(STORAGE_KEYS.accounts).map(normalizeAccount);
+    state.roles = readJson(STORAGE_KEYS.roles);
+    state.assets = readJson(STORAGE_KEYS.assets).map(normalizeAsset);
+    state.assetOrder = readOrder();
+    state.streams = readJson(STORAGE_KEYS.streams).map(normalizeStream);
+    state.uiPrefs = readUiPrefs();
+    state.authUser = readSession();
+  }
+
+  function saveLocalData() {
+    localStorage.setItem(STORAGE_KEYS.applications, JSON.stringify(state.applications));
+    localStorage.setItem(STORAGE_KEYS.accounts, JSON.stringify(state.accounts));
+    localStorage.setItem(STORAGE_KEYS.roles, JSON.stringify(state.roles));
+    localStorage.setItem(STORAGE_KEYS.assets, JSON.stringify(state.assets));
+    localStorage.setItem(STORAGE_KEYS.assetOrder, JSON.stringify(state.assetOrder));
+    localStorage.setItem(STORAGE_KEYS.streams, JSON.stringify(state.streams));
+    if (state.uiPrefs) localStorage.setItem(STORAGE_KEYS.uiPrefs, JSON.stringify(state.uiPrefs));
+  }
+
+  function readJson(key) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function readOrder() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEYS.assetOrder) || "{}");
+      return {
+        crew: Array.isArray(parsed.crew) ? parsed.crew : [],
+        media: Array.isArray(parsed.media) ? parsed.media : []
+      };
+    } catch (error) {
+      return { crew: [], media: [] };
+    }
+  }
+
+  function defaultUiPrefs() {
+    return {
+      font: "Inter, Arial, sans-serif",
+      red: "#e7515a",
+      blue: "#3aa7ff",
+      bg: "#01040b",
+      text: "#edf7ff",
+      tabOrder: defaultWorkspaceTabs.map(function (tab) { return tab[0]; })
+    };
+  }
+
+  function readUiPrefs() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEYS.uiPrefs) || "{}");
+      const defaults = defaultUiPrefs();
+      const validTabs = new Set(defaults.tabOrder);
+      const tabOrder = Array.isArray(saved.tabOrder)
+        ? saved.tabOrder.filter(function (id) { return validTabs.has(id); })
+        : [];
+      defaults.tabOrder.forEach(function (id) {
+        if (!tabOrder.includes(id)) tabOrder.push(id);
+      });
+      return Object.assign(defaults, saved, { tabOrder: tabOrder });
+    } catch (error) {
+      return defaultUiPrefs();
+    }
+  }
+
+  function normalizeApplication(row) {
+    const answers = typeof row.answers === "string" ? parseJsonObject(row.answers) : (row.answers || {});
+    const questionLabels = typeof row.question_labels === "string" ? parseJsonObject(row.question_labels) : (row.question_labels || {});
+    return Object.assign({}, row, {
+      id: row.id || uid(),
+      kind: row.kind || row.type || "recruitment",
+      status: row.status || "pending",
+      applicant_email: (row.applicant_email || answers.contact_email || "").toLowerCase(),
+      applicant_name: row.applicant_name || answers.full_name || "",
+      discord_id: row.discord_id || answers.discord_id || "",
+      answers: answers,
+      question_labels: questionLabels
+    });
+  }
+
+  function normalizeAccount(row) {
+    return Object.assign({}, row, {
+      id: row.id || uid(),
+      email: (row.email || "").toLowerCase(),
+      role: normalizeRole(row.role || "applicant"),
+      password_hash: row.password_hash || row.passwordHash || ""
+    });
+  }
+
+  function normalizeAsset(row) {
+    const order = Number(row.display_order);
+    return Object.assign({}, row, {
+      id: row.id || uid(),
+      category: row.category === "media" ? "media" : "crew",
+      title: row.title || row.name || "",
+      subtitle: row.subtitle || row.rank || "",
+      discord_id: row.discord_id || "",
+      photo_url: row.photo_url || "",
+      caption: row.caption || "",
+      display_order: Number.isFinite(order) ? order : null
+    });
+  }
+
+  function normalizeStream(row) {
+    return Object.assign({}, row, {
+      id: row.id || uid(),
+      name: row.name || row.title || "",
+      logo_url: row.logo_url || row.photo_url || "",
+      kick_url: row.kick_url || row.url || "",
+      created_by: row.created_by || "",
+      created_at: row.created_at || new Date().toISOString(),
+      updated_at: row.updated_at || new Date().toISOString()
+    });
+  }
+
+  function orderedWorkspaceTabs() {
+    const prefs = state.uiPrefs || readUiPrefs();
+    const byId = new Map(defaultWorkspaceTabs.map(function (tab) { return [tab[0], tab]; }));
+    const ordered = [];
+    (prefs.tabOrder || []).forEach(function (id) {
+      if (byId.has(id)) ordered.push(byId.get(id));
+    });
+    defaultWorkspaceTabs.forEach(function (tab) {
+      if (!ordered.some(function (entry) { return entry[0] === tab[0]; })) ordered.push(tab);
+    });
+    return ordered;
+  }
+
+  function syncAssetOrderFromRows() {
+    ["crew", "media"].forEach(function (category) {
+      const ordered = state.assets
+        .filter(function (asset) { return asset.category === category; })
+        .filter(function (asset) { return Number.isFinite(Number(asset.display_order)); })
+        .sort(function (a, b) { return Number(a.display_order) - Number(b.display_order); })
+        .map(function (asset) { return asset.id; });
+      if (ordered.length) state.assetOrder[category] = ordered;
+    });
+  }
+
+  function orderedAssets(category) {
+    const manual = state.assetOrder[category] || [];
+    const manualIndex = new Map(manual.map(function (id, index) { return [id, index]; }));
+    return state.assets
+      .filter(function (asset) { return asset.category === category; })
+      .map(normalizeAsset)
+      .sort(function (a, b) {
+        const aManual = manualIndex.has(a.id) ? manualIndex.get(a.id) : Infinity;
+        const bManual = manualIndex.has(b.id) ? manualIndex.get(b.id) : Infinity;
+        if (aManual !== bManual) return aManual - bManual;
+        const aOrder = Number.isFinite(Number(a.display_order)) ? Number(a.display_order) : Infinity;
+        const bOrder = Number.isFinite(Number(b.display_order)) ? Number(b.display_order) : Infinity;
+        if (aOrder !== bOrder) return aOrder - bOrder;
+        return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+      });
+  }
+
+  function normalizeRole(role) {
+    if (role === "editor") return "admin";
+    if (role === "viewer") return "applicant";
+    return role === "owner" || role === "admin" || role === "applicant" ? role : "applicant";
+  }
+
+  function readSession() {
+    try {
+      const session = JSON.parse(localStorage.getItem(STORAGE_KEYS.session) || "null");
+      if (!session || !session.email || !session.role) return null;
+      return { email: session.email.toLowerCase(), role: normalizeRole(session.role) };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveSession(account) {
+    state.authUser = account ? { email: account.email.toLowerCase(), role: normalizeRole(account.role) } : null;
+    if (state.authUser) localStorage.setItem(STORAGE_KEYS.session, JSON.stringify(state.authUser));
+    else localStorage.removeItem(STORAGE_KEYS.session);
+  }
+
+  function parseJsonObject(value) {
+    try {
+      const parsed = JSON.parse(value || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function updateRole() {
+    if (state.authUser) {
+      state.userEmail = state.authUser.email;
+      state.role = normalizeRole(state.authUser.role);
+    } else {
+      state.userEmail = "";
+      state.role = "guest";
+    }
+    const badge = document.getElementById("roleBadge");
+    if (badge) badge.textContent = tr("role" + cap(state.role));
+    const emailInput = document.getElementById("authEmailInput");
+    const passInput = document.getElementById("authPasswordInput");
+    const loggedIn = Boolean(state.authUser);
+    if (emailInput && loggedIn) emailInput.value = state.userEmail;
+    if (emailInput) emailInput.disabled = loggedIn;
+    if (passInput) {
+      passInput.disabled = loggedIn;
+      if (loggedIn) passInput.value = "";
+    }
+    emailInput?.classList.toggle("hidden", loggedIn);
+    passInput?.classList.toggle("hidden", loggedIn);
+    document.getElementById("loginButton")?.classList.toggle("hidden", loggedIn);
+    document.getElementById("createAccountButton")?.classList.toggle("hidden", loggedIn);
+    document.getElementById("logoutButton")?.classList.toggle("hidden", !loggedIn);
+    const manager = document.getElementById("roleManagerButton");
+    if (manager) manager.classList.toggle("hidden", state.role !== "owner");
+    updateAdminTabVisibility();
+  }
+
+  function updateAdminTabVisibility() {
+    const allowed = canViewRecords();
+    ["review", "archives"].forEach(function (workspace) {
+      document.getElementById("workspace-" + workspace)?.classList.toggle("hidden", !allowed);
+    });
+    if (!allowed && (getCurrentWorkspaceName() === "review" || getCurrentWorkspaceName() === "archives")) {
+      window.setWorkspace?.("recruitment");
+    }
+  }
+
+  function getCurrentWorkspaceName() {
+    try { return currentWorkspace; } catch (error) { return "recruitment"; }
+  }
+
+  function updateDatabaseBadge() {
+    const badge = document.getElementById("databaseBadge");
+    if (!badge) return;
+    badge.dataset.state = state.databaseMode;
+    badge.textContent = state.databaseMode === "live" ? tr("liveMode") : tr("localMode");
+  }
+
+  function renderAllPortal() {
+    updateRole();
+    updateDatabaseBadge();
+    renderCooldown();
+    renderApplicantStatus();
+    renderReview();
+    renderArchives();
+    renderAssets("crew");
+    renderAssets("media");
+    renderStreams();
+    renderRoleList();
+    const crewForm = document.getElementById("crewForm");
+    const mediaForm = document.getElementById("mediaForm");
+    if (crewForm) crewForm.classList.toggle("hidden", !canEdit());
+    if (mediaForm) mediaForm.classList.toggle("hidden", !canEdit());
+    const streamForm = document.getElementById("streamForm");
+    if (streamForm) streamForm.classList.toggle("hidden", !canEdit());
+    updateAssetFormState("crew");
+    updateAssetFormState("media");
+    updateStreamFormState();
+    const clear = document.getElementById("clearPendingButton");
+    if (clear) clear.classList.toggle("hidden", !canEdit());
+    const reset = document.getElementById("fullResetButton");
+    if (reset) reset.classList.toggle("hidden", !canEdit());
+  }
+
+  function renderCooldown() {
+    const banner = document.getElementById("cooldownBanner");
+    if (!banner) return;
+    const cooldown = getCurrentCooldown();
+    const pending = getApplicantRecords().find(function (record) { return record.status === "pending"; });
+    if (cooldown) {
+      banner.classList.remove("hidden");
+      banner.querySelector("span").textContent = tr(cooldown.status === "accepted" ? "cooldownAccepted" : "cooldownRejected", { date: formatDate(cooldown.cooldown_until) });
+    } else if (pending) {
+      banner.classList.remove("hidden");
+      banner.querySelector("span").textContent = tr("pendingWarning", { type: pending.kind === "transfer" ? tr("transferLabel") : tr("recruitmentLabel") });
+    } else {
+      banner.classList.add("hidden");
+    }
+  }
+
+  function renderApplicantStatus() {
+    const target = document.getElementById("applicantStatusCards");
+    if (!target) return;
+    const records = getApplicantRecords().slice(0, 4);
+    if (!state.userEmail || !records.length) {
+      target.innerHTML = '<div class="empty-portal">' + safe(tr("noApplicantRecords")) + "</div>";
+      return;
+    }
+    target.innerHTML = records.map(applicationCardHtml).join("");
+  }
+
+  function renderReview() {
+    const list = document.getElementById("reviewList");
+    if (!list) return;
+    document.querySelectorAll("[data-review-type]").forEach(function (button) {
+      button.setAttribute("aria-selected", String(button.dataset.reviewType === state.activeReviewType));
+    });
+    if (!canViewRecords()) {
+      list.innerHTML = '<div class="empty-portal">' + safe(tr("accessRequired")) + "</div>";
+      setCount("reviewCount", 0);
+      return;
+    }
+    const query = (document.getElementById("reviewSearchInput")?.value || "").trim().toLowerCase();
+    const records = state.applications.filter(function (app) {
+      return app.status === "pending" && app.kind === state.activeReviewType && matchesApplication(app, query);
+    });
+    setCount("reviewCount", records.length);
+    list.innerHTML = records.length ? records.map(applicationCardHtml).join("") : '<div class="empty-portal">' + safe(tr("noPending")) + "</div>";
+  }
+
+  function renderArchives() {
+    const list = document.getElementById("archiveList");
+    if (!list) return;
+    document.querySelectorAll("[data-archive-type]").forEach(function (button) {
+      button.setAttribute("aria-selected", String(button.dataset.archiveType === state.activeArchive));
+    });
+    if (!canViewRecords()) {
+      list.innerHTML = '<div class="empty-portal">' + safe(tr("accessRequired")) + "</div>";
+      return;
+    }
+    const parts = state.activeArchive.split("-");
+    const status = parts[0];
+    const kind = parts[1];
+    const records = state.applications.filter(function (app) {
+      return app.status === status && app.kind === kind;
+    });
+    list.innerHTML = records.length ? records.map(applicationCardHtml).join("") : '<div class="empty-portal">' + safe(tr("noArchive")) + "</div>";
+  }
+
+  function applicationCardHtml(app) {
+    const statusClass = app.status === "accepted" ? "accepted" : app.status === "rejected" ? "rejected" : "";
+    const labels = app.question_labels || {};
+    const questionHtml = Object.keys(app.answers || {}).map(function (key) {
+      const label = labels[key] || getQuestionLabel(app.kind, key);
+      const value = app.answers[key] === true ? "Yes" : app.answers[key];
+      if (value == null || value === "") return "";
+      return '<div class="question-pair"><strong>' + safe(label) + '</strong><span>' + safe(String(value)) + "</span></div>";
+    }).filter(Boolean).join("");
+    const decisionHtml = decisionDetailsHtml(app);
+    let actions = "";
+    if (app.status === "pending" && canEdit()) {
+      actions = '<div class="review-actions"><button class="portal-button success" type="button" onclick="window.openDecisionModal(\'' + safeAttr(app.id) + '\',\'accepted\')"><i class="fa-solid fa-check"></i><span data-i18n="approve">' + safe(tr("approve")) + '</span></button><button class="portal-button danger" type="button" onclick="window.openDecisionModal(\'' + safeAttr(app.id) + '\',\'rejected\')"><i class="fa-solid fa-xmark"></i><span data-i18n="reject">' + safe(tr("reject")) + '</span></button></div>';
+    } else if (app.status !== "pending" && canEdit()) {
+      actions = '<div class="review-actions"><button class="portal-button danger" type="button" onclick="window.deleteArchiveRecord(\'' + safeAttr(app.id) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="deleteArchive">' + safe(tr("deleteArchive")) + '</span></button></div>';
+    }
+    return [
+      '<article class="review-card">',
+      '<div class="review-top"><div><h3 class="review-title">' + safe(app.applicant_name || "Unknown applicant") + '</h3><div class="review-meta">' + safe(tr("submittedBy", { email: app.applicant_email || "-" })) + ' · ' + safe(app.discord_id || "-") + ' · ' + safe(tr("submittedAt", { date: formatDateTime(app.created_at) })) + '</div></div><span class="status-pill ' + statusClass + '">' + safe(tr(app.status)) + " · " + safe(app.kind === "transfer" ? tr("transferLabel") : tr("recruitmentLabel")) + "</span></div>",
+      '<div class="question-list">' + questionHtml + decisionHtml + "</div>",
+      actions,
+      "</article>"
+    ].join("");
+  }
+
+  function decisionDetailsHtml(app) {
+    if (app.status === "pending") return "";
+    const chunks = [];
+    if (app.decision_message) chunks.push(pairHtml(tr("decisionMessage"), app.decision_message));
+    if (app.interview_dates) {
+      const dates = typeof app.interview_dates === "string" ? parseJsonObject(app.interview_dates) : app.interview_dates;
+      chunks.push(pairHtml(tr("interviewDates"), [dates.monday, dates.friday].filter(Boolean).join(" / ")));
+    }
+    if (app.rejection_reason) chunks.push(pairHtml(tr("reason"), app.rejection_reason));
+    if (app.decided_at) chunks.push(pairHtml(tr("decidedAt", { date: formatDateTime(app.decided_at) }), app.decided_by || ""));
+    return chunks.join("");
+  }
+
+  function pairHtml(label, value) {
+    return '<div class="question-pair"><strong>' + safe(label) + '</strong><span>' + safe(value || "-") + "</span></div>";
+  }
+
+  function renderAssets(category) {
+    const grid = document.getElementById(category === "crew" ? "crewGrid" : "mediaGrid");
+    if (!grid) return;
+    const records = orderedAssets(category);
+    grid.classList.toggle("drag-enabled", canEdit());
+    if (!records.length) {
+      grid.innerHTML = '<div class="empty-portal">' + safe(tr(category === "crew" ? "noCrew" : "noMedia")) + "</div>";
+      return;
+    }
+    grid.innerHTML = records.map(function (asset, index) {
+      const title = asset.title || asset.name || "";
+      const subtitle = asset.subtitle || asset.rank || asset.caption || "";
+      const discord = asset.discord_id ? '<span>' + safe(tr("discordId")) + ": " + safe(asset.discord_id) + "</span>" : "";
+      const caption = category === "media" && asset.caption ? '<p class="asset-caption">' + safe(asset.caption) + "</p>" : "";
+      const drag = canEdit() ? '<button class="asset-drag-handle" type="button" aria-label="' + safeAttr(tr("dragAsset")) + '" title="' + safeAttr(tr("dragAsset")) + '"><i class="fa-solid fa-grip-lines"></i></button>' : "";
+      const actions = canEdit() ? '<div class="asset-card-actions"><button class="portal-button ghost" type="button" onclick="window.editAsset(\'' + safeAttr(asset.id) + '\')"><i class="fa-solid fa-pen-to-square"></i><span data-i18n="edit">' + safe(tr("edit")) + '</span></button><button class="portal-button danger" type="button" onclick="window.removeAsset(\'' + safeAttr(asset.id) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="remove">' + safe(tr("remove")) + "</span></button></div>" : "";
+      return '<article class="asset-card" data-asset-id="' + safeAttr(asset.id) + '" data-asset-category="' + safeAttr(category) + '" data-asset-index="' + index + '" draggable="' + (canEdit() ? "true" : "false") + '">' + drag + '<img src="' + safeAttr(asset.photo_url || "image2.png") + '" alt="' + safeAttr(title) + '"><div class="asset-card-body"><h3>' + safe(title) + '</h3><p>' + safe(subtitle || "") + '</p>' + caption + discord + actions + "</div></article>";
+    }).join("");
+  }
+
+  function renderStreams() {
+    const grid = document.getElementById("streamsGrid");
+    if (!grid) return;
+    if (!state.streams.length) {
+      grid.innerHTML = '<div class="empty-portal">' + safe(tr("noStreams")) + "</div>";
+      return;
+    }
+    grid.innerHTML = state.streams.map(function (stream) {
+      const status = state.streamStatus[stream.id] || { state: "loading" };
+      const isLive = status.state === "live";
+      const isOffline = status.state === "offline";
+      const title = isLive ? (status.title || tr("live")) : (isOffline ? tr("offline") : tr("streamUnavailable"));
+      const viewers = isLive ? tr("viewers", { n: formatNumber(status.viewers || 0) }) : tr("offline");
+      const thumb = isLive && status.thumbnail ? status.thumbnail + (status.thumbnail.includes("?") ? "&" : "?") + "t=" + Date.now() : (stream.logo_url || "image2.png");
+      const actions = canEdit() ? '<div class="asset-card-actions"><button class="portal-button ghost" type="button" onclick="window.editStream(\'' + safeAttr(stream.id) + '\')"><i class="fa-solid fa-pen-to-square"></i><span data-i18n="edit">' + safe(tr("edit")) + '</span></button><button class="portal-button danger" type="button" onclick="window.removeStream(\'' + safeAttr(stream.id) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="remove">' + safe(tr("remove")) + "</span></button></div>" : "";
+      return [
+        '<article class="stream-card ' + (isLive ? "is-live" : "is-offline") + '">',
+        '<div class="stream-shot"><img src="' + safeAttr(thumb) + '" alt="' + safeAttr(stream.name) + '"><span class="stream-state">' + safe(isLive ? tr("live") : tr("offline")) + "</span></div>",
+        '<div class="stream-body">',
+        '<img class="stream-logo" src="' + safeAttr(stream.logo_url || "lspd-shield.png") + '" alt="">',
+        '<div><div class="stream-name-row"><h3>' + safe(stream.name || "-") + '</h3><span class="stream-viewers"><i class="fa-solid fa-eye"></i>' + safe(viewers) + '</span></div><p>' + safe(title) + "</p></div>",
+        '</div>',
+        '<div class="stream-actions"><a class="portal-button primary" href="' + safeAttr(stream.kick_url) + '" target="_blank" rel="noopener"><i class="fa-solid fa-up-right-from-square"></i><span data-i18n="streamOpen">' + safe(tr("streamOpen")) + "</span></a>" + actions + "</div>",
+        "</article>"
+      ].join("");
+    }).join("");
+  }
+
+  async function saveStream(event) {
+    event.preventDefault();
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+    const patch = {
+      name: (data.name || "").trim(),
+      logo_url: (data.logo_url || "").trim(),
+      kick_url: normalizeKickUrl((data.kick_url || "").trim()),
+      updated_at: new Date().toISOString()
+    };
+    if (!patch.name || !patch.logo_url || !patch.kick_url) {
+      toast(tr("validationError"), "error");
+      return;
+    }
+    let ok;
+    if (state.streamEditing) {
+      ok = await updateRow("streams", state.streamEditing, patch);
+    } else {
+      ok = await insertRow("streams", Object.assign({ id: uid(), created_by: state.userEmail, created_at: new Date().toISOString() }, patch));
+    }
+    if (!ok) return;
+    state.streamEditing = null;
+    form.reset();
+    updateStreamFormState();
+    toast(tr("savedStream"), "success");
+    await refreshAfterMutation();
+    refreshStreamStatuses();
+  }
+
+  function updateStreamFormState() {
+    const editing = Boolean(state.streamEditing);
+    const saveButton = document.getElementById("streamSaveButton");
+    const cancelButton = document.getElementById("streamCancelEditButton");
+    if (saveButton) {
+      const icon = saveButton.querySelector("i");
+      const label = saveButton.querySelector("span");
+      if (icon) icon.className = "fa-solid " + (editing ? "fa-floppy-disk" : "fa-plus");
+      if (label) {
+        label.dataset.i18n = editing ? "updateStream" : "addStream";
+        label.textContent = tr(label.dataset.i18n);
+      }
+    }
+    if (cancelButton) cancelButton.classList.toggle("hidden", !editing);
+  }
+
+  function cancelStreamEdit() {
+    state.streamEditing = null;
+    document.getElementById("streamForm")?.reset();
+    updateStreamFormState();
+  }
+
+  window.editStream = function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const stream = state.streams.find(function (entry) { return entry.id === id; });
+    const form = document.getElementById("streamForm");
+    if (!stream || !form) return;
+    state.streamEditing = id;
+    if (form.elements.name) form.elements.name.value = stream.name || "";
+    if (form.elements.logo_url) form.elements.logo_url.value = stream.logo_url || "";
+    if (form.elements.kick_url) form.elements.kick_url.value = stream.kick_url || "";
+    updateStreamFormState();
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+    toast(tr("editMode"), "success");
+  };
+
+  window.removeStream = async function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const ok = await deleteRows("streams", [id]);
+    if (!ok) return;
+    delete state.streamStatus[id];
+    toast(tr("removed"), "success");
+    await refreshAfterMutation();
+  };
+
+  function startStreamPolling() {
+    if (state.streamTimer) clearInterval(state.streamTimer);
+    refreshStreamStatuses();
+    state.streamTimer = setInterval(refreshStreamStatuses, 10000);
+  }
+
+  async function refreshStreamStatuses() {
+    if (!state.streams.length) return;
+    await Promise.all(state.streams.map(refreshStreamStatus));
+    renderStreams();
+  }
+
+  async function refreshStreamStatus(stream) {
+    const slug = kickSlug(stream.kick_url);
+    if (!slug) {
+      state.streamStatus[stream.id] = { state: "offline" };
+      return;
+    }
+    try {
+      const response = await fetch("https://kick.com/api/v2/channels/" + encodeURIComponent(slug), { cache: "no-store" });
+      if (!response.ok) throw new Error("Kick request failed");
+      const data = await response.json();
+      const live = data.livestream || null;
+      if (!live) {
+        state.streamStatus[stream.id] = { state: "offline" };
+        return;
+      }
+      state.streamStatus[stream.id] = {
+        state: "live",
+        title: live.session_title || live.stream_title || live.title || data.user?.username || stream.name,
+        viewers: Number(live.viewer_count || live.viewers || 0),
+        thumbnail: thumbnailFromKick(live)
+      };
+    } catch (error) {
+      console.warn(error);
+      state.streamStatus[stream.id] = { state: "unavailable" };
+    }
+  }
+
+  function thumbnailFromKick(live) {
+    if (!live) return "";
+    if (typeof live.thumbnail === "string") return live.thumbnail;
+    if (live.thumbnail && typeof live.thumbnail === "object") return live.thumbnail.url || live.thumbnail.src || "";
+    return live.thumbnail_url || live.preview || "";
+  }
+
+  function kickSlug(url) {
+    const clean = String(url || "").trim();
+    if (!clean) return "";
+    const match = clean.match(/kick\.com\/([^/?#]+)/i);
+    return (match ? match[1] : clean).replace(/^@/, "").trim();
+  }
+
+  function normalizeKickUrl(url) {
+    const slug = kickSlug(url);
+    return slug ? "https://kick.com/" + slug : "";
+  }
+
+  function formatNumber(value) {
+    return new Intl.NumberFormat(getLang() === "ar" ? "ar" : "en").format(Number(value || 0));
+  }
+
+  function applyUiPrefs() {
+    state.uiPrefs = state.uiPrefs || readUiPrefs();
+    const root = document.documentElement;
+    root.style.setProperty("--user-font", state.uiPrefs.font);
+    root.style.setProperty("--critical", state.uiPrefs.red);
+    root.style.setProperty("--accent-cyan", state.uiPrefs.blue);
+    root.style.setProperty("--page", state.uiPrefs.bg);
+    root.style.setProperty("--text", state.uiPrefs.text);
+    root.style.setProperty("--custom-bg", state.uiPrefs.bg);
+    document.body.style.fontFamily = "var(--user-font)";
+    installWorkspaceNav();
+    renderSettingsPanel();
+  }
+
+  function renderSettingsPanel() {
+    const prefs = state.uiPrefs || readUiPrefs();
+    const font = document.getElementById("fontSettingInput");
+    const red = document.getElementById("redSettingInput");
+    const blue = document.getElementById("blueSettingInput");
+    const bg = document.getElementById("bgSettingInput");
+    const text = document.getElementById("textSettingInput");
+    if (font) font.value = prefs.font;
+    if (red) red.value = prefs.red;
+    if (blue) blue.value = prefs.blue;
+    if (bg) bg.value = prefs.bg;
+    if (text) text.value = prefs.text;
+    const list = document.getElementById("tabOrderList");
+    if (!list) return;
+    const byId = new Map(defaultWorkspaceTabs.map(function (tab) { return [tab[0], tab]; }));
+    list.innerHTML = (prefs.tabOrder || []).map(function (id, index, arr) {
+      const tab = byId.get(id);
+      if (!tab) return "";
+      return '<div class="tab-order-item"><span><i class="fa-solid ' + tab[1] + '"></i>' + safe(tr(tab[2])) + '</span><div><button class="icon-action" type="button" onclick="window.moveWorkspaceTab(\'' + safeAttr(id) + '\',-1)" title="' + safeAttr(tr("moveUp")) + '"' + (index === 0 ? " disabled" : "") + '><i class="fa-solid fa-arrow-up"></i></button><button class="icon-action" type="button" onclick="window.moveWorkspaceTab(\'' + safeAttr(id) + '\',1)" title="' + safeAttr(tr("moveDown")) + '"' + (index === arr.length - 1 ? " disabled" : "") + '><i class="fa-solid fa-arrow-down"></i></button></div></div>';
+    }).join("");
+  }
+
+  function saveUiPrefsFromControls() {
+    state.uiPrefs = state.uiPrefs || readUiPrefs();
+    state.uiPrefs.font = document.getElementById("fontSettingInput")?.value || state.uiPrefs.font;
+    state.uiPrefs.red = document.getElementById("redSettingInput")?.value || state.uiPrefs.red;
+    state.uiPrefs.blue = document.getElementById("blueSettingInput")?.value || state.uiPrefs.blue;
+    state.uiPrefs.bg = document.getElementById("bgSettingInput")?.value || state.uiPrefs.bg;
+    state.uiPrefs.text = document.getElementById("textSettingInput")?.value || state.uiPrefs.text;
+    saveLocalData();
+    applyUiPrefs();
+    toast(tr("settingsSaved"), "success");
+  }
+
+  window.moveWorkspaceTab = function (id, direction) {
+    state.uiPrefs = state.uiPrefs || readUiPrefs();
+    const order = state.uiPrefs.tabOrder.slice();
+    const index = order.indexOf(id);
+    const target = index + Number(direction);
+    if (index < 0 || target < 0 || target >= order.length) return;
+    order.splice(index, 1);
+    order.splice(target, 0, id);
+    state.uiPrefs.tabOrder = order;
+    saveLocalData();
+    applyUiPrefs();
+    updateAdminTabVisibility();
+    toast(tr("settingsSaved"), "success");
+  };
+
+  function resetUiPrefs() {
+    state.uiPrefs = defaultUiPrefs();
+    saveLocalData();
+    applyUiPrefs();
+    toast(tr("settingsSaved"), "success");
+  }
+
+  function toggleSettingsPanel() {
+    const panel = document.getElementById("settingsPanel");
+    if (!panel) return;
+    panel.classList.toggle("hidden");
+    playSound("settings");
+  }
+
+  function closeSettingsPanel() {
+    document.getElementById("settingsPanel")?.classList.add("hidden");
+  }
+
+  function renderRoleList() {
+    const target = document.getElementById("roleList");
+    if (!target) return;
+    if (!state.accounts.length) {
+      target.innerHTML = '<div class="empty-portal">' + safe(tr("noUsers")) + "</div>";
+      return;
+    }
+    target.innerHTML = state.accounts.map(function (entry) {
+      return '<article class="review-card"><div class="review-top"><div><h3 class="review-title">' + safe(entry.email) + '</h3><div class="review-meta">' + safe(entry.role) + '</div></div><button class="portal-button danger" type="button" onclick="window.removeRole(\'' + safeAttr(entry.email) + '\')"><i class="fa-solid fa-trash-can"></i><span data-i18n="remove">' + safe(tr("remove")) + "</span></button></div></article>";
+    }).join("");
+  }
+
+  function openApplicationModal(type) {
+    if (!state.authUser) {
+      toast(tr("loginRequired"), "warn");
+      document.getElementById("authEmailInput")?.focus();
+      return;
+    }
+    if (getCurrentCooldown()) {
+      renderCooldown();
+      toast(document.getElementById("cooldownBanner").textContent.trim(), "warn");
+      return;
+    }
+    const pending = getApplicantRecords().find(function (record) { return record.status === "pending"; });
+    if (pending) {
+      renderCooldown();
+      toast(tr("pendingWarning", { type: pending.kind === "transfer" ? tr("transferLabel") : tr("recruitmentLabel") }), "warn");
+      return;
+    }
+    state.applicationType = type === "transfer" ? "transfer" : "recruitment";
+    state.applicationStep = 1;
+    state.applicationDraft = {};
+    const form = document.getElementById("applicationForm");
+    if (form) form.reset();
+    renderApplicationFields();
+    openModal("applicationModal");
+  }
+
+  function renderApplicationFields() {
+    const title = document.getElementById("applicationModalTitle");
+    const step = document.getElementById("applicationStepText");
+    const fields = document.getElementById("applicationFields");
+    if (!title || !step || !fields) return;
+    title.textContent = tr(state.applicationType === "transfer" ? "applicationModalTitleTransfer" : "applicationModalTitleRecruitment");
+    step.textContent = tr("applicationStep", { step: state.applicationStep });
+    const defs = questionBank[state.applicationType][state.applicationStep - 1];
+    fields.innerHTML = defs.map(fieldHtml).join("");
+    defs.forEach(function (def) {
+      const node = fields.querySelector('[name="' + def.key + '"]');
+      if (!node) return;
+      if (def.type === "checkbox") node.checked = Boolean(state.applicationDraft[def.key]);
+      else if (state.applicationDraft[def.key] != null) node.value = state.applicationDraft[def.key];
+    });
+    const emailField = fields.querySelector('[name="contact_email"]');
+    if (emailField && state.userEmail && !state.applicationDraft.contact_email) emailField.value = state.userEmail;
+    document.getElementById("applicationBackButton").classList.toggle("hidden", state.applicationStep === 1);
+    document.getElementById("applicationNextButton").classList.toggle("hidden", state.applicationStep === 2);
+    document.getElementById("applicationSubmitButton").classList.toggle("hidden", state.applicationStep !== 2);
+  }
+
+  function fieldHtml(field) {
+    const label = getLocalizedLabel(field);
+    if (field.type === "textarea") {
+      return '<label class="full"><span>' + safe(label) + '</span><textarea class="portal-textarea" name="' + safeAttr(field.key) + '" ' + requiredAttr(field) + "></textarea></label>";
+    }
+    if (field.type === "checkbox") {
+      return '<label class="check-field"><input type="checkbox" name="' + safeAttr(field.key) + '" ' + requiredAttr(field) + '><span>' + safe(label) + "</span></label>";
+    }
+    return '<label><span>' + safe(label) + '</span><input class="portal-input" name="' + safeAttr(field.key) + '" type="' + safeAttr(field.type) + '" ' + requiredAttr(field) + "></label>";
+  }
+
+  function requiredAttr(field) {
+    return field.required ? "required" : "";
+  }
+
+  function validateApplicationStep() {
+    const form = document.getElementById("applicationForm");
+    const defs = questionBank[state.applicationType][state.applicationStep - 1];
+    for (const def of defs) {
+      const field = form.elements[def.key];
+      if (!field) continue;
+      const valid = def.type === "checkbox" ? field.checked : Boolean(String(field.value || "").trim());
+      if (def.required && !valid) {
+        field.focus();
+        toast(tr("validationError"), "error");
+        playSound("error");
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function submitApplication(event) {
+    event.preventDefault();
+    if (!validateApplicationStep()) return;
+    const form = event.currentTarget;
+    Object.assign(state.applicationDraft, collectStepData(form, state.applicationType, state.applicationStep));
+    const data = collectApplicationData();
+    const applicantEmail = (state.userEmail || data.contact_email || "").trim().toLowerCase();
+    if (!applicantEmail) {
+      toast(tr("validationError"), "error");
+      return;
+    }
+    const now = new Date().toISOString();
+    const row = {
+      id: uid(),
+      kind: state.applicationType,
+      status: "pending",
+      applicant_email: applicantEmail,
+      applicant_name: data.full_name || "",
+      discord_id: data.discord_id || "",
+      answers: data,
+      question_labels: collectQuestionLabels(state.applicationType),
+      decision_message: null,
+      rejection_reason: null,
+      interview_dates: null,
+      cooldown_until: null,
+      decided_at: null,
+      decided_by: null,
+      created_at: now,
+      updated_at: now
+    };
+    const ok = await insertRow("applications", row);
+    if (!ok) return;
+    await sendDiscordWebhook(row);
+    state.userEmail = applicantEmail;
+    localStorage.setItem(STORAGE_KEYS.userEmail, applicantEmail);
+    const input = document.getElementById("authEmailInput");
+    if (input) input.value = applicantEmail;
+    closeModal("applicationModal");
+    toast(tr("savedApplication"), "success");
+    await refreshAfterMutation();
+  }
+
+  async function sendDiscordWebhook(row) {
+    if (!DISCORD_WEBHOOK_URL) return;
+    const typeLabel = row.kind === "transfer" ? tr("transferLabel") : tr("recruitmentLabel");
+    const summary = [
+      "**Applicant:** " + (row.applicant_name || "-"),
+      "**Email:** " + (row.applicant_email || "-"),
+      "**Discord:** " + (row.discord_id || "-"),
+      "**Type:** " + typeLabel,
+      "**Submitted:** " + formatDateTime(row.created_at)
+    ].join("\n");
+    try {
+      const response = await fetch(DISCORD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: "LSPD Recruitment Desk",
+          avatar_url: absoluteAssetUrl("lspd-shield.png"),
+          embeds: [{
+            title: "New LSPD " + typeLabel + " Submission",
+            description: summary,
+            color: row.kind === "transfer" ? 3447003 : 1942002,
+            timestamp: row.created_at,
+            footer: { text: "FTLSPD Portal" }
+          }]
+        })
+      });
+      if (!response.ok) throw new Error("Discord webhook returned " + response.status);
+    } catch (error) {
+      console.warn(error);
+      toast(tr("databaseError"), "warn");
+    }
+  }
+
+  function absoluteAssetUrl(path) {
+    try { return new URL(path, window.location.href).href; }
+    catch (error) { return path; }
+  }
+
+  function collectStepData(form, type, step) {
+    const data = {};
+    questionBank[type][step - 1].forEach(function (def) {
+      const field = form.elements[def.key];
+      if (!field) return;
+      data[def.key] = def.type === "checkbox" ? field.checked : String(field.value || "").trim();
+    });
+    return data;
+  }
+
+  function collectApplicationData() {
+    const data = {};
+    questionBank[state.applicationType].flat().forEach(function (def) {
+      data[def.key] = state.applicationDraft[def.key] != null ? state.applicationDraft[def.key] : (def.type === "checkbox" ? false : "");
+    });
+    return data;
+  }
+
+  function collectQuestionLabels(type) {
+    const labels = {};
+    questionBank[type].flat().forEach(function (def) {
+      labels[def.key] = getLocalizedLabel(def);
+    });
+    return labels;
+  }
+
+  function getQuestionLabel(type, key) {
+    const field = (questionBank[type] || []).flat().find(function (def) { return def.key === key; });
+    return field ? getLocalizedLabel(field) : key;
+  }
+
+  function getLocalizedLabel(field) {
+    return field.label[getLang()] || field.label.en;
+  }
+
+  window.openDecisionModal = function (id, action) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const app = state.applications.find(function (record) { return record.id === id; });
+    if (!app) return;
+    state.pendingDecision = { id, action };
+    document.getElementById("decisionTitle").textContent = tr(action === "accepted" ? "decisionApproveTitle" : "decisionRejectTitle");
+    document.getElementById("decisionSubject").textContent = app.applicant_name + " - " + app.applicant_email;
+    document.getElementById("approvalMessageInput").value = tr("defaultApproval");
+    document.getElementById("rejectionReasonInput").value = "";
+    document.getElementById("mondayDateInput").value = "";
+    document.getElementById("fridayDateInput").value = "";
+    const approving = action === "accepted";
+    document.getElementById("approvalMessageWrap").classList.toggle("hidden", !approving);
+    document.getElementById("mondayDateWrap").classList.toggle("hidden", !approving);
+    document.getElementById("fridayDateWrap").classList.toggle("hidden", !approving);
+    document.getElementById("rejectionReasonWrap").classList.toggle("hidden", approving);
+    document.getElementById("rejectionReasonInput").required = !approving;
+    openModal("decisionModal");
+  };
+
+  async function saveDecision(event) {
+    event.preventDefault();
+    if (!canEdit() || !state.pendingDecision) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const action = state.pendingDecision.action;
+    const now = new Date();
+    const patch = {
+      status: action,
+      updated_at: now.toISOString(),
+      decided_at: now.toISOString(),
+      decided_by: state.userEmail,
+      cooldown_until: addDays(now, action === "accepted" ? 7 : 3).toISOString()
+    };
+    if (action === "accepted") {
+      patch.decision_message = document.getElementById("approvalMessageInput").value.trim() || tr("defaultApproval");
+      patch.interview_dates = {
+        monday: formatDateForSave(document.getElementById("mondayDateInput").value),
+        friday: formatDateForSave(document.getElementById("fridayDateInput").value)
+      };
+      patch.rejection_reason = null;
+    } else {
+      const reason = document.getElementById("rejectionReasonInput").value.trim();
+      if (!reason) {
+        toast(tr("validationError"), "error");
+        return;
+      }
+      patch.rejection_reason = reason;
+      patch.decision_message = null;
+      patch.interview_dates = null;
+    }
+    const ok = await updateRow("applications", state.pendingDecision.id, patch);
+    if (!ok) return;
+    closeModal("decisionModal");
+    state.pendingDecision = null;
+    toast(tr("savedDecision"), "success");
+    await refreshAfterMutation();
+  }
+
+  async function clearPending() {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    if (!confirm(tr("confirmClear"))) return;
+    const ids = state.applications.filter(function (app) {
+      return app.status === "pending" && app.kind === state.activeReviewType;
+    }).map(function (app) { return app.id; });
+    const ok = await deleteRows("applications", ids);
+    if (!ok) return;
+    toast(tr("pendingCleared"), "success");
+    await refreshAfterMutation();
+  }
+
+  async function resetSystem() {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    if (!confirm(tr("confirmReset"))) return;
+    const ids = state.applications.filter(function (app) {
+      return app.status === "accepted" || app.status === "rejected";
+    }).map(function (app) { return app.id; });
+    const ok = await deleteRows("applications", ids);
+    if (!ok) return;
+    toast(tr("resetDone"), "success");
+    await refreshAfterMutation();
+  }
+
+  function openRoleModal() {
+    if (state.role !== "owner") {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    renderRoleList();
+    openModal("roleModal");
+  }
+
+  async function saveRole(event) {
+    event.preventDefault();
+    if (state.role !== "owner") {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const email = document.getElementById("roleEmailInput").value.trim().toLowerCase();
+    const password = document.getElementById("rolePasswordInput").value;
+    const role = document.getElementById("roleSelectInput").value;
+    if (!email || !password || email === OWNER_EMAIL) {
+      toast(tr("validationError"), "error");
+      return;
+    }
+    const existing = state.accounts.find(function (entry) { return (entry.email || "").toLowerCase() === email; });
+    const patch = {
+      email,
+      role: normalizeRole(role),
+      password_hash: await hashPassword(password),
+      updated_at: new Date().toISOString()
+    };
+    let ok;
+    if (existing) ok = await updateRow("accounts", existing.id, patch);
+    else ok = await insertRow("accounts", Object.assign({ id: uid(), created_at: new Date().toISOString() }, patch));
+    if (!ok) return;
+    event.currentTarget.reset();
+    toast(tr("savedRole"), "success");
+    await refreshAfterMutation();
+  }
+
+  window.removeRole = async function (email) {
+    if (state.role !== "owner") {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const existing = state.accounts.find(function (entry) { return (entry.email || "").toLowerCase() === email.toLowerCase(); });
+    if (!existing) return;
+    let ok;
+    if (state.client) {
+      const result = existing.id ? await state.client.from(tableName("accounts")).delete().eq("id", existing.id) : await state.client.from(tableName("accounts")).delete().eq("email", email);
+      ok = !result.error;
+      if (result.error) console.warn(result.error);
+    } else {
+      state.accounts = state.accounts.filter(function (entry) { return (entry.email || "").toLowerCase() !== email.toLowerCase(); });
+      saveLocalData();
+      ok = true;
+    }
+    if (!ok) {
+      toast(tr("databaseError"), "error");
+      return;
+    }
+    toast(tr("removed"), "success");
+    await refreshAfterMutation();
+  };
+
+  async function saveAsset(event, category) {
+    event.preventDefault();
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+    const editingId = state.assetEditing[category];
+    const existing = editingId ? state.assets.find(function (asset) { return asset.id === editingId && asset.category === category; }) : null;
+    const patch = {
+      title: (data.title || "").trim(),
+      subtitle: (data.subtitle || "").trim(),
+      discord_id: (data.discord_id || "").trim(),
+      photo_url: (data.photo_url || "").trim(),
+      caption: (data.caption || "").trim(),
+      updated_at: new Date().toISOString()
+    };
+    let ok;
+    if (existing) {
+      ok = await updateRow("assets", existing.id, patch);
+    } else {
+      const order = orderedAssets(category).length;
+      ok = await insertRow("assets", Object.assign({
+        id: uid(),
+        category,
+        created_by: state.userEmail,
+        created_at: new Date().toISOString(),
+        display_order: order
+      }, patch));
+    }
+    if (!ok) return;
+    form.reset();
+    state.assetEditing[category] = null;
+    updateAssetFormState(category);
+    toast(tr("savedAsset"), "success");
+    await refreshAfterMutation();
+  }
+
+  function updateAssetFormState(category) {
+    const form = document.getElementById(category === "crew" ? "crewForm" : "mediaForm");
+    if (!form) return;
+    const editing = Boolean(state.assetEditing[category]);
+    form.classList.toggle("editing-asset", editing);
+    const saveButton = document.getElementById(category + "SaveButton");
+    const cancelButton = document.getElementById(category + "CancelEditButton");
+    if (saveButton) {
+      const icon = saveButton.querySelector("i");
+      const label = saveButton.querySelector("span");
+      if (icon) icon.className = "fa-solid " + (editing ? "fa-floppy-disk" : "fa-plus");
+      if (label) {
+        label.dataset.i18n = editing ? (category === "crew" ? "updateCrew" : "updateMedia") : (category === "crew" ? "addCrew" : "addMedia");
+        label.textContent = tr(label.dataset.i18n);
+      }
+    }
+    if (cancelButton) cancelButton.classList.toggle("hidden", !editing);
+  }
+
+  function cancelAssetEdit(category) {
+    state.assetEditing[category] = null;
+    const form = document.getElementById(category === "crew" ? "crewForm" : "mediaForm");
+    if (form) form.reset();
+    updateAssetFormState(category);
+  }
+
+  window.editAsset = function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const asset = state.assets.find(function (entry) { return entry.id === id; });
+    if (!asset) return;
+    const category = asset.category === "media" ? "media" : "crew";
+    const form = document.getElementById(category === "crew" ? "crewForm" : "mediaForm");
+    if (!form) return;
+    state.assetEditing[category] = id;
+    if (form.elements.title) form.elements.title.value = asset.title || "";
+    if (form.elements.subtitle) form.elements.subtitle.value = asset.subtitle || "";
+    if (form.elements.discord_id) form.elements.discord_id.value = asset.discord_id || "";
+    if (form.elements.photo_url) form.elements.photo_url.value = asset.photo_url || "";
+    if (form.elements.caption) form.elements.caption.value = asset.caption || "";
+    updateAssetFormState(category);
+    form.scrollIntoView({ behavior: "smooth", block: "center" });
+    toast(tr("editMode"), "success");
+  };
+
+  window.removeAsset = async function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const ok = await deleteRows("assets", [id]);
+    if (!ok) return;
+    toast(tr("removed"), "success");
+    await refreshAfterMutation();
+  };
+
+  window.deleteArchiveRecord = async function (id) {
+    if (!canEdit()) {
+      toast(tr("noPermission"), "error");
+      return;
+    }
+    const record = state.applications.find(function (app) { return app.id === id; });
+    if (!record || record.status === "pending") return;
+    if (!confirm(tr("confirmDeleteArchive"))) return;
+    const ok = await deleteRows("applications", [id]);
+    if (!ok) return;
+    toast(tr("archiveDeleted"), "success");
+    await refreshAfterMutation();
+  };
+
+  function handleAssetDragStart(event) {
+    const card = event.target.closest(".asset-card[data-asset-id]");
+    if (!card || !canEdit()) return;
+    state.dragAsset = {
+      id: card.dataset.assetId,
+      category: card.dataset.assetCategory
+    };
+    playSound("drag");
+    card.classList.add("dragging");
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", state.dragAsset.id);
+  }
+
+  function handleAssetDragOver(event) {
+    const card = event.target.closest(".asset-card[data-asset-id]");
+    if (!card || !state.dragAsset || card.dataset.assetCategory !== state.dragAsset.category) return;
+    event.preventDefault();
+    card.classList.add("drag-over");
+    event.dataTransfer.dropEffect = "move";
+  }
+
+  async function handleAssetDrop(event) {
+    const card = event.target.closest(".asset-card[data-asset-id]");
+    if (!card || !state.dragAsset || card.dataset.assetCategory !== state.dragAsset.category) return;
+    event.preventDefault();
+    document.querySelectorAll(".asset-card.drag-over").forEach(function (node) { node.classList.remove("drag-over"); });
+    if (card.dataset.assetId === state.dragAsset.id) return;
+    await moveAssetBefore(state.dragAsset.category, state.dragAsset.id, card.dataset.assetId);
+    playSound("success");
+  }
+
+  function handleAssetDragEnd() {
+    document.querySelectorAll(".asset-card.dragging, .asset-card.drag-over").forEach(function (node) {
+      node.classList.remove("dragging", "drag-over");
+    });
+    state.dragAsset = null;
+  }
+
+  async function moveAssetBefore(category, draggedId, targetId) {
+    const ids = orderedAssets(category).map(function (asset) { return asset.id; });
+    const from = ids.indexOf(draggedId);
+    const to = ids.indexOf(targetId);
+    if (from < 0 || to < 0 || from === to) return;
+    ids.splice(from, 1);
+    ids.splice(to, 0, draggedId);
+    state.assetOrderLockUntil = Date.now() + 30000;
+    state.assetOrder[category] = ids;
+    state.assets = state.assets.map(function (asset) {
+      if (asset.category !== category) return asset;
+      const index = ids.indexOf(asset.id);
+      return index >= 0 ? Object.assign({}, asset, { display_order: index, updated_at: new Date().toISOString() }) : asset;
+    });
+    saveLocalData();
+    renderAssets(category);
+    toast(tr("reorderSaved"), "success");
+    if (state.client) await persistAssetOrder(category, ids);
+  }
+
+  async function persistAssetOrder(category, ids) {
+    for (let index = 0; index < ids.length; index += 1) {
+      const ok = await updateRow("assets", ids[index], { display_order: index, updated_at: new Date().toISOString() }, { quiet: true });
+      if (!ok) return;
+    }
+  }
+
+  async function insertRow(table, row) {
+    if (state.client) {
+      let result = await state.client.from(tableName(table)).insert(row);
+      if (result.error && table === "assets" && row && Object.prototype.hasOwnProperty.call(row, "display_order") && isMissingDisplayOrderError(result.error)) {
+        const fallback = Object.assign({}, row);
+        delete fallback.display_order;
+        result = await state.client.from(tableName(table)).insert(fallback);
+      }
+      if (result.error) {
+        console.warn(result.error);
+        toast(tr("databaseError"), "error");
+        return false;
+      }
+      return true;
+    }
+    if (table === "applications") state.applications.unshift(normalizeApplication(row));
+    if (table === "accounts") state.accounts.push(normalizeAccount(row));
+    if (table === "roles") state.roles.push(row);
+    if (table === "assets") state.assets.unshift(normalizeAsset(row));
+    if (table === "streams") state.streams.unshift(normalizeStream(row));
+    saveLocalData();
+    return true;
+  }
+
+  async function updateRow(table, id, patch, options) {
+    const settings = options || {};
+    if (state.client) {
+      let result = await state.client.from(tableName(table)).update(patch).eq("id", id);
+      if (result.error && table === "assets" && patch && Object.prototype.hasOwnProperty.call(patch, "display_order") && isMissingDisplayOrderError(result.error)) {
+        const fallback = Object.assign({}, patch);
+        delete fallback.display_order;
+        result = Object.keys(fallback).length ? await state.client.from(tableName(table)).update(fallback).eq("id", id) : { error: null };
+      }
+      if (result.error) {
+        console.warn(result.error);
+        if (!settings.quiet) toast(tr("databaseError"), "error");
+        return false;
+      }
+      return true;
+    }
+    if (table === "applications") {
+      state.applications = state.applications.map(function (row) { return row.id === id ? normalizeApplication(Object.assign({}, row, patch)) : row; });
+    }
+    if (table === "accounts") {
+      state.accounts = state.accounts.map(function (row) { return row.id === id ? normalizeAccount(Object.assign({}, row, patch)) : row; });
+    }
+    if (table === "assets") {
+      state.assets = state.assets.map(function (row) { return row.id === id ? normalizeAsset(Object.assign({}, row, patch)) : row; });
+    }
+    if (table === "streams") {
+      state.streams = state.streams.map(function (row) { return row.id === id ? normalizeStream(Object.assign({}, row, patch)) : row; });
+    }
+    saveLocalData();
+    return true;
+  }
+
+  function isMissingDisplayOrderError(error) {
+    const message = String((error && (error.message || error.details || error.hint || error.code)) || "");
+    return /display_order|schema cache|column/i.test(message);
+  }
+
+  async function deleteRows(table, ids) {
+    if (!ids.length) return true;
+    if (state.client) {
+      const result = await state.client.from(tableName(table)).delete().in("id", ids);
+      if (result.error) {
+        console.warn(result.error);
+        toast(tr("databaseError"), "error");
+        return false;
+      }
+      return true;
+    }
+    if (table === "applications") state.applications = state.applications.filter(function (row) { return !ids.includes(row.id); });
+    if (table === "accounts") state.accounts = state.accounts.filter(function (row) { return !ids.includes(row.id); });
+    if (table === "assets") {
+      state.assets = state.assets.filter(function (row) { return !ids.includes(row.id); });
+      state.assetOrder.crew = state.assetOrder.crew.filter(function (id) { return !ids.includes(id); });
+      state.assetOrder.media = state.assetOrder.media.filter(function (id) { return !ids.includes(id); });
+    }
+    if (table === "streams") state.streams = state.streams.filter(function (row) { return !ids.includes(row.id); });
+    saveLocalData();
+    return true;
+  }
+
+  async function refreshAfterMutation() {
+    if (state.client) await fetchAll();
+    else renderAllPortal();
+  }
+
+  function getApplicantRecords() {
+    const email = state.userEmail.toLowerCase();
+    if (!email) return [];
+    return state.applications.filter(function (app) { return (app.applicant_email || "").toLowerCase() === email; });
+  }
+
+  function getCurrentCooldown() {
+    const now = Date.now();
+    return getApplicantRecords()
+      .filter(function (app) { return app.cooldown_until && new Date(app.cooldown_until).getTime() > now; })
+      .sort(function (a, b) { return new Date(b.cooldown_until).getTime() - new Date(a.cooldown_until).getTime(); })[0];
+  }
+
+  function matchesApplication(app, query) {
+    if (!query) return true;
+    const haystack = [
+      app.applicant_email,
+      app.applicant_name,
+      app.discord_id,
+      app.kind,
+      app.status,
+      JSON.stringify(app.answers || {})
+    ].join(" ").toLowerCase();
+    return haystack.includes(query);
+  }
+
+  function canViewRecords() {
+    return state.role === "owner" || state.role === "admin";
+  }
+
+  function canEdit() {
+    return state.role === "owner" || state.role === "admin";
+  }
+
+  function openModal(id) {
+    document.getElementById(id)?.classList.remove("hidden");
+    playSound("modal");
+  }
+
+  function closeModal(id) {
+    document.getElementById(id)?.classList.add("hidden");
+  }
+
+  function toggleById(id, show) {
+    const node = document.getElementById(id);
+    if (node) node.classList.toggle("hidden", !show);
+  }
+
+  function safe(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char];
+    });
+  }
+
+  function safeAttr(value) {
+    return safe(value).replace(/`/g, "&#096;");
+  }
+
+  function uid() {
+    if (crypto && crypto.randomUUID) return crypto.randomUUID();
+    return "id-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+  }
+
+  function cap(value) {
+    return String(value || "").charAt(0).toUpperCase() + String(value || "").slice(1);
+  }
+
+  function addDays(date, days) {
+    const next = new Date(date);
+    next.setDate(next.getDate() + days);
+    return next;
+  }
+
+  function formatDateForSave(value) {
+    return value ? value.replace(/-/g, "/") : "";
+  }
+
+  function formatDate(value) {
+    if (!value) return "-";
+    return new Date(value).toLocaleDateString(getLang() === "ar" ? "ar-SA" : "en-US", { year: "numeric", month: "short", day: "numeric" });
+  }
+
+  function formatDateTime(value) {
+    if (!value) return "-";
+    return new Date(value).toLocaleString(getLang() === "ar" ? "ar-SA" : "en-US", { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function setCount(id, value) {
+    const node = document.getElementById(id);
+    if (node) node.textContent = String(value);
+  }
+
+  function debounce(fn, delay) {
+    let timer;
+    return function () {
+      const args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(null, args); }, delay);
+    };
+  }
+
+  function toast(message, type) {
+    const stack = document.getElementById("toastStack");
+    if (!stack) return;
+    const node = document.createElement("div");
+    node.className = "portal-toast " + (type || "");
+    node.textContent = message;
+    stack.appendChild(node);
+    playSound(type === "error" ? "error" : "success");
+    setTimeout(function () { node.remove(); }, 4200);
+  }
+
+  let audioContext;
+  function primeAudio() {
+    try {
+      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+      state.audioReady = true;
+      if (audioContext.state === "suspended") audioContext.resume();
+    } catch (error) {
+      state.audioReady = false;
+    }
+  }
+
+  function playSound(type) {
+    if (type === "hover") {
+      const now = Date.now();
+      if (now - state.lastHoverSound < 90) return;
+      state.lastHoverSound = now;
+    }
+    if (!state.audioReady || !audioContext) return;
+    const patterns = {
+      hover: [[520, .015, .028, "sine", 0]],
+      click: [[390, .026, .04, "triangle", 0], [620, .018, .04, "sine", .025]],
+      connect: [[220, .04, .07, "triangle", 0], [440, .04, .08, "sine", .06], [880, .032, .1, "sine", .13]],
+      success: [[620, .038, .06, "sine", 0], [840, .034, .08, "sine", .055], [1120, .026, .09, "triangle", .12]],
+      error: [[180, .055, .075, "sawtooth", 0], [132, .042, .095, "sawtooth", .07]],
+      warn: [[300, .04, .065, "triangle", 0], [420, .025, .075, "sine", .075]],
+      modal: [[480, .03, .06, "sine", 0], [720, .022, .08, "triangle", .055]],
+      settings: [[260, .035, .055, "triangle", 0], [520, .025, .06, "sine", .045], [780, .018, .08, "sine", .095]],
+      drag: [[160, .03, .045, "square", 0], [310, .022, .05, "triangle", .045]],
+      stream: [[420, .03, .05, "sine", 0], [690, .026, .07, "triangle", .055], [980, .018, .08, "sine", .11]],
+      offline: [[210, .034, .08, "sawtooth", 0], [150, .024, .09, "sawtooth", .07]]
+    };
+    (patterns[type] || patterns.click).forEach(function (settings) {
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      const start = audioContext.currentTime + settings[4];
+      osc.type = settings[3];
+      osc.frequency.setValueAtTime(settings[0], start);
+      osc.frequency.exponentialRampToValueAtTime(settings[0] * 1.045, start + settings[2]);
+      gain.gain.setValueAtTime(settings[1], start);
+      gain.gain.exponentialRampToValueAtTime(.0001, start + settings[2]);
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      osc.start(start);
+      osc.stop(start + settings[2] + .018);
+    });
+  }
+
+  window.LSPD_PORTAL = {
+    config: SUPABASE_CONFIG,
+    state: state,
+    refresh: fetchAll
+  };
+
+  installPortalDom();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initPortal);
+  else initPortal();
+})();
