@@ -464,7 +464,7 @@
   function installFirstTownBrand() {
     const brand = document.querySelector(".brand");
     if (!brand || document.querySelector(".first-town-header-logo")) return;
-    brand.insertAdjacentHTML("beforeend", '<img class="first-town-header-logo" src="FT.png" alt="First Town logo">');
+    brand.insertAdjacentHTML("beforeend", '<img class="first-town-header-logo" src="" alt="First Town logo">');
   }
 
   function installStylesheet() {
