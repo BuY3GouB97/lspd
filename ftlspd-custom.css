@@ -29,8 +29,16 @@ body {
 
 .stream-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.credits-command {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.credit-brief {
+  grid-column: 1 / -1 !important;
 }
 
 .stream-card {
@@ -45,7 +53,7 @@ body {
 
 .stream-shot {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 8.6;
   background: #020711;
 }
 
@@ -82,16 +90,16 @@ body {
 }
 
 .stream-body {
-  padding: 14px;
+  padding: 10px;
   display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 9px;
   align-items: center;
 }
 
 .stream-logo {
-  width: 54px;
-  height: 54px;
+  width: 42px;
+  height: 42px;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid rgba(58, 167, 255, .28);
@@ -99,9 +107,10 @@ body {
 }
 
 .stream-body h3 {
-  margin: 0 0 4px;
-  font-family: var(--display-font);
-  font-size: 16px;
+  margin: 0;
+  font-family: var(--hud-font);
+  font-size: 15px;
+  letter-spacing: .06em;
 }
 
 .stream-body p,
@@ -113,12 +122,41 @@ body {
   line-height: 1.45;
 }
 
+.stream-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stream-viewers {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 5px;
+  color: #f2fbff !important;
+  font-family: var(--hud-font);
+  font-size: 13px !important;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+
+.stream-viewers i {
+  color: #ff727b;
+  font-size: 12px;
+}
+
 .stream-actions {
-  padding: 0 14px 14px;
+  padding: 0 10px 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
+}
+
+.stream-actions .portal-button {
+  min-height: 34px;
+  padding-inline: 10px;
+  font-size: 10px;
 }
 
 .settings-dock {
@@ -303,7 +341,37 @@ body {
   }
 
   .settings-grid,
-  .stream-grid {
+  .stream-grid,
+  .credits-command {
     grid-template-columns: 1fr;
   }
+}
+
+html {
+  scrollbar-color: rgba(231, 81, 90, .78) rgba(2, 7, 18, .94);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background:
+    linear-gradient(180deg, rgba(2, 7, 18, .98), rgba(5, 22, 46, .92));
+  border-inline-start: 1px solid rgba(58, 167, 255, .12);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid rgba(2, 7, 18, .98);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(231, 81, 90, .92), rgba(93, 12, 24, .96));
+  box-shadow: inset 0 0 0 1px rgba(255, 180, 186, .25), 0 0 16px rgba(231, 81, 90, .22);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, rgba(255, 111, 121, .98), rgba(143, 24, 41, .98));
 }
