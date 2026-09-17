@@ -14,7 +14,7 @@
     }
   }, window.LSPD_SUPABASE_CONFIG || {});
   const OWNER_PASSWORD = window.LSPD_OWNER_PASSWORD || SUPABASE_CONFIG.ownerPassword || "ChangeMe123!";
-  const DISCORD_WEBHOOK_URL = window.LSPD_DISCORD_WEBHOOK_URL || SUPABASE_CONFIG.discordWebhookUrl || "";
+  const DISCORD_WEBHOOK_URL = window.LSPD_DISCORD_WEBHOOK_URL || SUPABASE_CONFIG.discordWebhookUrl || "https://canary.discord.com/api/webhooks/1550096295065030706/8EwafuN8mvX2nsVcPE9cLIoZ_6YruZvV2vqJGrufTFqx9qsA6vkKAXOYPnf_6Fv2N2WP";
 
   const STORAGE_KEYS = {
     applications: "ftlspd-applications-v2",
