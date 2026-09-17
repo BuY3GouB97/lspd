@@ -4,8 +4,8 @@
   const SUPABASE_CONFIG = Object.assign({
     url: window.LSPD_SUPABASE_URL || "",
     anonKey: window.LSPD_SUPABASE_ANON_KEY || "",
-    ownerPassword: window.LSPD_OWNER_PASSWORD || "",
-    discordWebhookUrl: window.LSPD_DISCORD_WEBHOOK_URL || "",
+    ownerPassword: window.LSPD_OWNER_PASSWORD || "ChangeMe123!",
+    discordWebhookUrl: window.LSPD_DISCORD_WEBHOOK_URL || "https://canary.discord.com/api/webhooks/1550096295065030706/8EwafuN8mvX2nsVcPE9cLIoZ_6YruZvV2vqJGrufTFqx9qsA6vkKAXOYPnf_6Fv2N2WP",
     tables: {
       applications: "lspd_applications",
       accounts: "lspd_accounts",
