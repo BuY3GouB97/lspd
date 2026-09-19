@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#01040b">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; upgrade-insecure-requests">
+  <title>Register | LSPD Command</title>
+  <link rel="icon" type="image/png" href="../header.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../ftlspd-custom.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: #edf7ff;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(231, 81, 90, .2), transparent 22rem),
+        linear-gradient(115deg, rgba(0, 62, 125, .18), transparent 30%),
+        linear-gradient(180deg, rgba(1, 4, 11, .82), rgba(1, 4, 11, .98)),
+        url("../image4.webp") center / cover fixed,
+        #01040b;
+      font-family: Inter, Arial, sans-serif;
+    }
+    .auth-shell {
+      width: min(460px, 100%);
+      padding: 28px;
+      border: 1px solid rgba(231, 81, 90, .34);
+      border-radius: 8px;
+      background: rgba(3, 9, 19, .9);
+      box-shadow: 0 32px 120px rgba(0, 0, 0, .68), 0 0 50px rgba(231, 81, 90, .16);
+      backdrop-filter: blur(18px);
+    }
+    .kicker, label, .auth-switch { font-family: "Share Tech Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+    .kicker { margin: 0 0 10px; color: #ff727b; font-size: 11px; }
+    h1 { margin: 0 0 8px; font-family: Orbitron, Inter, sans-serif; font-size: 32px; }
+    p { margin: 0 0 20px; color: #9fb4c9; line-height: 1.6; }
+    form { display: grid; gap: 12px; }
+    label { display: grid; gap: 7px; color: #b9d7ef; font-size: 11px; }
+    input {
+      min-height: 44px;
+      padding: 0 12px;
+      color: #edf7ff;
+      border: 1px solid rgba(58, 167, 255, .22);
+      border-radius: 8px;
+      background: rgba(2, 7, 18, .78);
+      font: inherit;
+    }
+    button, a {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      color: #fff8f9;
+      border: 1px solid rgba(231, 81, 90, .76);
+      clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+      background: linear-gradient(135deg, rgba(231, 81, 90, .92), rgba(93, 12, 24, .94));
+      font-family: "Share Tech Mono", monospace;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .55; cursor: wait; }
+    .auth-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+    .auth-row a { border-color: rgba(58, 167, 255, .3); background: rgba(5, 22, 46, .72); }
+    .discord-auth { width: 100%; margin-top: 10px; border-color: rgba(88, 101, 242, .72); background: linear-gradient(135deg, rgba(88, 101, 242, .9), rgba(23, 31, 86, .94)); }
+    #authStatus { min-height: 20px; margin: 10px 0 0; color: #9fb4c9; font-size: 13px; }
+    #authStatus[data-state="error"] { color: #ff8991; }
+    #authStatus[data-state="success"] { color: #9eeaff; }
+  </style>
+</head>
+<body data-auth-mode="register">
+  <main class="auth-shell">
+    <p class="kicker">New Applicant Access</p>
+    <h1>Create Account</h1>
+    <p>Create an applicant account before recruitment or transfer requests.</p>
+    <form id="authBranchForm">
+      <label>Email<input id="authEmail" type="email" autocomplete="email" required></label>
+      <label>Password<input id="authPassword" type="password" autocomplete="new-password" minlength="10" required></label>
+      <button id="authSubmit" type="submit">Register</button>
+    </form>
+    <button id="discordAuthButton" class="discord-auth" type="button">Continue with Discord</button>
+    <p id="authStatus" aria-live="polite"></p>
+    <div class="auth-row">
+      <a href="../login/">Login</a>
+      <a href="../ftlspd-portal.html">Back Hub</a>
+    </div>
+  </main>
+  <script src="../lspd-config.js"></script>
+  <script src="../auth-branch.js"></script>
+</body>
+</html>
